@@ -1,7 +1,9 @@
 {
-  "name": "client",
+  "name": "onno-mart-client",
   "version": "0.1.0",
   "private": true,
+  "author": "Mohammad Ali",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
