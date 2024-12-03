@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports */
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -9,6 +10,12 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+        container: {
+            center: true,
+            screens: {
+                "2xl": "1140px",
+            },
+        },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
