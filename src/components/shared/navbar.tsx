@@ -3,6 +3,7 @@
 import logo from "@/assets/images/logo.png";
 import { useSession } from "@/provider/session-provider";
 import {
+    BadgeDollarSign,
     ChevronDown,
     Globe,
     Heart,
@@ -45,13 +46,13 @@ const Navbar: FC = () => {
     return (
         <header className="min-h-[60px] tracking-wide relative z-50">
             <section className="bg-primary px-4 py-4">
-                <div className="container flex items-center">
+                <div className="container flex gap-3.5 items-center">
                     <Link
                         href={"tel:+8801916498482"}
                         className="flex items-center gap-2 text-white"
                     >
                         <PhoneCall className="inline" size={20} />
-                        +880 190000000
+                        <span className="hidden sm:block">+880 190000000</span>
                     </Link>
                     <span className="border-l border-gray-300 h-4 mx-3 max-sm:hidden" />
                     <Link
@@ -59,16 +60,19 @@ const Navbar: FC = () => {
                         className="flex items-center gap-2 text-white"
                     >
                         <Mail className="inline" size={20} />
-                        info@example.com
+
+                        <span className="hidden sm:block">
+                            info@example.com
+                        </span>
                     </Link>
-                    <div className="sm:ml-auto flex items-center text-white">
+                    <div className="ml-auto flex items-center text-white">
                         <div className="relative group">
                             <div className="flex items-center cursor-pointer">
                                 <Globe className="inline mr-1" size={20} />
                                 <span>English</span>
                                 <ChevronDown className="inline" size={18} />
                             </div>
-                            <div className="absolute left-0 mt-2 w-32 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
+                            <div className="absolute right-0 sm:-right-2 mt-2 w-24 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
                                 <Link
                                     href="#"
                                     className="block px-4 py-2 text-black hover:bg-gray-100"
@@ -80,11 +84,14 @@ const Navbar: FC = () => {
                         <span className="border-l border-gray-300 h-4 mx-3 max-sm:hidden" />
                         <div className="relative group">
                             <div className="flex items-center cursor-pointer">
-                                <Globe className="inline mr-1" size={20} />
+                                <BadgeDollarSign
+                                    className="inline mr-2"
+                                    size={20}
+                                />
                                 <span>USD</span>
                                 <ChevronDown className="inline" size={18} />
                             </div>
-                            <div className="absolute left-0 mt-2 w-32 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
+                            <div className="absolute right-0 sm:-right-2 mt-2 w-24 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
                                 <Link
                                     href="#"
                                     className="block px-4 py-2 text-black hover:bg-gray-100"
@@ -99,7 +106,8 @@ const Navbar: FC = () => {
                             className="flex items-center gap-2 text-white"
                         >
                             <User className="inline" size={20} />
-                            My Account
+
+                            <span className="hidden sm:block">My Account</span>
                         </Link>
                     </div>
                 </div>
@@ -112,7 +120,7 @@ const Navbar: FC = () => {
                             alt="logo"
                             width={150}
                             height={80}
-                            className="w-36"
+                            className="w-28 sm:w-36"
                         />
                     </Link>
                     <div
@@ -197,26 +205,26 @@ const Navbar: FC = () => {
                         </ul>
                     </div>
                     <div className="flex items-center max-sm:ml-auto">
-                        <ul className="flex space-x-4">
-                            <li className="flex items-center justify-center bg-[#f8f7f7] size-12 rounded-full relative transition-all transform duration-300 hover:bg-primary hover:text-white">
+                        <ul className="flex gap-2 sm:gap-4">
+                            <li className="flex items-center justify-center bg-[#f8f7f7] size-8 sm:size-12 rounded-full relative transition-all transform duration-300 hover:bg-primary hover:text-white">
                                 <button id="searchIcon">
-                                    <Search size={22} />
+                                    <Search size={20} />
                                 </button>
                             </li>
-                            <li className="flex items-center justify-center bg-[#f8f7f7] size-12 rounded-full relative transition-all transform duration-300 hover:bg-primary hover:text-white">
+                            <li className="flex items-center justify-center bg-[#f8f7f7] size-8 sm:size-12 rounded-full relative transition-all transform duration-300 hover:bg-primary hover:text-white">
                                 <Link href="/wishlist">
-                                    <span className="flex items-center justify-center bg-primary size-[25px] absolute -top-[10px] -right-[10px] rounded-full text-white">
+                                    <span className="flex items-center justify-center bg-primary size-5 text-xs sm:text-base sm:size-[25px] absolute -top-[10px] -right-[10px] rounded-full text-white">
                                         0
                                     </span>
-                                    <Heart size={22} />
+                                    <Heart size={20} />
                                 </Link>
                             </li>
-                            <li className="flex items-center justify-center bg-[#f8f7f7] size-12 rounded-full relative transition-all transform duration-300 hover:bg-primary hover:text-white">
+                            <li className="flex items-center justify-center bg-[#f8f7f7] size-8 sm:size-12 rounded-full relative transition-all transform duration-300 hover:bg-primary hover:text-white">
                                 <Link href="/cart">
-                                    <span className="flex items-center justify-center bg-primary size-[25px] absolute -top-[10px] -right-[10px] rounded-full text-white">
+                                    <span className="flex items-center justify-center bg-primary size-5 text-xs sm:text-base sm:size-[25px] absolute -top-[10px] -right-[10px] rounded-full text-white">
                                         0
                                     </span>
-                                    <ShoppingCart size={22} />
+                                    <ShoppingCart size={20} />
                                 </Link>
                             </li>
                         </ul>
