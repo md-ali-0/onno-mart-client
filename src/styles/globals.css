@@ -72,9 +72,76 @@ body {
 
 @layer base {
   * {
-    @apply border-border;
+      @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+      @apply bg-background text-foreground;
+  }
+  .navbar-active .hamburger div:first-child {
+      @apply rotate-45 translate-y-1.5;
+  }
+
+  .navbar-active .hamburger div:last-child {
+      @apply -rotate-45 -translate-y-1;
+  }
+
+  .navbar-active div:first-child div:first-child div:last-child {
+      @apply block lg:flex;
+  }
+
+  .sideLink {
+      @apply flex items-center gap-x-3.5 py-2 px-2.5 text-[15px] text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10 dark:text-white;
+  }
+
+  .sideLinkActive {
+      @apply flex items-center gap-x-3.5 py-2 px-2.5 bg-white/10 text-[15px] text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 dark:text-white;
+  }
+
+  .dropdownSideBar {
+      @apply relative flex items-center gap-x-3.5 py-2 px-2.5 text-[15px] text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10 w-full;
+  }
+
+  *::selection {
+      background-color: black;
+      color: #fff;
+  }
+}
+
+@layer utilities {
+  .link-button {
+      @apply inline-block text-gray-600 hover:text-gray-50 bg-gray-100 hover:bg-blue-500 text-center font-medium px-2 py-1 rounded-md;
+  }
+  .nav-link {
+      @apply relative pb-1 block font-medium text-[15px];
+  }
+
+  .nav-link::after {
+      content: "";
+      @apply absolute w-0 h-[2px] bottom-0 left-0 bg-neutral-900 dark:bg-neutral-300 duration-300 ease-in-out;
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+      @apply w-[80%];
+  }
+
+  .navigation-wrapper {
+      @apply relative;
+  }
+
+  .slider {
+      @apply flex items-center justify-between font-medium;
+  }
+
+  .custom-scroll {
+      @apply overflow-x-hidden scroll-smooth;
+  }
+
+  .custom-scroll::-webkit-scrollbar {
+      @apply w-1.5;
+  }
+
+  .custom-scroll::-webkit-scrollbar-thumb {
+      @apply bg-slate-600 dark:bg-slate-800 rounded-xl border border-slate-600 dark:border-[#7b7b7b] shadow-inner transition-all duration-150 ease-in-out;
   }
 }
