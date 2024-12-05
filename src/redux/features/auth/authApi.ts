@@ -11,6 +11,15 @@ const authApi = baseApi.injectEndpoints({
                 };
             },
         }),
+        vendorSignUp: builder.mutation({
+            query: (data) => {
+                return {
+                    url: "/auth/signup",
+                    body: data,
+                    method: "POST",
+                };
+            },
+        }),
         signoutUser: builder.mutation({
             query: () => {
                 return {
@@ -44,6 +53,7 @@ const authApi = baseApi.injectEndpoints({
 export const {
     useSignUpUserMutation,
     useSignoutUserMutation,
+    useVendorSignUpMutation,
     useForgetPasswordMutation,
     useResetPasswordMutation,
 } = authApi;

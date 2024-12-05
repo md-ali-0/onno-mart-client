@@ -4,7 +4,6 @@ import { signout } from "@/actions/auth";
 import logo from "@/assets/images/logo.png";
 import { useSession } from "@/provider/session-provider";
 import {
-    BadgeDollarSign,
     ChevronDown,
     Globe,
     Heart,
@@ -62,6 +61,14 @@ const Navbar: FC = () => {
                         </span>
                     </Link>
                     <div className="ml-auto flex items-center text-white">
+                        {!session?.isAuth && (
+                            <div className="hidden sm:block">
+                                <Link href={'/auth/vendor-signup'} className="flex items-center cursor-pointer text-sm border p-1 px-2">
+                                    Join as Vendor
+                                </Link>
+                            </div>
+                        )}
+                        <span className="border-l border-gray-300 h-4 mx-3 max-sm:hidden" />
                         <div className="relative group hidden sm:block py-2.5">
                             <div className="flex items-center cursor-pointer">
                                 <Globe className="inline mr-1" size={20} />
@@ -74,25 +81,6 @@ const Navbar: FC = () => {
                                     className="block px-4 py-2 text-black hover:bg-gray-100"
                                 >
                                     English
-                                </Link>
-                            </div>
-                        </div>
-                        <span className="border-l border-gray-300 h-4 mx-3 max-sm:hidden" />
-                        <div className="relative group hidden sm:block py-2.5">
-                            <div className="flex items-center cursor-pointer">
-                                <BadgeDollarSign
-                                    className="inline mr-2"
-                                    size={20}
-                                />
-                                <span>USD</span>
-                                <ChevronDown className="inline" size={18} />
-                            </div>
-                            <div className="absolute right-0 sm:-right-2 mt-2 w-24 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
-                                <Link
-                                    href="#"
-                                    className="block px-4 py-2 text-black hover:bg-gray-100"
-                                >
-                                    USD
                                 </Link>
                             </div>
                         </div>
