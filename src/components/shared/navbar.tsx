@@ -1,5 +1,6 @@
 "use client";
 
+import { signout } from "@/actions/auth";
 import logo from "@/assets/images/logo.png";
 import { useSession } from "@/provider/session-provider";
 import {
@@ -23,19 +24,14 @@ import { toast } from "sonner";
 
 const Navbar: FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const path = usePathname();
-
-    const handleDropdownToggle = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
 
     const { session, setIsLoading } = useSession();
 
     const handleLogout = async () => {
         try {
             setIsLoading(true);
-            // await signout();
+            await signout();
             setIsLoading(false);
             toast.success("Logout Successfully");
         } catch (error) {
@@ -44,8 +40,8 @@ const Navbar: FC = () => {
     };
 
     return (
-        <header className="min-h-[60px] tracking-wide relative z-50">
-            <section className="bg-primary px-4 py-4">
+        <header className="min-h-[60px] tracking-wide border-b relative z-50">
+            <section className="bg-primary px-4 sm:px-0 py-1.5">
                 <div className="container flex gap-3.5 items-center">
                     <Link
                         href={"tel:+8801916498482"}
@@ -66,7 +62,7 @@ const Navbar: FC = () => {
                         </span>
                     </Link>
                     <div className="ml-auto flex items-center text-white">
-                        <div className="relative group">
+                        <div className="relative group hidden sm:block py-2.5">
                             <div className="flex items-center cursor-pointer">
                                 <Globe className="inline mr-1" size={20} />
                                 <span>English</span>
@@ -82,7 +78,7 @@ const Navbar: FC = () => {
                             </div>
                         </div>
                         <span className="border-l border-gray-300 h-4 mx-3 max-sm:hidden" />
-                        <div className="relative group">
+                        <div className="relative group hidden sm:block py-2.5">
                             <div className="flex items-center cursor-pointer">
                                 <BadgeDollarSign
                                     className="inline mr-2"
@@ -101,19 +97,66 @@ const Navbar: FC = () => {
                             </div>
                         </div>
                         <span className="border-l border-gray-300 h-4 mx-3 max-sm:hidden" />
-                        <Link
-                            href={"mailto:md.ali.office@gmail.com"}
-                            className="flex items-center gap-2 text-white"
-                        >
+                        <div className="flex items-center gap-2 text-white">
                             <User className="inline" size={20} />
+                            {session?.isAuth ? (
+                                <div className="relative group hidden sm:block py-2.5">
+                                    <div className="flex items-center">
+                                        <span className="hidden sm:block">
+                                            My Account
+                                        </span>
+                                        <ChevronDown
+                                            className="inline"
+                                            size={18}
+                                        />
+                                    </div>
+                                    <ul className="absolute right-0 sm:-right-2 mt-2 w-32 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
+                                        {session.role === "admin" && (
+                                            <li>
+                                                <Link
+                                                    href="/dashboard"
+                                                    className="block px-4 py-2 text-black hover:bg-gray-100"
+                                                >
+                                                    Dashboard
+                                                </Link>
+                                            </li>
+                                        )}
 
-                            <span className="hidden sm:block">My Account</span>
-                        </Link>
+                                        <li>
+                                            <Link
+                                                href="#"
+                                                className="block px-4 py-2 text-black hover:bg-gray-100"
+                                            >
+                                                My Profile
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <button
+                                                onClick={handleLogout}
+                                                className="block w-full text-left px-4 py-2 text-black hover:bg-gray-100"
+                                            >
+                                                Logout
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            ) : (
+                                <>
+                                    <Link href={"/auth/signin"}>
+                                        <span>Signin</span>
+                                    </Link>
+                                    /
+                                    <Link href={"/auth/signup"}>
+                                        <span>Signup</span>
+                                    </Link>
+                                </>
+                            )}
+                        </div>
                     </div>
                 </div>
             </section>
             <nav className="container">
-                <div className="flex flex-wrap items-center justify-between py-8 px-4 sm:px-0 lg:gap-y-4 gap-y-6 gap-x-4">
+                <div className="flex flex-wrap items-center justify-between py-5 px-4 sm:px-0 lg:gap-y-4 gap-y-6 gap-x-4">
                     <Link href="/">
                         <Image
                             src={logo}
@@ -129,12 +172,12 @@ const Navbar: FC = () => {
                     >
                         <button
                             onClick={() => setIsOpen(false)}
-                            className="lg:hidden bg-primary text-white fixed top-2 right-4 z-[100] rounded-full p-3"
+                            className="lg:hidden text-white fixed top-2 right-2 z-[100] rounded-full p-3"
                         >
                             <X />
                         </button>
-                        <ul className="lg:!flex lg:gap-x-10 max-lg:space-y-3 max-lg:fixed max-lg:bg-primary max-lg:w-2/3 max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:px-10 max-lg:py-4 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
-                            <li className="mb-6 hidden max-lg:block">
+                        <ul className="lg:!flex lg:gap-x-10 max-lg:space-y-3 max-lg:fixed max-lg:bg-primary max-lg:w-full max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:px-4 max-lg:py-4 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
+                            <li className="mb-6 hidden invert max-lg:block">
                                 <Link href="/">
                                     <Image
                                         src={logo}

@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useRef, useState } from "react";
 import "swiper/css";
@@ -90,7 +91,7 @@ const BrowseByCategory: FC = () => {
     }, []);
 
     const breakpoints = {
-        0: { slidesPerView: 1, spaceBetween: 16 },
+        0: { slidesPerView: 2, spaceBetween: 16 },
         640: { slidesPerView: 4, spaceBetween: 24 },
         768: { slidesPerView: 5, spaceBetween: 24 },
         1024: { slidesPerView: 6, spaceBetween: 24 },
@@ -102,7 +103,7 @@ const BrowseByCategory: FC = () => {
                 <div>Loading...</div>
             ) : (
                 <section className="my-10 sm:my-14">
-                    <div className="container relative">
+                    <div className="container relative px-4 sm:px-0">
                         <h2 className="text-2xl sm:text-4xl font-bold mb-10">
                             Browse by Categories
                         </h2>
@@ -148,13 +149,15 @@ const BrowseByCategory: FC = () => {
                                     className="mobile:!w-24"
                                 >
                                     <Link
-                                        href={"/frontend/product"}
+                                        href={`/shop?category=${category.name}`}
                                         className="w-full rounded-2xl shadow-xs group"
                                     >
-                                        <img
+                                        <Image
                                             className="w-full block rounded-tl-2xl rounded-tr-2xl"
                                             src={category.thumb}
                                             alt={category.name}
+                                            width={200}
+                                            height={200}
                                         />
                                         <span className="text-sm sm:text-xl font-medium capitalize text-center py-2 px-3 overflow-hidden whitespace-nowrap text-ellipsis block rounded-bl-2xl rounded-br-2xl group-hover:text-primary">
                                             {category.name}

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { Button } from "../ui/button";
 
 const FlashSaleProductCard: React.FC = () => {
     // const toggleWishlist = (productId: number) => {
@@ -16,18 +17,14 @@ const FlashSaleProductCard: React.FC = () => {
     // };
 
     return (
-        <div className="relative sm:p-2 rounded-2xl sm:shadow-card transition-all duration-300 sm:hover:shadow-hover group">
-            <span className="absolute -right-2.5 top-6 rounded-bl-3xl text-sm rounded-tr-3xl bg-rose-600 px-3 py-2.5 font-medium uppercase tracking-widest text-white z-20">
-                Save 10%
-            </span>
-            <div className="relative overflow-hidden border rounded-bl-3xl rounded-tr-3xl isolate">
-                {/* <label className="capitalize text-xs font-semibold rounded-xl py-1 px-2 shadow absolute top-3 left-3 z-10 bg-slate-800 text-white">
+        <div className="group sm:p-2 rounded-2xl sm:shadow-card transition-all duration-300 sm:hover:shadow-hover group">
+            <div className="relative overflow-hidden rounded-xl isolate">
+                <label className="capitalize text-xs font-semibold rounded-xl py-1 px-2 shadow absolute top-3 left-3 z-10 bg-slate-800 text-white">
                     Flash Sale
-                </label> */}
-
+                </label>
                 <button
                     type="button"
-                    className="flex items-center justify-center size-8 rounded-full text-center text-base shadow absolute top-3 left-3 z-10 bg-white"
+                    className="flex items-center justify-center size-8 rounded-full text-center text-base shadow absolute top-3 right-3 z-10 bg-white"
                 >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -49,8 +46,13 @@ const FlashSaleProductCard: React.FC = () => {
                     alt="product"
                     width={400}
                     height={650}
-                    className="w-full rounded-bl-3xl rounded-tr-3xl transition-all duration-300 group-hover:scale-105"
+                    className="w-full rounded-xl transition-all duration-300 group-hover:scale-105"
                 />
+                <div className="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
+                    <Button className="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center text-white w-full rounded-md h-auto z-10">
+                        Add to Cart
+                    </Button>
+                </div>
             </div>
             <div className="px-1 sm:px-0 pt-4 pb-2">
                 <h3 className="capitalize text-base font-semibold whitespace-nowrap transition-all duration-300 hover:text-primary">

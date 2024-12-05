@@ -13,7 +13,8 @@ const config: Config = {
         container: {
             center: true,
             screens: {
-                "2xl": "1140px",
+                "2xl": "1400px",
+                "xl": "1140px",
             },
         },
   		colors: {

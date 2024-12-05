@@ -11,7 +11,7 @@ const Breadcumb: FC = () => {
     const title = pathnames[lastIndex].replace(/-/g, " ")
     return (
         <div className="bg-white dark:bg-gray-900 border-b">
-            <div className="container mx-auto px-5 sm:px-8 py-5 flex justify-between items-center">
+            <div className="container mx-auto px-4 sm:px-0 py-5 flex justify-between items-center">
                 <h1 className="text-xl capitalize font-semibold">{title}</h1>
                 <nav>
                     <ul className="flex space-x-4">

@@ -3,6 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { Button } from "../ui/button";
+import StarRating from "./star-rating";
 
 const ProductCard: React.FC = () => {
     // const toggleWishlist = (productId: number) => {
@@ -16,65 +18,76 @@ const ProductCard: React.FC = () => {
     // };
 
     return (
-        <div className="sm:p-2 rounded-2xl sm:shadow-card transition-all duration-300 sm:hover:shadow-hover group">
-            <div className="relative overflow-hidden rounded-xl isolate">
-                {/* <label className="capitalize text-xs font-semibold rounded-xl py-1 px-2 shadow absolute top-3 left-3 z-10 bg-slate-800 text-white">
-                    Flash Sale
-                </label> */}
-                <button
-                    type="button"
-                    className="flex items-center justify-center size-8 rounded-full text-center text-base shadow absolute top-3 right-3 z-10 bg-white"
-                >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth="1.5"
-                        stroke="currentColor"
-                        className="size-5"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                        />
-                    </svg>
-                </button>
+        <div className="group">
+            <div className="relative overflow-hidden shadow dark:shadow-gray-800 group-hover:shadow-lg group-hover:dark:shadow-gray-800 rounded-md duration-500">
                 <Image
                     src="https://demo.shopperz.xyz/storage/96/conversions/1-cover.png"
+                    className="group-hover:scale-110 duration-500"
                     alt="product"
                     width={400}
                     height={650}
-                    className="w-full rounded-xl transition-all duration-300 group-hover:scale-105"
                 />
+                <div className="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
+                    <Button className="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center text-white w-full rounded-md h-auto">
+                        Add to Cart
+                    </Button>
+                </div>
+                <ul className="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-1">
+                    <li>
+                        <Button className="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                strokeWidth="1.5"
+                                stroke="currentColor"
+                                className="size-5"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                                />
+                            </svg>
+                        </Button>
+                    </li>
+                    <li className="mt-1 ms-0">
+                        <Link
+                            className="size-10 inline-flex items-center justify-center tracking-wide align-middle duration-500 text-center rounded-full bg-white text-slate-900 hover:bg-slate-900 hover:text-white shadow"
+                            href="/shop-item-detail"
+                        >
+                            <svg
+                                stroke="currentColor"
+                                fill="none"
+                                strokeWidth={2}
+                                viewBox="0 0 24 24"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                className="size-4"
+                                height="1em"
+                                width="1em"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                <circle cx={12} cy={12} r={3} />
+                            </svg>
+                        </Link>
+                    </li>
+                </ul>
+                <ul className="list-none absolute top-[10px] start-4" />
             </div>
-            <div className="px-1 sm:px-0 pt-4 pb-2">
-                <h3 className="capitalize text-base font-semibold whitespace-nowrap transition-all duration-300 hover:text-primary">
-                    <Link
-                        href="/product/team-red-hoodie859"
-                        className="block overflow-hidden text-ellipsis"
-                    >
-                        Team Red Hoodie
-                    </Link>
-                </h3>
-                {/* <div className="flex flex-wrap items-center gap-2 mb-5">
-                    <StarRating rating={4}/>
-                    <div className="flex items-center gap-1 mt-[5px]">
-                        <span className="text-xs font-medium whitespace-nowrap text-text">
-                            5.0
-                        </span>
-                        <span className="text-xs font-medium whitespace-nowrap text-text hover:text-primary">
-                            (1 Review)
-                        </span>
-                    </div>
-                </div> */}
-                <div className="flex flex-wrap-reverse items-center gap-x-3 gap-y-1">
-                    <h3 className="text-xl sm:text-[22px] font-bold">
-                        <span>$60.00</span>
-                    </h3>
-                    <h4 className="text-sm sm:text-base font-semibold text-red-500">
-                        <del>$120.00</del>
-                    </h4>
+            <div className="mt-4">
+                <Link
+                    className="hover:text-primary text-lg font-medium"
+                    href="/product/3"
+                >
+                    Mens White Slip Shoes
+                </Link>
+                <div className="flex justify-between items-center mt-1">
+                    <p>
+                        $16.00 <del className="text-slate-400">$21.00</del>
+                    </p>
+                    <StarRating rating={5} />
                 </div>
             </div>
         </div>

@@ -42,7 +42,7 @@ const FlashSale: React.FC = () => {
 
     return (
         <section className="mb-10 sm:mb-20">
-            <div className="container">
+            <div className="container px-4 sm:px-0">
                 <div className="flex items-center justify-between gap-4 mb-5 sm:mb-7">
                     <h2 className="text-2xl sm:text-4xl font-bold capitalize">
                         Flash Sale

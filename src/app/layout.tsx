@@ -3,6 +3,7 @@ import { SessionProvider } from "@/provider/session-provider";
 import { ThemeProvider } from "@/provider/theme-provider";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
+import { Toaster } from "sonner";
 import "../styles/globals.css";
 
 export const metadata: Metadata = {
@@ -35,6 +36,7 @@ export default function RootLayout({
                             disableTransitionOnChange
                         >
                             {children}
+                            <Toaster richColors expand/>
                         </ThemeProvider>
                     </ReduxProvider>
                 </SessionProvider>

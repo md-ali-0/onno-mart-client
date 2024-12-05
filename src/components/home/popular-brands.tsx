@@ -91,7 +91,7 @@ const PopularBrands: FC = () => {
     }, []);
 
     const breakpoints = {
-        0: { slidesPerView: 1, spaceBetween: 16 },
+        0: { slidesPerView: 2, spaceBetween: 16 },
         640: { slidesPerView: 4, spaceBetween: 24 },
         768: { slidesPerView: 5, spaceBetween: 24 },
         1024: { slidesPerView: 6, spaceBetween: 24 },
@@ -103,7 +103,7 @@ const PopularBrands: FC = () => {
                 <div>Loading...</div>
             ) : (
                 <section className="my-10 sm:my-14">
-                    <div className="container relative">
+                    <div className="container px-4 sm:px-0 relative">
                         <h2 className="text-2xl sm:text-4xl font-bold mb-10">
                             Popular Brands
                         </h2>
