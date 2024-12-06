@@ -62,23 +62,29 @@ const Navbar: FC = () => {
                     </Link>
                     <div className="ml-auto flex items-center text-white">
                         {!session?.isAuth && (
-                            <div className="hidden sm:block">
-                                <Link href={'/auth/vendor-signup'} className="flex items-center cursor-pointer text-sm border p-1 px-2">
-                                    Join as Vendor
-                                </Link>
-                            </div>
+                            <>
+                                <div className="hidden sm:block">
+                                    <Link
+                                        href={"/auth/vendor-signup"}
+                                        className="flex items-center cursor-pointer text-sm border p-1 px-2"
+                                    >
+                                        Join as Vendor
+                                    </Link>
+                                </div>
+                                <span className="border-l border-gray-300 h-4 mx-3 max-sm:hidden" />
+                            </>
                         )}
-                        <span className="border-l border-gray-300 h-4 mx-3 max-sm:hidden" />
-                        <div className="relative group hidden sm:block py-2.5">
-                            <div className="flex items-center cursor-pointer">
+
+                        <div className="relative cursor-pointer group hidden sm:block py-2.5">
+                            <div className="flex items-center">
                                 <Globe className="inline mr-1" size={20} />
                                 <span>English</span>
                                 <ChevronDown className="inline" size={18} />
                             </div>
-                            <div className="absolute right-0 sm:-right-2 mt-2 w-24 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
+                            <div className="absolute rounded right-0 sm:-right-2 mt-2 w-24 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
                                 <Link
                                     href="#"
-                                    className="block px-4 py-2 text-black hover:bg-gray-100"
+                                    className="block px-3 py-1.5 text-black hover:bg-gray-100"
                                 >
                                     English
                                 </Link>
@@ -88,9 +94,9 @@ const Navbar: FC = () => {
                         <div className="flex items-center gap-2 text-white">
                             <User className="inline" size={20} />
                             {session?.isAuth ? (
-                                <div className="relative group hidden sm:block py-2.5">
+                                <div className="relative cursor-pointer group py-2.5">
                                     <div className="flex items-center">
-                                        <span className="hidden sm:block">
+                                        <span className="">
                                             My Account
                                         </span>
                                         <ChevronDown
@@ -98,12 +104,12 @@ const Navbar: FC = () => {
                                             size={18}
                                         />
                                     </div>
-                                    <ul className="absolute right-0 sm:-right-2 mt-2 w-32 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
+                                    <ul className="absolute rounded right-0 mt-2 w-32 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
                                         {session.role === "admin" && (
                                             <li>
                                                 <Link
                                                     href="/dashboard"
-                                                    className="block px-4 py-2 text-black hover:bg-gray-100"
+                                                    className="block px-3 py-1.5 text-black hover:bg-gray-100"
                                                 >
                                                     Dashboard
                                                 </Link>

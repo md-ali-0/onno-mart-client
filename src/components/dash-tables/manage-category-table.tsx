@@ -8,34 +8,28 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {
-    useDeleteBrandMutation,
-    useGetAllBrandsQuery,
-} from "@/redux/features/brand/brandApi";
-import { Brand, ErrorResponse, TMeta } from "@/types";
+
+import { useDeleteCategoryMutation, useGetAllCategoriesQuery } from "@/redux/features/category/categoryApi";
+import { Category, ErrorResponse, TMeta } from "@/types";
 import { SerializedError } from "@reduxjs/toolkit";
 import { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import { LuMoreVertical } from "react-icons/lu";
 import { toast } from "sonner";
-import EditBrandDialog from "../dash-edit-dialogs/edit-brand-dialog";
 import { DataTable } from "../data-table/data-table";
 import DeleteDialog from "../shared/delete-dialog";
 
-const ManageBrandTable: FC = () => {
+const ManageCategoTable: FC = () => {
     const [search, setSearch] = useState<string | undefined>(undefined);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
 
-    const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [categoryToEdit, setCategoryToEdit] = useState<Brand | null>(null);
-    const [categoryToDelete, setCategoryToDelete] = useState<Brand | null>(
+    const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(
         null
     );
 
-    const { data, isError, isLoading, isSuccess, error } = useGetAllBrandsQuery(
+    const { data, isError, isLoading, isSuccess, error } = useGetAllCategoriesQuery(
         [
             {
                 name: "limit",
@@ -58,34 +52,12 @@ const ManageBrandTable: FC = () => {
         }
     }, [isError, isSuccess, error]);
 
-    const handleEditClick = (category: Brand) => {
-        setCategoryToEdit(category);
-        setEditDialogOpen(true);
-    };
-
-    const handleDeleteClick = (category: Brand) => {
+    const handleDeleteClick = (category: Category) => {
         setCategoryToDelete(category);
         setDeleteDialogOpen(true);
     };
 
-    const columns: ColumnDef<Brand>[] = [
-        {
-            accessorKey: "image",
-            header: "Image",
-            cell: ({ row }) => {
-                return (
-                    <div className="rounded-md overflow-hidden w-16">
-                        <Image
-                            src={row.original?.image}
-                            alt={row.original.name}
-                            width={100}
-                            height={100}
-                            className="rounded-md transition-all transform ease-in-out duration-200 hover:scale-105"
-                        />
-                    </div>
-                );
-            },
-        },
+    const columns: ColumnDef<Category>[] = [
         {
             accessorKey: "name",
             header: "Name",
@@ -121,11 +93,6 @@ const ManageBrandTable: FC = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                             <DropdownMenuItem
-                                onClick={() => handleEditClick(row.original)}
-                            >
-                                Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
                                 onClick={() => handleDeleteClick(row.original)}
                             >
                                 Delete
@@ -144,7 +111,7 @@ const ManageBrandTable: FC = () => {
             isError: isDeleteError,
             error: deleteError,
         },
-    ] = useDeleteBrandMutation();
+    ] = useDeleteCategoryMutation();
 
     useEffect(() => {
         if (isDeleteError) {
@@ -158,7 +125,7 @@ const ManageBrandTable: FC = () => {
 
             toast.error(errorMessage);
         } else if (isDeleteSuccess) {
-            toast.success("Brand Deleted successfully");
+            toast.success("Category Deleted successfully");
         }
     }, [isDeleteError, isDeleteSuccess, deleteError]);
 
@@ -177,11 +144,7 @@ const ManageBrandTable: FC = () => {
                 onPageSizeChange={setLimit}
                 meta={data?.meta as TMeta}
             />
-            <EditBrandDialog
-                brand={categoryToEdit}
-                open={editDialogOpen}
-                onClose={() => setEditDialogOpen(false)}
-            />
+
             <DeleteDialog
                 id={categoryToDelete?.id as string}
                 open={deleteDialogOpen}
@@ -192,4 +155,4 @@ const ManageBrandTable: FC = () => {
     );
 };
 
-export default ManageBrandTable;
+export default ManageCategoTable;

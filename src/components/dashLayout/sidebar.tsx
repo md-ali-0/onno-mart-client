@@ -55,7 +55,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                             <SidebarSubMenu
                                 menu={{
                                     name: "Brand",
-                                    icon: "Hash",
+                                    icon: "Hexagon",
                                 }}
                                 subMenu={[
                                     {
@@ -71,63 +71,22 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                             ></SidebarSubMenu>
                             <SidebarSubMenu
                                 menu={{
-                                    name: "Specifications",
-                                    icon: "TabletSmartphone",
+                                    name: "Category",
+                                    icon: "SquareSlash",
                                 }}
                                 subMenu={[
                                     {
-                                        name: "Create Specification",
-                                        path: "/dashboard/create-specification",
+                                        name: "Create Category",
+                                        path: "/dashboard/create-category",
                                     },
                                     {
-                                        name: "Specifications",
-                                        path: "/dashboard/specifications",
+                                        name: "All Categories",
+                                        path: "/dashboard/categories",
                                     },
                                 ]}
                                 setSidebarOpen={setSidebarOpen}
                             ></SidebarSubMenu>
-                            <SidebarSubMenu
-                                menu={{
-                                    name: "Reviews",
-                                    icon: "Star",
-                                }}
-                                subMenu={[
-                                    {
-                                        name: "Create Review",
-                                        path: "/dashboard/create-review",
-                                    },
-                                    {
-                                        name: "Manage Reviews",
-                                        path: "/dashboard/reviews",
-                                    },
-                                ]}
-                                setSidebarOpen={setSidebarOpen}
-                            ></SidebarSubMenu>
-                            <SidebarSubMenu
-                                menu={{
-                                    name: "Posts",
-                                    icon: "Rss",
-                                }}
-                                subMenu={[
-                                    {
-                                        name: "Create Post",
-                                        path: "/dashboard/create-post",
-                                    },
-                                    {
-                                        name: "Manage Posts",
-                                        path: "/dashboard/posts",
-                                    },
-                                ]}
-                                setSidebarOpen={setSidebarOpen}
-                            ></SidebarSubMenu>
-                            <SideBarMenuItem
-                                menu={{
-                                    name: "Comments",
-                                    icon: "MessageCircle",
-                                    path: "/dashboard/comments",
-                                }}
-                                setSidebarOpen={setSidebarOpen}
-                            />
+                            
                             <SideBarMenuItem
                                 menu={{
                                     name: "Ratings",
@@ -136,23 +95,6 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                                 }}
                                 setSidebarOpen={setSidebarOpen}
                             />
-                            <SidebarSubMenu
-                                menu={{
-                                    name: "Pages",
-                                    icon: "PanelsTopLeft",
-                                }}
-                                subMenu={[
-                                    {
-                                        name: "Create Page",
-                                        path: "/dashboard/create-page",
-                                    },
-                                    {
-                                        name: "Manage Pages",
-                                        path: "/dashboard/pages",
-                                    },
-                                ]}
-                                setSidebarOpen={setSidebarOpen}
-                            ></SidebarSubMenu>
                             <SideBarMenuItem
                                 menu={{
                                     name: "Users",
