@@ -86,7 +86,23 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                                 ]}
                                 setSidebarOpen={setSidebarOpen}
                             ></SidebarSubMenu>
-                            
+                            <SidebarSubMenu
+                                menu={{
+                                    name: "Product",
+                                    icon: "ShoppingBasket",
+                                }}
+                                subMenu={[
+                                    {
+                                        name: "Create Product",
+                                        path: "/dashboard/create-product",
+                                    },
+                                    {
+                                        name: "All Products",
+                                        path: "/dashboard/products",
+                                    },
+                                ]}
+                                setSidebarOpen={setSidebarOpen}
+                            ></SidebarSubMenu>
                             <SideBarMenuItem
                                 menu={{
                                     name: "Ratings",

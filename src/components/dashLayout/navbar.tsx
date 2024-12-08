@@ -121,7 +121,7 @@ const DashNavbar: FC<DashNavbarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                             ) : (
                                 <Avatar>
                                     <AvatarImage
-                                        src={userData?.profilePicture as string}
+                                        src={userData?.avatar as string}
                                         alt={userData?.name}
                                     />
                                     <AvatarFallback>
