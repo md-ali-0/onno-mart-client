@@ -3,14 +3,14 @@
 import { signout } from "@/actions/auth";
 import logo from "@/assets/images/logo.png";
 import { useSession } from "@/provider/session-provider";
+import { useGetMeQuery } from "@/redux/features/user/userApi";
 import {
-    ChevronDown,
-    Globe,
+    FileText,
     Heart,
-    Mail,
+    LogIn,
     Menu,
-    PhoneCall,
-    Search,
+    Settings,
+    ShoppingBag,
     ShoppingCart,
     User,
     X,
@@ -19,13 +19,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC, useState } from "react";
+import { GrUserManager } from "react-icons/gr";
+import { HiOutlineUserPlus } from "react-icons/hi2";
 import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Skeleton } from "../ui/skeleton";
 
 const Navbar: FC = () => {
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isDropdownOpen, setIsDropDownOpen] = useState<boolean>(false);
     const path = usePathname();
 
     const { session, setIsLoading } = useSession();
+
+    const { data, isLoading } = useGetMeQuery(undefined);
+    console.log(data);
 
     const handleLogout = async () => {
         try {
@@ -40,7 +48,7 @@ const Navbar: FC = () => {
 
     return (
         <header className="min-h-[60px] tracking-wide border-b relative z-50">
-            <section className="bg-primary px-4 sm:px-0 py-1.5">
+            {/* <section className="bg-primary px-4 sm:px-0 py-1.5">
                 <div className="container flex gap-3.5 items-center">
                     <Link
                         href={"tel:+8801916498482"}
@@ -96,16 +104,14 @@ const Navbar: FC = () => {
                             {session?.isAuth ? (
                                 <div className="relative cursor-pointer group py-2.5">
                                     <div className="flex items-center">
-                                        <span className="">
-                                            My Account
-                                        </span>
+                                        <span className="">My Account</span>
                                         <ChevronDown
                                             className="inline"
                                             size={18}
                                         />
                                     </div>
                                     <ul className="absolute rounded right-0 mt-2 w-32 bg-white z-50 border border-gray-200 shadow-lg hidden group-hover:block">
-                                        {session.role === "admin" && (
+                                        {session.role === "ADMIN" && (
                                             <li>
                                                 <Link
                                                     href="/dashboard"
@@ -115,10 +121,20 @@ const Navbar: FC = () => {
                                                 </Link>
                                             </li>
                                         )}
+                                        {session.role === "USER" && (
+                                            <li>
+                                                <Link
+                                                    href="/user/dashboard"
+                                                    className="block px-3 py-1.5 text-black hover:bg-gray-100"
+                                                >
+                                                    Dashboard
+                                                </Link>
+                                            </li>
+                                        )}
 
                                         <li>
                                             <Link
-                                                href="#"
+                                                href="/user/profile"
                                                 className="block px-4 py-2 text-black hover:bg-gray-100"
                                             >
                                                 My Profile
@@ -148,16 +164,16 @@ const Navbar: FC = () => {
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> */}
             <nav className="container">
-                <div className="flex flex-wrap items-center justify-between py-5 px-4 sm:px-0 lg:gap-y-4 gap-y-6 gap-x-4">
+                <div className="flex flex-wrap items-center justify-between py-3.5 px-4 sm:px-0 lg:gap-y-4 gap-y-6 gap-x-4">
                     <Link href="/">
                         <Image
                             src={logo}
                             alt="logo"
                             width={150}
                             height={80}
-                            className="w-28 sm:w-36"
+                            className="w-24 sm:w-36"
                         />
                     </Link>
                     <div
@@ -178,7 +194,7 @@ const Navbar: FC = () => {
                                         alt="logo"
                                         width={150}
                                         height={80}
-                                        className="w-36"
+                                        className="w-28 sm:w-36"
                                     />
                                 </Link>
                             </li>
@@ -186,13 +202,13 @@ const Navbar: FC = () => {
                             <li
                                 className={`max-lg:border-b max-lg:py-3 relative lg:after:absolute hover:text-primary lg:after:bg-primary ${
                                     path == "/"
-                                        ? "lg:after:w-full text-primary"
+                                        ? "lg:after:w-full !text-primary"
                                         : "lg:after:w-0"
                                 } lg:hover:after:w-full  lg:after:h-[1px] lg:after:block lg:after:-bottom-1 lg:after:transition-all lg:after:duration-300`}
                             >
                                 <Link
                                     href="/"
-                                    className="text-white sm:text-[#1f0300] block uppercase"
+                                    className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
                                 >
                                     Home
                                 </Link>
@@ -206,7 +222,7 @@ const Navbar: FC = () => {
                             >
                                 <Link
                                     href="/shop"
-                                    className="text-white sm:text-[#1f0300] block uppercase"
+                                    className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
                                 >
                                     Shop
                                 </Link>
@@ -220,7 +236,7 @@ const Navbar: FC = () => {
                             >
                                 <Link
                                     href="/about"
-                                    className="text-white sm:text-[#1f0300] block uppercase"
+                                    className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
                                 >
                                     About
                                 </Link>
@@ -234,7 +250,7 @@ const Navbar: FC = () => {
                             >
                                 <Link
                                     href="/contact"
-                                    className="text-white sm:text-[#1f0300] block uppercase"
+                                    className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
                                 >
                                     Contact
                                 </Link>
@@ -242,32 +258,263 @@ const Navbar: FC = () => {
                         </ul>
                     </div>
                     <div className="flex items-center max-sm:ml-auto">
-                        <ul className="flex gap-2 sm:gap-4">
-                            <li className="flex items-center justify-center bg-[#f8f7f7] size-8 sm:size-12 rounded-full relative transition-all transform duration-300 hover:bg-primary hover:text-white">
-                                <button id="searchIcon">
-                                    <Search size={20} />
-                                </button>
-                            </li>
-                            <li className="flex items-center justify-center bg-[#f8f7f7] size-8 sm:size-12 rounded-full relative transition-all transform duration-300 hover:bg-primary hover:text-white">
+                        <ul className="flex gap-1.5 sm:gap-4">
+                            <li className="flex items-center justify-center bg-[#f8f7f7] size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
                                 <Link href="/wishlist">
-                                    <span className="flex items-center justify-center bg-primary size-5 text-xs sm:text-base sm:size-[25px] absolute -top-[10px] -right-[10px] rounded-full text-white">
+                                    <span className="flex items-center justify-center bg-primary size-5 text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-[13px]">
                                         0
                                     </span>
-                                    <Heart size={20} />
+                                    <Heart size={18} />
                                 </Link>
                             </li>
-                            <li className="flex items-center justify-center bg-[#f8f7f7] size-8 sm:size-12 rounded-full relative transition-all transform duration-300 hover:bg-primary hover:text-white">
+                            <li className="flex items-center justify-center bg-[#f8f7f7] size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
                                 <Link href="/cart">
-                                    <span className="flex items-center justify-center bg-primary size-5 text-xs sm:text-base sm:size-[25px] absolute -top-[10px] -right-[10px] rounded-full text-white">
+                                    <span className="flex items-center justify-center bg-primary size-5 text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-[13px]">
                                         0
                                     </span>
-                                    <ShoppingCart size={20} />
+                                    <ShoppingCart size={18} />
                                 </Link>
                             </li>
+                            <div
+                                onClick={() => setIsDropDownOpen(false)}
+                                className={`fixed inset-0 w-full h-full ${
+                                    isDropdownOpen ? "" : "hidden"
+                                }`}
+                            ></div>
+                            {session?.isAuth ? (
+                                <li className="group flex items-center justify-center bg-[#f8f7f7] size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary">
+                                    <button
+                                        className="group-hover:text-white p-[13px] rounded-full"
+                                        onClick={() =>
+                                            setIsDropDownOpen(!isDropdownOpen)
+                                        }
+                                    >
+                                        {isLoading ? (
+                                            <div className="flex items-center space-x-4">
+                                                <Skeleton className="size-10 rounded-full" />
+                                            </div>
+                                        ) : (
+                                            <Avatar>
+                                                <AvatarImage
+                                                    src={data?.avatar}
+                                                    alt={data?.name}
+                                                />
+                                                <AvatarFallback>
+                                                    {
+                                                        data?.name.split(
+                                                            ""
+                                                        )[0]
+                                                    }
+                                                </AvatarFallback>
+                                            </Avatar>
+                                        )}
+                                    </button>
+
+                                    <div
+                                        className="absolute top-[38px] end-0 m-0 mt-4 w-48 rounded-md overflow-hidden bg-white dark:bg-slate-900 border dark:shadow-gray-700 z-10"
+                                        style={{
+                                            display: `${
+                                                isDropdownOpen
+                                                    ? "block"
+                                                    : "none"
+                                            }`,
+                                        }}
+                                    >
+                                        <ul className="py-2 text-start">
+                                            <li className="ms-0">
+                                                <p className="text-slate-400 text-[15px] pt-2 px-4">
+                                                    {data?.name}
+                                                </p>
+                                            </li>
+                                            {session?.role === "ADMIN" && (
+                                                <li>
+                                                    <Link
+                                                        href="/dashboard"
+                                                        className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                        onClick={() =>
+                                                            setIsDropDownOpen(
+                                                                false
+                                                            )
+                                                        }
+                                                    >
+                                                        Dashboard
+                                                    </Link>
+                                                </li>
+                                            )}
+                                            <li className="ms-0">
+                                                <Link
+                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                    href="/user/dashboard"
+                                                    onClick={() =>
+                                                        setIsDropDownOpen(false)
+                                                    }
+                                                >
+                                                    <User
+                                                        size={20}
+                                                        className="h-4 w-4 me-2"
+                                                    />
+                                                    Account
+                                                </Link>
+                                            </li>
+                                            <li className="ms-0">
+                                                <Link
+                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                    href="/user/purchased-items"
+                                                    onClick={() =>
+                                                        setIsDropDownOpen(false)
+                                                    }
+                                                >
+                                                    <ShoppingBag
+                                                        size={20}
+                                                        className="h-4 w-4 me-2"
+                                                    />
+                                                    Purchased Items
+                                                </Link>
+                                            </li>
+                                            <li className="ms-0">
+                                                <Link
+                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                    href="/user/transactions"
+                                                    onClick={() =>
+                                                        setIsDropDownOpen(false)
+                                                    }
+                                                >
+                                                    <FileText
+                                                        size={20}
+                                                        className="h-4 w-4 me-2"
+                                                    />
+                                                    Transactions
+                                                </Link>
+                                            </li>
+                                            <li className="ms-0">
+                                                <Link
+                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                    href="/user/edit-profile"
+                                                    onClick={() =>
+                                                        setIsDropDownOpen(false)
+                                                    }
+                                                >
+                                                    <Settings
+                                                        size={20}
+                                                        className="h-4 w-4 me-2"
+                                                    />
+                                                    Edit Profile
+                                                </Link>
+                                            </li>
+                                            <li className="border-t border-gray-100 dark:border-gray-800 my-1" />
+                                            <li className="ms-0">
+                                                <button
+                                                    className="flex items-center py-1 px-4 hover:text-orange-500 text-[15px]"
+                                                    onClick={() => {
+                                                        setIsDropDownOpen(
+                                                            false
+                                                        );
+                                                        handleLogout();
+                                                    }}
+                                                >
+                                                    <svg
+                                                        stroke="currentColor"
+                                                        fill="none"
+                                                        strokeWidth={2}
+                                                        viewBox="0 0 24 24"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        className="h-4 w-4 me-2"
+                                                        height="1em"
+                                                        width="1em"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                                        <polyline points="16 17 21 12 16 7" />
+                                                        <line
+                                                            x1={21}
+                                                            y1={12}
+                                                            x2={9}
+                                                            y2={12}
+                                                        />
+                                                    </svg>
+                                                    Logout
+                                                </button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            ) : (
+                                <li className="group flex items-center justify-center bg-[#f8f7f7] size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary">
+                                    <button
+                                        className="group-hover:text-white p-[13px] rounded-full"
+                                        onClick={() =>
+                                            setIsDropDownOpen(!isDropdownOpen)
+                                        }
+                                    >
+                                        <User size={18} />
+                                    </button>
+
+                                    <div
+                                        className="absolute top-[38px] end-0 m-0 mt-4 w-48 rounded-md overflow-hidden bg-white dark:bg-slate-900 border dark:shadow-gray-700 z-10"
+                                        style={{
+                                            display: `${
+                                                isDropdownOpen
+                                                    ? "block"
+                                                    : "none"
+                                            }`,
+                                        }}
+                                    >
+                                        <ul className="py-2 text-start">
+                                            <li className="ms-0">
+                                                <Link
+                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                    href="/auth/signin"
+                                                    onClick={() =>
+                                                        setIsDropDownOpen(false)
+                                                    }
+                                                >
+                                                    <LogIn
+                                                        size={20}
+                                                        className="h-4 w-4 me-2"
+                                                    />
+                                                    Sign In
+                                                </Link>
+                                            </li>
+                                            <li className="ms-0">
+                                                <Link
+                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                    href="/auth/signup"
+                                                    onClick={() =>
+                                                        setIsDropDownOpen(false)
+                                                    }
+                                                >
+                                                    <HiOutlineUserPlus
+                                                        size={20}
+                                                        className="h-4 w-4 me-2"
+                                                    />
+                                                    Sign Up
+                                                </Link>
+                                            </li>
+                                            <li className="border-t border-gray-100 dark:border-gray-800 my-1" />
+                                            <li className="ms-0">
+                                                <Link
+                                                    className="flex items-center py-1 px-4 hover:text-orange-500 text-[15px]"
+                                                    href="/auth/vendor-signup"
+                                                    onClick={() =>
+                                                        setIsDropDownOpen(false)
+                                                    }
+                                                >
+                                                    <GrUserManager
+                                                        size={20}
+                                                        className="h-4 w-4 me-2"
+                                                    />
+                                                    Join as Vendor
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            )}
                         </ul>
                         <button
                             onClick={() => setIsOpen(true)}
-                            className="lg:hidden ml-6"
+                            className="lg:hidden ml-2.5"
                         >
                             <Menu />
                         </button>

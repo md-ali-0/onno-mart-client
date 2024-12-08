@@ -31,7 +31,7 @@ export async function getSession(): Promise<TSession> {
     if (cookie) {
         const session = await decrypt(cookie);
         if (session?.user) {
-            return { isAuth: true, user: session.user, role: "admin" };
+            return { isAuth: true, user: session.user, role: session.role as 'ADMIN' | 'USER' | 'guest' | 'VENDOR' };
         }
     }
 

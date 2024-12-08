@@ -7,7 +7,6 @@ import {
     LogOut,
     Settings,
     ShoppingBag,
-    Truck,
     Users
 } from "lucide-react";
 import Link from "next/link";
@@ -18,7 +17,6 @@ const sidebarLinks = [
     { icon: Users, label: "Vendor Panel", href: "/dashboard" },
     { icon: ShoppingBag, label: "Purchased Items", href: "/user/purchased-items" },
     { icon: FileText, label: "Transactions", href: "/user/transactions" },
-    { icon: Truck, label: "Order Tracking", href: "/user/order-tracking" },
     { icon: Box, label: "Favorite Sellers", href: "/user/favorite-seller" },
     { icon: Settings, label: "Edit Profile", href: "/user/edit-profile" },
     { icon: Settings, label: "Reset Password", href: "/user/reset-password" },

@@ -37,6 +37,7 @@ const SignInForm: React.FC = () => {
         if (response.success) {
             toast.success("User Logged In Successfully");
             router.replace("/");
+            localStorage.setItem('accessToken', response.data)
         } else {
             toast.error(response?.message);
         }
