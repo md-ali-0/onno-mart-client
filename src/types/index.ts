@@ -1,4 +1,5 @@
 export * from "./Brand";
+export * from "./CartItem";
 export * from "./Category";
 export * from "./global";
 export * from "./ISession";

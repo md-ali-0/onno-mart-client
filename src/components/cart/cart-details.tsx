@@ -2,19 +2,20 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Product } from "@/types";
+import { CartItem } from "@/types";
 import CartProduct from "./cart-product";
 import OrderSummary from "./order-summery";
 
 interface CartDetailsProps {
-    cartProducts: Product[];
-    setCartProducts: React.Dispatch<React.SetStateAction<Product[]>>;
+    cart: CartItem[];
+    updateQuantity: (id: string, newQuantity: number) => void
+    total: number
 }
 
-const CartDetails: React.FC<CartDetailsProps> = ({ cartProducts, setCartProducts }) => {
+const CartDetails: React.FC<CartDetailsProps> = ({ cart, updateQuantity, total }) => {
+
     const handleClearCart = () => {
-        localStorage.removeItem("cartProducts");
-        setCartProducts([]);
+        localStorage.removeItem("cart");
     };
 
     return (
@@ -45,8 +46,8 @@ const CartDetails: React.FC<CartDetailsProps> = ({ cartProducts, setCartProducts
                             </tr>
                         </thead>
                         <tbody>
-                            {cartProducts?.map((product) => (
-                                <CartProduct key={product.id} product={product} setCartProducts={setCartProducts} />
+                            {cart?.map((product) => (
+                                <CartProduct key={product.id} product={product} updateQuantity={updateQuantity} />
                             ))}
                         </tbody>
                     </table>
@@ -67,7 +68,7 @@ const CartDetails: React.FC<CartDetailsProps> = ({ cartProducts, setCartProducts
                 </div>
             </div>
             <div className="md:col-span-3">
-                <OrderSummary />
+                <OrderSummary total={total}/>
             </div>
         </div>
     );

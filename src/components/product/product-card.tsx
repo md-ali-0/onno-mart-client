@@ -1,27 +1,18 @@
 "use client";
 
+import { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { Button } from "../ui/button";
 import StarRating from "./star-rating";
 
-const ProductCard: React.FC = () => {
-    // const toggleWishlist = (productId: number) => {
-    //     setProducts((prev) =>
-    //         prev.map((product) =>
-    //             product.id === productId
-    //                 ? { ...product, wishlist: !product.wishlist }
-    //                 : product
-    //         )
-    //     );
-    // };
-
+const ProductCard = ({product}: {product: Product}) => {
+    
     return (
         <div className="group">
             <div className="relative overflow-hidden shadow dark:shadow-gray-800 group-hover:shadow-lg group-hover:dark:shadow-gray-800 rounded-md duration-500">
                 <Image
-                    src="https://demo.shopperz.xyz/storage/96/conversions/1-cover.png"
+                    src={product.thumbnail}
                     className="group-hover:scale-110 duration-500"
                     alt="product"
                     width={400}
@@ -79,13 +70,13 @@ const ProductCard: React.FC = () => {
             <div className="mt-4">
                 <Link
                     className="hover:text-primary text-lg font-medium"
-                    href="/product/3"
+                    href={`/product/${product.id}`}
                 >
-                    Mens White Slip Shoes
+                    {product.name}
                 </Link>
                 <div className="flex justify-between items-center mt-1">
                     <p>
-                        $16.00 <del className="text-slate-400">$21.00</del>
+                        ${product.price} <del className="text-slate-400">%{product.discount}</del>
                     </p>
                     <StarRating rating={5} />
                 </div>

@@ -1,36 +1,23 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Product } from "@/types";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const OrderSummary: FC = () => {
-    const [cart, setCart] = useState<Product[]>([]);
-    const [totalPriceWithOutVat, setTotalPriceWithOutVat] = useState(0);
+const OrderSummary = ({total} : {total: number}) => {
+
     const [vatAmount, setVatAmount] = useState(0);
 
     const VAT_RATE = 0.15; // 15%
 
     useEffect(() => {
-        // Load cart from local storage
-        const cartFromStorage = JSON.parse(localStorage.getItem("cartProducts") || "[]");
-        setCart(cartFromStorage);
+        setVatAmount(total * VAT_RATE);
+    }, [total]);
 
-        // Calculate totals
-        const totalPrice = cartFromStorage.reduce(
-            (acc: number, item: Product) => acc + item.price * item.inventory,
-            0
-        );
-        setTotalPriceWithOutVat(totalPrice);
-        setVatAmount(totalPrice * VAT_RATE);
-    }, []);
+    const totalPriceWithVat = total + vatAmount;
 
-    const totalPriceWithVat = totalPriceWithOutVat + vatAmount;
-
-    const allProductsInStock = cart.every((item) => item.inventory <= item.inventory);
     const router = useRouter();
 
     const handleProceedToCheckout = () => {
@@ -50,7 +37,7 @@ const OrderSummary: FC = () => {
                             Total before VAT
                         </dt>
                         <dd className="text-base font-medium text-gray-900 dark:text-gray-200">
-                            ${totalPriceWithOutVat.toFixed(2)}
+                            ${total.toFixed(2)}
                         </dd>
                     </dl>
                     <dl className="flex items-center justify-between gap-4">
@@ -80,18 +67,11 @@ const OrderSummary: FC = () => {
                 </dl>
             </div>
             <Button
-                disabled={!allProductsInStock}
                 className="w-full"
                 onClick={handleProceedToCheckout}
             >
                 Proceed to Checkout
             </Button>
-            {!allProductsInStock && (
-                <p className="text-sm text-red-600">
-                    Some products are out of stock. Proceed to checkout
-                    disabled.
-                </p>
-            )}
             <div className="flex items-center justify-center gap-2">
                 <span className="text-sm font-normal text-gray-500">or</span>
                 <Link
