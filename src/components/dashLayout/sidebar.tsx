@@ -1,4 +1,5 @@
 // import logo from "@/assets/images/logo.png";
+import { useSession } from "@/provider/session-provider";
 import Link from "next/link";
 import { Dispatch, FC, SetStateAction } from "react";
 import SideBarMenuItem from "./sidebar-menu-item";
@@ -10,6 +11,7 @@ interface SidebarProps {
 }
 
 const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
+    const { session } = useSession();
     return (
         <aside>
             <div
@@ -34,7 +36,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                             height={50}
                             className="invert w-28"
                         /> */}
-                        MobInfo
+                        OnnoMart
                     </Link>
                 </div>
                 <div className="overflow-y-auto custom-scroll">
@@ -52,57 +54,74 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                                 }}
                                 setSidebarOpen={setSidebarOpen}
                             />
-                            <SidebarSubMenu
-                                menu={{
-                                    name: "Brand",
-                                    icon: "Hexagon",
-                                }}
-                                subMenu={[
-                                    {
-                                        name: "Create Brand",
-                                        path: "/dashboard/create-brand",
-                                    },
-                                    {
-                                        name: "All Brands",
-                                        path: "/dashboard/brands",
-                                    },
-                                ]}
-                                setSidebarOpen={setSidebarOpen}
-                            ></SidebarSubMenu>
-                            <SidebarSubMenu
-                                menu={{
-                                    name: "Category",
-                                    icon: "SquareSlash",
-                                }}
-                                subMenu={[
-                                    {
-                                        name: "Create Category",
-                                        path: "/dashboard/create-category",
-                                    },
-                                    {
-                                        name: "All Categories",
-                                        path: "/dashboard/categories",
-                                    },
-                                ]}
-                                setSidebarOpen={setSidebarOpen}
-                            ></SidebarSubMenu>
-                            <SidebarSubMenu
-                                menu={{
-                                    name: "Product",
-                                    icon: "ShoppingBasket",
-                                }}
-                                subMenu={[
-                                    {
-                                        name: "Create Product",
-                                        path: "/dashboard/create-product",
-                                    },
-                                    {
-                                        name: "All Products",
+                            {session?.role == "ADMIN" && (
+                                <>
+                                    <SidebarSubMenu
+                                        menu={{
+                                            name: "Brand",
+                                            icon: "Hexagon",
+                                        }}
+                                        subMenu={[
+                                            {
+                                                name: "Create Brand",
+                                                path: "/dashboard/create-brand",
+                                            },
+                                            {
+                                                name: "All Brands",
+                                                path: "/dashboard/brands",
+                                            },
+                                        ]}
+                                        setSidebarOpen={setSidebarOpen}
+                                    ></SidebarSubMenu>
+                                    <SidebarSubMenu
+                                        menu={{
+                                            name: "Category",
+                                            icon: "SquareSlash",
+                                        }}
+                                        subMenu={[
+                                            {
+                                                name: "Create Category",
+                                                path: "/dashboard/create-category",
+                                            },
+                                            {
+                                                name: "All Categories",
+                                                path: "/dashboard/categories",
+                                            },
+                                        ]}
+                                        setSidebarOpen={setSidebarOpen}
+                                    ></SidebarSubMenu>
+                                </>
+                            )}
+                            {session?.role === "ADMIN" && (
+                                <SideBarMenuItem
+                                    menu={{
+                                        name: "Products",
+                                        icon: "ShoppingBasket",
                                         path: "/dashboard/products",
-                                    },
-                                ]}
-                                setSidebarOpen={setSidebarOpen}
-                            ></SidebarSubMenu>
+                                    }}
+                                    setSidebarOpen={setSidebarOpen}
+                                />
+                            )}
+                            {session?.role === "VENDOR" && (
+                                <SidebarSubMenu
+                                    menu={{
+                                        name: "Product",
+                                        icon: "ShoppingBasket",
+                                    }}
+                                    subMenu={[
+                                        {
+                                            name: "Create Product",
+                                            path: "/dashboard/create-product",
+                                        },
+                                        {
+                                            name: "All Products",
+                                            path: "/dashboard/products",
+                                        },
+                                    ]}
+                                    setSidebarOpen={setSidebarOpen}
+                                ></SidebarSubMenu>
+                            )}
+
                             <SideBarMenuItem
                                 menu={{
                                     name: "Ratings",

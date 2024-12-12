@@ -3,7 +3,7 @@ import Image from "next/image";
 export default function FeaturesSection() {
     return (
         <section className="my-10 sm:my-14">
-            <div className="container  px-4 sm:px-0">
+            <div className="container  px-4 lg:px-0">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div className="bg-white shadow-md px-5 py-3.5 rounded-xl">
                         <div className="flex items-center gap-2.5 mb-4">

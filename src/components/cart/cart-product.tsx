@@ -1,14 +1,44 @@
+import { decrementQuantity, incrementQuantity, removeProduct } from "@/redux/features/cart/cartSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { CartItem } from "@/types";
 import { X } from "lucide-react";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 interface CartProductProps {
     product: CartItem;
-    updateQuantity: (id: string, newQuantity: number) => void
 }
 
-const CartProduct: FC<CartProductProps> = ({ product, updateQuantity }) => {
+const CartProduct: FC<CartProductProps> = ({ product }) => {
+    const [quantity, setQuantity] = useState(product.quantity);
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        setQuantity(product.quantity);
+    }, [product.quantity, product.inventory]);
+
+    const deleteCartProduct = () => {
+        dispatch(removeProduct({ id: product.id }));
+    };
+
+    const handleIncrementQuantity = () => {
+        if (quantity < product.inventory) {
+            dispatch(
+                incrementQuantity({ id: product.id })
+            );
+            setQuantity((prevQuantity) => prevQuantity + 1);
+        }
+    };
+
+    const handleDecrementQuantity = () => {
+        if (quantity > 1) {
+            dispatch(
+                decrementQuantity({ id: product.id })
+            );
+            setQuantity((prevQuantity) => prevQuantity - 1);
+        }
+    };
 
     return (
         <tr>
@@ -27,7 +57,7 @@ const CartProduct: FC<CartProductProps> = ({ product, updateQuantity }) => {
                 <div className="flex items-center">
                     <button
                         className="flex justify-center items-center text-lg px-2 py-1 border size-8"
-                        onClick={() => updateQuantity(product.id, product.quantity - 1)}
+                        onClick={handleDecrementQuantity}
                     >
                         -
                     </button>
@@ -39,7 +69,7 @@ const CartProduct: FC<CartProductProps> = ({ product, updateQuantity }) => {
                     />
                     <button
                         className="flex justify-center items-center text-lg px-2 py-1 border size-8"
-                        onClick={() => updateQuantity(product.id, product.quantity + 1)}
+                        onClick={handleIncrementQuantity}
                     >
                         +
                     </button>
@@ -49,7 +79,7 @@ const CartProduct: FC<CartProductProps> = ({ product, updateQuantity }) => {
                 ${Number(product.quantity * product.price).toFixed(2)}
             </td>
             <td className="text-center py-2 px-4 border-b">
-                <button >
+                <button onClick={deleteCartProduct}>
                     <X size={15} />
                 </button>
             </td>

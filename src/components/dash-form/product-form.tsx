@@ -21,7 +21,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { useGetAllBrandsQuery } from "@/redux/features/brand/brandApi";
 import { useGetAllCategoriesQuery } from "@/redux/features/category/categoryApi";
 import { useCreateProductMutation } from "@/redux/features/product/productApi";
+import { useGetMeQuery } from "@/redux/features/user/userApi";
 import { ErrorResponse } from "@/types";
+import { generateSlug } from "@/utils/genereateSlug";
 import { SerializedError } from "@reduxjs/toolkit";
 import Image from "next/image";
 import { useEffect } from "react";
@@ -30,6 +32,7 @@ import { toast } from "sonner";
 
 type ProductFormValues = {
     name: string;
+    slug: string;
     price: number;
     description: string;
     categoryId: string;
@@ -41,9 +44,13 @@ type ProductFormValues = {
 };
 
 export default function CreateProductForm() {
+    const { data: user } = useGetMeQuery(undefined);
+    console.log(user);
+    
     const form = useForm<ProductFormValues>({
         defaultValues: {
             name: "",
+            slug: "",
             price: 0,
             description: "",
             categoryId: "",
@@ -55,7 +62,13 @@ export default function CreateProductForm() {
         },
     });
 
-    const { reset } = form;
+    const { watch, setValue, reset } = form;
+    const name = watch("name");
+
+    useEffect(() => {
+        const slug = generateSlug(name);
+        setValue("slug", slug);
+    }, [name, setValue]);
 
     const [createProduct, { isSuccess, isLoading, isError, error }] =
         useCreateProductMutation();
@@ -93,10 +106,12 @@ export default function CreateProductForm() {
     const onSubmit = async (data: ProductFormValues) => {
         const productData = {
             name: data.name,
+            slug: data.slug,
             price: Number(data.price),
             description: data.description,
             categoryId: data.categoryId,
             brandId: data.brandId,
+            shopId: user?.shop.id,
             inventory: Number(data.inventory),
             discount: Number(data.discount),
         };
@@ -159,6 +174,24 @@ export default function CreateProductForm() {
                 />
                 <FormField
                     control={form.control}
+                    name="slug"
+                    render={({ field }) => (
+                        <FormItem className="col-span-1">
+                            <FormLabel htmlFor="slug">Slug</FormLabel>
+                            <FormControl>
+                                <Input
+                                    id="slug"
+                                    placeholder="Enter Product slug"
+                                    {...field}
+                                    required
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
                     name="description"
                     render={({ field }) => (
                         <FormItem>
@@ -211,8 +244,8 @@ export default function CreateProductForm() {
                                         <SelectContent>
                                             {categories?.data?.map((item) => (
                                                 <SelectItem
-                                                    value={String(item?.id)}
-                                                    key={item?.id}
+                                                    value={String(item?.slug)}
+                                                    key={item?.slug}
                                                 >
                                                     {item.name}
                                                 </SelectItem>
@@ -254,8 +287,8 @@ export default function CreateProductForm() {
                                         <SelectContent>
                                             {brands?.data?.map((item) => (
                                                 <SelectItem
-                                                    value={String(item?.id)}
-                                                    key={item?.id}
+                                                    value={String(item?.slug)}
+                                                    key={item?.slug}
                                                 >
                                                     <Image
                                                         src={item.image}

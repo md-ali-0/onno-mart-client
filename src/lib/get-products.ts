@@ -1,5 +1,5 @@
 import config from "@/config";
-import { Brand, Category, Product, Shop } from "@/types";
+import { Product, Shop } from "@/types";
 
 // Function to fetch shops from the API
 export async function getShops(): Promise<Shop[]> {
@@ -7,12 +7,14 @@ export async function getShops(): Promise<Shop[]> {
     if (!response.ok) {
         throw new Error("Failed to fetch shops.");
     }
-    return response.json();
+    const result = await response.json();
+    return result.data
 }
 
 // Function to fetch products with filters and pagination
 export async function getProducts(
     page: number,
+    limit: number = 10, // Set the default value here
     categories: string[] = [],
     brands: string[] = [],
     shopId?: number
@@ -23,6 +25,7 @@ export async function getProducts(
 }> {
     const query = new URLSearchParams({
         page: page.toString(),
+        limit: limit.toString(),
         categories: categories.join(","),
         brands: brands.join(","),
         ...(shopId ? { shopId: shopId.toString() } : {}),
@@ -36,15 +39,15 @@ export async function getProducts(
     }
     const result = await response.json();
     return {
-        products : result?.data || [],
+        products: result?.data || [],
         totalPages: result?.meta?.totalPage,
         totalProducts: result?.meta?.total,
-    }
+    };
 }
 
 // Function to fetch a single product by ID
-export async function getProductById(id: string): Promise<Product | undefined> {
-    const response = await fetch(`${config.host}/api/product/${id}`);
+export async function getProductBySlug(slug: string): Promise<Product | undefined> {
+    const response = await fetch(`${config.host}/api/product/${slug}`);
     if (!response.ok) {
         throw new Error("Failed to fetch product.");
     }
@@ -52,21 +55,3 @@ export async function getProductById(id: string): Promise<Product | undefined> {
     return result?.data;
 }
 
-// Fetch categories and brands from the API
-export async function getCategories(): Promise<Category[]> {
-    const response = await fetch(`${config.host}/api/category`);
-    if (!response.ok) {
-        throw new Error("Failed to fetch categories.");
-    }
-    const result = await response.json();
-    return result?.data;
-}
-
-export async function getBrands(): Promise<Brand[]> {
-    const response = await fetch(`${config.host}/api/brand`);
-    if (!response.ok) {
-        throw new Error("Failed to fetch brands.");
-    }
-    const result = await response.json();
-    return result?.data;
-}

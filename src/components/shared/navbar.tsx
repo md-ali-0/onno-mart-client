@@ -4,9 +4,11 @@ import { signout } from "@/actions/auth";
 import logo from "@/assets/images/logo.png";
 import { useSession } from "@/provider/session-provider";
 import { useGetMeQuery } from "@/redux/features/user/userApi";
+import { useAppSelector } from "@/redux/hooks";
 import {
     FileText,
     Heart,
+    LayoutGrid,
     LogIn,
     Menu,
     Settings,
@@ -17,7 +19,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { GrUserManager } from "react-icons/gr";
 import { HiOutlineUserPlus } from "react-icons/hi2";
@@ -30,7 +32,8 @@ const Navbar: FC = () => {
     const [isDropdownOpen, setIsDropDownOpen] = useState<boolean>(false);
     const path = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
-
+    const cartProduct = useAppSelector((state) => state.cart.cart);
+    const router = useRouter()
     const { session, setIsLoading } = useSession();
 
     const { data, isLoading } = useGetMeQuery(undefined);
@@ -38,8 +41,10 @@ const Navbar: FC = () => {
     const handleLogout = async () => {
         try {
             setIsLoading(true);
+            localStorage.removeItem("accessToken")
             await signout();
             setIsLoading(false);
+            router.replace('/auth/signin')
             toast.success("Logout Successfully");
         } catch (error) {
             console.error("Logout failed:", error);
@@ -67,14 +72,14 @@ const Navbar: FC = () => {
                 isScrolled ? "fixed top-0 left-0 w-full" : "relative"
             }`}
         >
-            <div className="container flex flex-wrap items-center justify-between py-3.5 px-4 sm:px-0 lg:gap-y-4 gap-y-6 gap-x-4">
+            <div className="container flex flex-wrap items-center justify-between py-3.5 px-4 lg:px-0 lg:gap-y-4 gap-y-6 gap-x-4">
                 <Link href="/">
                     <Image
                         src={logo}
                         alt="logo"
                         width={150}
                         height={80}
-                        className="w-24 sm:w-36"
+                        className="w-20 sm:w-36"
                     />
                 </Link>
                 <div
@@ -88,7 +93,7 @@ const Navbar: FC = () => {
                         <X />
                     </button>
                     <ul className="lg:!flex lg:gap-x-10 max-lg:space-y-3 max-lg:fixed max-lg:bg-primary max-lg:w-full max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:px-4 max-lg:py-4 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
-                        <li className="mb-6 hidden invert max-lg:block">
+                        <li className="mb-6 hidden max-lg:block">
                             <Link href="/">
                                 <Image
                                     src={logo}
@@ -116,16 +121,30 @@ const Navbar: FC = () => {
                         </li>
                         <li
                             className={`max-lg:border-b max-lg:py-3 relative lg:after:absolute lg:after:bg-primary ${
+                                path == "/products"
+                                    ? "lg:after:w-full"
+                                    : "lg:after:w-0"
+                            } lg:hover:after:w-full lg:after:h-[1px] lg:after:block lg:after:-bottom-1 lg:after:transition-all lg:after:duration-300`}
+                        >
+                            <Link
+                                href="/products"
+                                className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
+                            >
+                                Products
+                            </Link>
+                        </li>
+                        <li
+                            className={`max-lg:border-b max-lg:py-3 relative lg:after:absolute lg:after:bg-primary ${
                                 path == "/shop"
                                     ? "lg:after:w-full"
                                     : "lg:after:w-0"
                             } lg:hover:after:w-full lg:after:h-[1px] lg:after:block lg:after:-bottom-1 lg:after:transition-all lg:after:duration-300`}
                         >
                             <Link
-                                href="/shop"
+                                href="/sellers"
                                 className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
                             >
-                                Shop
+                                Sellers
                             </Link>
                         </li>
                         <li
@@ -160,18 +179,18 @@ const Navbar: FC = () => {
                 </div>
                 <div className="flex items-center max-sm:ml-auto">
                     <ul className="flex gap-1.5 sm:gap-4">
-                        <li className="flex items-center justify-center bg-[#f8f7f7] size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
+                        <li className="flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
                             <Link href="/wishlist">
-                                <span className="flex items-center justify-center bg-primary size-5 text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-[13px]">
+                                <span className="flex items-center justify-center bg-primary size-5 text-[11px] sm:text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-0.5 sm:p-2.5">
                                     0
                                 </span>
                                 <Heart size={18} />
                             </Link>
                         </li>
-                        <li className="flex items-center justify-center bg-[#f8f7f7] size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
+                        <li className="flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
                             <Link href="/cart">
-                                <span className="flex items-center justify-center bg-primary size-5 text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-[13px]">
-                                    0
+                                <span className="flex items-center justify-center bg-primary size-5 text-[11px] sm:text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-0.5 sm:p-2.5">
+                                    {cartProduct.length}
                                 </span>
                                 <ShoppingCart size={18} />
                             </Link>
@@ -183,7 +202,7 @@ const Navbar: FC = () => {
                             }`}
                         ></div>
                         {session?.isAuth ? (
-                            <li className="group flex items-center justify-center bg-[#f8f7f7] size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary">
+                            <li className="group flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary">
                                 <button
                                     className="group-hover:text-white p-[12px] rounded-full"
                                     onClick={() =>
@@ -192,7 +211,7 @@ const Navbar: FC = () => {
                                 >
                                     {isLoading ? (
                                         <div className="flex items-center space-x-4">
-                                            <Skeleton className="size-10 rounded-full" />
+                                            <Skeleton className="size-9 sm:size-10 rounded-full" />
                                         </div>
                                     ) : (
                                         <Avatar>
@@ -230,7 +249,28 @@ const Navbar: FC = () => {
                                                         setIsDropDownOpen(false)
                                                     }
                                                 >
+                                                    <LayoutGrid
+                                                        size={20}
+                                                        className="h-4 w-4 me-2"
+                                                    />
                                                     Dashboard
+                                                </Link>
+                                            </li>
+                                        )}
+                                        {session?.role === "VENDOR" && (
+                                            <li>
+                                                <Link
+                                                    href="/dashboard"
+                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                    onClick={() =>
+                                                        setIsDropDownOpen(false)
+                                                    }
+                                                >
+                                                    <LayoutGrid
+                                                        size={20}
+                                                        className="h-4 w-4 me-2"
+                                                    />
+                                                    Seller Dashboard
                                                 </Link>
                                             </li>
                                         )}
@@ -331,9 +371,9 @@ const Navbar: FC = () => {
                                 </div>
                             </li>
                         ) : (
-                            <li className="group flex items-center justify-center bg-[#f8f7f7] size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary">
+                            <li className="group flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary">
                                 <button
-                                    className="group-hover:text-white p-[13px] rounded-full"
+                                    className="group-hover:text-white p-2.5 sm:p-[13px] rounded-full"
                                     onClick={() =>
                                         setIsDropDownOpen(!isDropdownOpen)
                                     }

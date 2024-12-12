@@ -61,10 +61,9 @@ const VendorSignUpForm: React.FC = () => {
 
         formData.append("data", JSON.stringify(vendorData));
         if (data?.shopLogo?.[0]) {
-            formData.append("shopLogo", data.shopLogo?.[0]);
+            formData.append("shopLogo", data?.shopLogo?.[0]);
         }
-
-        await signupVendor(vendorData);
+        await signupVendor(formData);
     };
 
     return (

@@ -14,7 +14,7 @@ const authApi = baseApi.injectEndpoints({
         vendorSignUp: builder.mutation({
             query: (data) => {
                 return {
-                    url: "/auth/signup",
+                    url: "/auth/vendor-signup",
                     body: data,
                     method: "POST",
                 };

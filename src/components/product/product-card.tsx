@@ -1,5 +1,7 @@
 "use client";
 
+import { addProduct } from "@/redux/features/cart/cartSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,7 +9,8 @@ import { Button } from "../ui/button";
 import StarRating from "./star-rating";
 
 const ProductCard = ({product}: {product: Product}) => {
-    
+    const dispatch = useAppDispatch()
+
     return (
         <div className="group">
             <div className="relative overflow-hidden shadow dark:shadow-gray-800 group-hover:shadow-lg group-hover:dark:shadow-gray-800 rounded-md duration-500">
@@ -19,7 +22,7 @@ const ProductCard = ({product}: {product: Product}) => {
                     height={650}
                 />
                 <div className="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                    <Button className="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center text-white w-full rounded-md h-auto">
+                    <Button onClick={()=>dispatch(addProduct({...product, quantity: 1}))} className="py-2 px-5 inline-block font-semibold tracking-wide align-middle duration-500 text-base text-center text-white w-full rounded-md h-auto">
                         Add to Cart
                     </Button>
                 </div>
@@ -70,7 +73,7 @@ const ProductCard = ({product}: {product: Product}) => {
             <div className="mt-4">
                 <Link
                     className="hover:text-primary text-lg font-medium"
-                    href={`/product/${product.id}`}
+                    href={`/product/${product.slug}`}
                 >
                     {product.name}
                 </Link>

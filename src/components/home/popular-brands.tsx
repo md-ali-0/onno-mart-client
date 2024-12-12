@@ -103,7 +103,7 @@ const PopularBrands: FC = () => {
                 <div>Loading...</div>
             ) : (
                 <section className="my-10 sm:my-14">
-                    <div className="container px-4 sm:px-0 relative">
+                    <div className="container px-4 lg:px-0 relative">
                         <h2 className="text-2xl sm:text-4xl font-bold mb-10">
                             Popular Brands
                         </h2>

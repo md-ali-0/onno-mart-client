@@ -1,5 +1,4 @@
-import { TResponseRedux } from "@/types";
-import { User } from "@prisma/client";
+import { TResponseRedux, User } from "@/types";
 import { baseApi } from "../../api/baseApi";
 
 const userApi = baseApi.injectEndpoints({

@@ -1,4 +1,4 @@
-import logo from "@/assets/images/logo.png";
+import logo from "@/assets/images/logo-dark.png";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -12,7 +12,7 @@ const Footer = () => {
     return (
         <footer className="bg-slate-900 overflow-hidden">
             <div className="relative z-10 pt-20">
-                <div className="container mx-auto px-4 sm:px-0">
+                <div className="container mx-auto px-4 lg:px-0">
                     <div className="flex flex-col md:flex-row justify-between">
                         <div className="w-full md:w-2/5">
                             <div className="mb-16 max-w-[310px]">
@@ -22,7 +22,7 @@ const Footer = () => {
                                         alt="logo"
                                         width={150}
                                         height={80}
-                                        className="invert max-w-full"
+                                        className="max-w-full"
                                     />
                                 </Link>
                                 <p className="mb-9 flex items-center  text-white">
@@ -115,7 +115,7 @@ const Footer = () => {
                 </div>
             </div>
             <div className="bg-[#2E3842] py-4">
-                <div className="container px-4 sm:px-0 mx-auto">
+                <div className="container px-4 lg:px-0 mx-auto">
                     <div className="flex flex-wrap items-center justify-between">
                         <div className="order-last w-full md:w-1/2 lg:order-first lg:w-5/12 xl:w-1/3">
                             <p className="text-center text-base text-[#CACBCF] lg:text-left">

@@ -144,4 +144,17 @@ body {
   .custom-scroll::-webkit-scrollbar-thumb {
       @apply bg-slate-600 dark:bg-slate-800 rounded-xl border border-slate-600 dark:border-[#7b7b7b] shadow-inner transition-all duration-150 ease-in-out;
   }
+
+  .category-scroll {
+      @apply overflow-x-hidden scroll-smooth;
+  }
+
+  .category-scroll::-webkit-scrollbar {
+      @apply w-1;
+  }
+
+  .category-scroll::-webkit-scrollbar-thumb {
+      @apply bg-primary/20 rounded-xl border border-primary/20 shadow-inner transition-all duration-150 ease-in-out;
+  }
+  
 }

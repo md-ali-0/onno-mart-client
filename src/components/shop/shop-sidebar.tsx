@@ -48,7 +48,7 @@ export default function ShopSidebar({
         }
 
         params.set("page", "1"); // Reset to first page on filter change
-        router.push(`/shop?${params.toString()}`);
+        router.push(`/products?${params.toString()}`);
     };
     return (
         <div className="rounded-xl border p-4 sticky top-20">
@@ -93,9 +93,9 @@ export default function ShopSidebar({
                         >
                             <Checkbox
                                 id={brand.id}
-                                checked={selectedBrands.includes(brand.id)}
+                                checked={selectedBrands.includes(brand.slug)}
                                 onCheckedChange={() =>
-                                    handleFilterChange("brand", brand.id)
+                                    handleFilterChange("brand", brand.slug)
                                 }
                             />
                             <Label htmlFor={brand.id}>{brand.name}</Label>
@@ -114,10 +114,10 @@ export default function ShopSidebar({
                             <Checkbox
                                 id={category.id}
                                 checked={selectedCategories.includes(
-                                    category.id
+                                    category.slug
                                 )}
                                 onCheckedChange={() =>
-                                    handleFilterChange("category", category.id)
+                                    handleFilterChange("category", category.slug)
                                 }
                             />
                             <Label htmlFor={category.id}>{category.name}</Label>

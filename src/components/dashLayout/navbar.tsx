@@ -1,4 +1,7 @@
 
+import { signout } from "@/actions/auth";
+import { useSession } from "@/provider/session-provider";
+import { useGetMeQuery } from "@/redux/features/user/userApi";
 import {
     Command,
     LucideLogOut,
@@ -6,10 +9,8 @@ import {
     Plus,
     Search,
 } from "lucide-react";
-
-import { signout } from "@/actions/auth";
-import { useGetMeQuery } from "@/redux/features/user/userApi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { toast } from "sonner";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -25,10 +26,15 @@ const DashNavbar: FC<DashNavbarProps> = ({ sidebarOpen, setSidebarOpen }) => {
     const [search, setSearch] = useState<string>("");
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { data: userData, isLoading } = useGetMeQuery(undefined);
-
+    const { setIsLoading } = useSession();
+    const router = useRouter()
     const handleLogout = async () => {
         try {
+            setIsLoading(true);
+            localStorage.removeItem("accessToken")
             await signout();
+            setIsLoading(false);
+            router.replace('/auth/signin')
             toast.success("Logout Successfully");
         } catch (error) {
             console.error("Logout failed:", error);

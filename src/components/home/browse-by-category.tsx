@@ -103,7 +103,7 @@ const BrowseByCategory: FC = () => {
                 <div>Loading...</div>
             ) : (
                 <section className="my-10 sm:my-14">
-                    <div className="container relative px-4 sm:px-0">
+                    <div className="container relative px-4 lg:px-0">
                         <h2 className="text-2xl sm:text-4xl font-bold mb-10">
                             Browse by Categories
                         </h2>

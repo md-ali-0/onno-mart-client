@@ -59,8 +59,16 @@ const ManageCategoTable: FC = () => {
 
     const columns: ColumnDef<Category>[] = [
         {
+            accessorKey: "icon",
+            header: "Icon",
+        },
+        {
             accessorKey: "name",
             header: "Name",
+        },
+        {
+            accessorKey: "slug",
+            header: "Slug",
         },
         {
             accessorKey: "Last Updated",

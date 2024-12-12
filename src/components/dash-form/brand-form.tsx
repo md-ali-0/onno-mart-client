@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useCreateBrandMutation } from "@/redux/features/brand/brandApi";
 import { ErrorResponse } from "@/types";
+import { generateSlug } from "@/utils/genereateSlug";
 import { SerializedError } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -19,6 +20,7 @@ import { toast } from "sonner";
 
 type BrandFormValues = {
     name: string;
+    slug: string;
     image: File | null;
 };
 
@@ -26,11 +28,18 @@ export default function BrandForm() {
     const form = useForm<BrandFormValues>({
         defaultValues: {
             name: "",
-            image: null
+            slug: "",
+            image: null,
         },
     });
 
-    const { reset } = form;
+    const { watch, setValue, reset } = form;
+    const name = watch("name");
+
+    useEffect(() => {
+        const slug = generateSlug(name);
+        setValue("slug", slug);
+    }, [name, setValue]);
 
     const [addBrand, { isSuccess, isLoading, isError, error }] =
         useCreateBrandMutation();
@@ -53,6 +62,7 @@ export default function BrandForm() {
     const onSubmit = async (data: BrandFormValues) => {
         const brandData = {
             name: data.name,
+            slug: data.slug,
         };
 
         const formData = new FormData();
@@ -90,12 +100,28 @@ export default function BrandForm() {
                     />
                     <FormField
                         control={form.control}
-                        name="image"
+                        name="slug"
                         render={({ field }) => (
                             <FormItem className="col-span-1">
-                                <FormLabel htmlFor="image">
-                                    Image
-                                </FormLabel>
+                                <FormLabel htmlFor="slug">Slug</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        id="slug"
+                                        placeholder="Enter Brand slug"
+                                        {...field}
+                                        required
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                            <FormItem className="md:col-span-2">
+                                <FormLabel htmlFor="image">Image</FormLabel>
                                 <FormControl>
                                     <Input
                                         id="image"

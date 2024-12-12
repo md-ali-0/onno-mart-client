@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useCreateCategoryMutation } from "@/redux/features/category/categoryApi";
 import { ErrorResponse } from "@/types";
+import { generateSlug } from "@/utils/genereateSlug";
 import { SerializedError } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -19,16 +20,26 @@ import { toast } from "sonner";
 
 type CategoryFormValues = {
     name: string;
+    slug: string;
+    icon: string;
 };
 
 export default function CategoryForm() {
     const form = useForm<CategoryFormValues>({
         defaultValues: {
             name: "",
+            slug: "",
+            icon: ""
         },
     });
 
-    const { reset } = form;
+    const { watch, setValue, reset } = form;
+    const name = watch("name");
+
+    useEffect(() => {
+        const slug = generateSlug(name);
+        setValue("slug", slug);
+    }, [name, setValue]);
 
     const [addCategory, { isSuccess, isLoading, isError, error }] =
         useCreateCategoryMutation();
@@ -58,17 +69,55 @@ export default function CategoryForm() {
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)}>
                 {/* Basic Information */}
-                <section className="grid grid-cols-1 gap-6">
+                <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <FormField
                         control={form.control}
                         name="name"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel htmlFor="name">Category Name</FormLabel>
+                                <FormLabel htmlFor="name">
+                                    Category Name
+                                </FormLabel>
                                 <FormControl>
                                     <Input
                                         id="name"
                                         placeholder="Enter Category name"
+                                        {...field}
+                                        required
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="slug"
+                        render={({ field }) => (
+                            <FormItem className="col-span-1">
+                                <FormLabel htmlFor="slug">Slug</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        id="slug"
+                                        placeholder="Enter Category slug"
+                                        {...field}
+                                        required
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="icon"
+                        render={({ field }) => (
+                            <FormItem className="col-span-1">
+                                <FormLabel htmlFor="icon">Icon</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        id="icon"
+                                        placeholder="Enter Category icon symbol"
                                         {...field}
                                         required
                                     />

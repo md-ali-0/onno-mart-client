@@ -6,6 +6,7 @@ import { Shop } from "./Shop";
 export type Product = {
     id: string;
     name: string;
+    slug: string;
     price: number;
     thumbnail: string;
     description: string;

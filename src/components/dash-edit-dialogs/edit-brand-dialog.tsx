@@ -11,6 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useUpdateBrandMutation } from "@/redux/features/brand/brandApi";
 import { Brand, ErrorResponse } from "@/types";
+import { generateSlug } from "@/utils/genereateSlug";
 import { SerializedError } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
@@ -34,11 +35,18 @@ const EditBrandDialog = ({ brand, open, onClose }: EditBrandDialogProps) => {
     const form = useForm<Brand>({
         defaultValues: brand || {
             name: "",
+            slug: "",
             image: ""
         },
         values: brand || undefined,
     });
-    const { reset } = form;
+    const { watch, setValue, reset } = form;
+    const name = watch("name");
+
+    useEffect(() => {
+        const slug = generateSlug(name);
+        setValue("slug", slug);
+    }, [name, setValue]);
 
     const [updatecategory, { isSuccess, isError, error }] =
         useUpdateBrandMutation();
@@ -61,6 +69,7 @@ const EditBrandDialog = ({ brand, open, onClose }: EditBrandDialogProps) => {
         reset(
             brand || {
                 name: "",
+                slug: "",
                 image: ""
             }
         );
@@ -73,6 +82,7 @@ const EditBrandDialog = ({ brand, open, onClose }: EditBrandDialogProps) => {
 
         const brandData = {
             name: data.name,
+            slug: data.slug,
         };
 
         if ((data.image as any) instanceof File) {
@@ -114,6 +124,26 @@ const EditBrandDialog = ({ brand, open, onClose }: EditBrandDialogProps) => {
                                         <Input
                                             id="name"
                                             placeholder="Enter Brand name"
+                                            {...field}
+                                            required
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="slug"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel htmlFor="slug">
+                                        Brand Slug
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            id="slug"
+                                            placeholder="Enter Brand Slug"
                                             {...field}
                                             required
                                         />

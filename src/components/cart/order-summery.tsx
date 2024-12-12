@@ -1,12 +1,19 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const OrderSummary = ({total} : {total: number}) => {
+const OrderSummary = () => {
+    const cart = useAppSelector((state) => state.cart.cart);
+
+    const total = cart.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+    );
 
     const [vatAmount, setVatAmount] = useState(0);
 
@@ -66,10 +73,7 @@ const OrderSummary = ({total} : {total: number}) => {
                     </dd>
                 </dl>
             </div>
-            <Button
-                className="w-full"
-                onClick={handleProceedToCheckout}
-            >
+            <Button className="w-full" onClick={handleProceedToCheckout}>
                 Proceed to Checkout
             </Button>
             <div className="flex items-center justify-center gap-2">
