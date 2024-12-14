@@ -26,7 +26,7 @@ export const baseApi = createApi({
         "users",
         "userData",
         "brands",
-        "coupons",
+        "reviews",
         "payments",
         "shops",
     ],

@@ -7,15 +7,15 @@ import {
     LogOut,
     Settings,
     ShoppingBag,
-    Users
+    Star
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const sidebarLinks = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/user/dashboard" },
-    { icon: Users, label: "Vendor Panel", href: "/dashboard" },
     { icon: ShoppingBag, label: "Purchased Items", href: "/user/purchased-items" },
+    { icon: Star, label: "My Reviews", href: "/user/my-reviews" },
     { icon: FileText, label: "Transactions", href: "/user/transactions" },
     { icon: Box, label: "Favorite Sellers", href: "/user/favorite-seller" },
     { icon: Settings, label: "Edit Profile", href: "/user/edit-profile" },

@@ -1,17 +1,17 @@
-import { Order, TQueryParam, TResponseRedux } from "@/types";
+import { Review, TQueryParam, TResponseRedux } from "@/types";
 import { baseApi } from "../../api/baseApi";
 
-const ordersApi = baseApi.injectEndpoints({
+const reviewApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getSingleOrder: builder.query({
+        getSingleReview: builder.query({
             query: (id) => {
                 return {
-                    url: `/order/${id}`,
+                    url: `/review/${id}`,
                 };
             },
-            providesTags: ["orders"],
+            providesTags: ["reviews"],
         }),
-        getAllOrders: builder.query({
+        getAllReviews: builder.query({
             query: (args) => {
                 const params = new URLSearchParams();
                 if (args) {
@@ -22,43 +22,54 @@ const ordersApi = baseApi.injectEndpoints({
                     });
                 }
                 return {
-                    url: `/order`,
+                    url: `/review`,
                     params: params,
                 };
             },
-            transformResponse: (response: TResponseRedux<Order[]>) => {
+            transformResponse: (response: TResponseRedux<Review[]>) => {
                 return {
                     data: response.data,
                     meta: response.meta,
                 };
             },
-            providesTags: ["orders"],
+            providesTags: ["reviews"],
         }),
-        updateOrder: builder.mutation({
+        createReview: builder.mutation({
             query: (data) => {
                 return {
-                    url: `/order/${data.id}`,
+                    url: `/review`,
+                    method: "POST",
+                    body: data,
+                };
+            },
+            invalidatesTags: ["reviews"],
+        }),
+        updateReview: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/review/${data.id}`,
                     method: "PATCH",
                     body: data.formData,
                 };
             },
-            invalidatesTags: ["orders"],
+            invalidatesTags: ["reviews"],
         }),
-        deleteOrder: builder.mutation({
+        deleteReview: builder.mutation({
             query: (id) => {
                 return {
-                    url: `/order/${id}`,
+                    url: `/review/${id}`,
                     method: "DELETE",
                 };
             },
-            invalidatesTags: ["orders"],
+            invalidatesTags: ["reviews"],
         }),
     }),
 });
 
 export const {
-    useGetAllOrdersQuery,
-    useGetSingleOrderQuery,
-    useUpdateOrderMutation,
-    useDeleteOrderMutation
-} = ordersApi;
+    useGetAllReviewsQuery,
+    useGetSingleReviewQuery,
+    useUpdateReviewMutation,
+    useCreateReviewMutation,
+    useDeleteReviewMutation,
+} = reviewApi;
