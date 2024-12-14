@@ -13,6 +13,12 @@ export type User = {
     password: string;
     name: string;
     avatar: string;
+    phone?: string;
+    city?: string;
+    state?: string;
+    zip_code?: string;
+    address?: string;
+    country?: string;
     role: Role;
     shop: Shop;
     status: UserStatus;

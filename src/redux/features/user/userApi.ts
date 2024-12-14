@@ -55,7 +55,7 @@ const userApi = baseApi.injectEndpoints({
             query: (data) => {
                 return {
                     url: `/user/me`,
-                    method: "PATCH",
+                    method: "PUT",
                     body: data,
                 };
             },

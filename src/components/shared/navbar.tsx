@@ -7,7 +7,6 @@ import { useGetMeQuery } from "@/redux/features/user/userApi";
 import { useAppSelector } from "@/redux/hooks";
 import {
     FileText,
-    Heart,
     LayoutGrid,
     LogIn,
     Menu,
@@ -77,7 +76,8 @@ const Navbar: FC = () => {
         <>
             <div className="w-full bg-gradient-to-r from-amber-600 to-orange-600 py-2 text-center text-sm text-white">
                 <p>
-                    🎉 Special Winter Offer! Get 25% OFF on all products with code
+                    🎉 Special Winter Offer! Get 25% OFF on all products with
+                    code
                     {/* */} <span className="font-semibold">WINTER25</span>
                 </p>
             </div>
@@ -195,14 +195,6 @@ const Navbar: FC = () => {
                     <div className="flex items-center max-sm:ml-auto">
                         <ul className="flex gap-1.5 sm:gap-4">
                             <li className="flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
-                                <Link href="/wishlist">
-                                    <span className="flex items-center justify-center bg-primary size-5 text-[11px] sm:text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-0.5 sm:p-2.5">
-                                        0
-                                    </span>
-                                    <Heart size={18} />
-                                </Link>
-                            </li>
-                            <li className="flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
                                 <Link href="/cart">
                                     <span className="flex items-center justify-center bg-primary size-5 text-[11px] sm:text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-0.5 sm:p-2.5">
                                         {cartProduct.length}
@@ -259,7 +251,7 @@ const Navbar: FC = () => {
                                             </li>
                                             {session?.role === "ADMIN" && (
                                                 <li>
-                                                    <Link
+                                                    <a
                                                         href="/dashboard"
                                                         className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
                                                         onClick={() =>
@@ -273,12 +265,12 @@ const Navbar: FC = () => {
                                                             className="h-4 w-4 me-2"
                                                         />
                                                         Dashboard
-                                                    </Link>
+                                                    </a>
                                                 </li>
                                             )}
                                             {session?.role === "VENDOR" && (
                                                 <li>
-                                                    <Link
+                                                    <a
                                                         href="/dashboard"
                                                         className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
                                                         onClick={() =>
@@ -291,70 +283,82 @@ const Navbar: FC = () => {
                                                             size={20}
                                                             className="h-4 w-4 me-2"
                                                         />
-                                                        Seller Dashboard
-                                                    </Link>
+                                                        Vendor Dashboard
+                                                    </a>
                                                 </li>
                                             )}
-                                            <li className="ms-0">
-                                                <Link
-                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
-                                                    href="/user/dashboard"
-                                                    onClick={() =>
-                                                        setIsDropDownOpen(false)
-                                                    }
-                                                >
-                                                    <User
-                                                        size={20}
-                                                        className="h-4 w-4 me-2"
-                                                    />
-                                                    Account
-                                                </Link>
-                                            </li>
-                                            <li className="ms-0">
-                                                <Link
-                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
-                                                    href="/user/purchased-items"
-                                                    onClick={() =>
-                                                        setIsDropDownOpen(false)
-                                                    }
-                                                >
-                                                    <ShoppingBag
-                                                        size={20}
-                                                        className="h-4 w-4 me-2"
-                                                    />
-                                                    Purchased Items
-                                                </Link>
-                                            </li>
-                                            <li className="ms-0">
-                                                <Link
-                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
-                                                    href="/user/transactions"
-                                                    onClick={() =>
-                                                        setIsDropDownOpen(false)
-                                                    }
-                                                >
-                                                    <FileText
-                                                        size={20}
-                                                        className="h-4 w-4 me-2"
-                                                    />
-                                                    Transactions
-                                                </Link>
-                                            </li>
-                                            <li className="ms-0">
-                                                <Link
-                                                    className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
-                                                    href="/user/edit-profile"
-                                                    onClick={() =>
-                                                        setIsDropDownOpen(false)
-                                                    }
-                                                >
-                                                    <Settings
-                                                        size={20}
-                                                        className="h-4 w-4 me-2"
-                                                    />
-                                                    Edit Profile
-                                                </Link>
-                                            </li>
+                                            {session?.role === "USER" && (
+                                                <>
+                                                    <li className="ms-0">
+                                                        <a
+                                                            className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                            href="/user/dashboard"
+                                                            onClick={() =>
+                                                                setIsDropDownOpen(
+                                                                    false
+                                                                )
+                                                            }
+                                                        >
+                                                            <User
+                                                                size={20}
+                                                                className="h-4 w-4 me-2"
+                                                            />
+                                                            Account
+                                                        </a>
+                                                    </li>
+                                                    <li className="ms-0">
+                                                        <a
+                                                            className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                            href="/user/purchased-items"
+                                                            onClick={() =>
+                                                                setIsDropDownOpen(
+                                                                    false
+                                                                )
+                                                            }
+                                                        >
+                                                            <ShoppingBag
+                                                                size={20}
+                                                                className="h-4 w-4 me-2"
+                                                            />
+                                                            Purchased Items
+                                                        </a>
+                                                    </li>
+                                                    <li className="ms-0">
+                                                        <a
+                                                            className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                            href="/user/transactions"
+                                                            onClick={() =>
+                                                                setIsDropDownOpen(
+                                                                    false
+                                                                )
+                                                            }
+                                                        >
+                                                            <FileText
+                                                                size={20}
+                                                                className="h-4 w-4 me-2"
+                                                            />
+                                                            Transactions
+                                                        </a>
+                                                    </li>
+                                                    <li className="ms-0">
+                                                        <a
+                                                            className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                            href="/user/edit-profile"
+                                                            onClick={() =>
+                                                                setIsDropDownOpen(
+                                                                    false
+                                                                )
+                                                            }
+                                                        >
+                                                            <Settings
+                                                                size={20}
+                                                                className="h-4 w-4 me-2"
+                                                            />
+                                                            Edit Profile
+                                                        </a>
+                                                    </li>
+                                                </>
+                                            )}
                                             <li className="border-t border-gray-100 dark:border-gray-800 my-1" />
                                             <li className="ms-0">
                                                 <button

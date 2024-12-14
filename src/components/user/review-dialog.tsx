@@ -15,8 +15,7 @@ import {
     DialogDescription,
     DialogFooter,
     DialogHeader,
-    DialogTitle,
-    DialogTrigger,
+    DialogTitle
 } from "../ui/dialog";
 import {
     Form,
@@ -92,9 +91,6 @@ export default function ReviewDialog({
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogTrigger asChild>
-                <Button variant="outline">Give a Rating</Button>
-            </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
                     <DialogTitle>Rate Your Experience</DialogTitle>
