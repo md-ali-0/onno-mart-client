@@ -6,17 +6,33 @@ import { clearCart } from "@/redux/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
+import { FormEvent, useState } from "react";
+import { toast } from "sonner";
 import CartProduct from "./cart-product";
 import OrderSummary from "./order-summery";
 
 const CartDetails: React.FC = () => {
     const cart = useAppSelector((state) => state.cart.cart);
-
+    const [discount, setDiscount] = useState(0)
     const dispatch = useAppDispatch();
 
     const handleClearCart = () => {
         dispatch(clearCart());
     };
+
+    const handleDiscount = async (e: FormEvent<HTMLFormElement>)=>{
+        e.preventDefault()
+        const formData = new FormData(e.currentTarget)
+        const cuponCode = formData.get("cupon")
+
+        if (cuponCode === "WINTER25") {
+            setDiscount(25)
+            toast.success("Coupon Applied Successfully")
+        } else {
+            toast.error("Coupon Code is Invalid")
+        }
+    }
+
     return (
         <>
             {cart.length > 0 ? (
@@ -57,12 +73,12 @@ const CartDetails: React.FC = () => {
                             </table>
                         </div>
                         <div className="flex flex-col md:flex-row justify-between mt-5">
-                            <div className="flex items-center mb-4 md:mb-0">
-                                <Input type="text" placeholder="Coupon code" />
-                                <Button className="px-4 py-2 ml-2 w-full md:w-auto">
+                            <form onSubmit={handleDiscount} className="flex items-center mb-4 md:mb-0">
+                                <Input type="text" placeholder="Coupon code" name="cupon" />
+                                <Button type="submit" className="px-4 py-2 ml-2 w-full md:w-auto">
                                     Apply coupon
                                 </Button>
-                            </div>
+                            </form>
                             <Button
                                 className="px-4 py-2 w-full md:w-auto"
                                 onClick={handleClearCart}
@@ -72,7 +88,7 @@ const CartDetails: React.FC = () => {
                         </div>
                     </div>
                     <div className="md:col-span-3">
-                        <OrderSummary />
+                        <OrderSummary discount={discount} />
                     </div>
                 </div>
             ) : (

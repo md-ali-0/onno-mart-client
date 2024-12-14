@@ -1,64 +1,294 @@
-'use client'
+"use client";
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { CartItem } from "@/types"
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { Input } from "@/components/ui/input";
+import { useSession } from "@/provider/session-provider";
+import { useCreatePaymentIntentMutation } from "@/redux/features/payment/paymentApi";
+import { useAppSelector } from "@/redux/hooks";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "sonner";
+
+type FormInputs = {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+    address: string;
+    paymentMethod: string;
+};
 
 export default function CheckoutPage() {
-  const [cart, setCart] = useState<CartItem[]>([])
-  const router = useRouter()
+    const { session } = useSession();
+    const cart = useAppSelector((state) => state.cart.cart);
+    const [discount, setDiscount] = useState(0);
+    const [createPayment] = useCreatePaymentIntentMutation();
 
-  useEffect(() => {
-    const savedCart = localStorage.getItem('cart')
-    if (savedCart) {
-      setCart(JSON.parse(savedCart))
-    }
-  }, [])
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormInputs>();
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0)
+    useEffect(() => {
+        const discount = localStorage.getItem("discount");
+        if (discount) {
+            setDiscount(Number(discount));
+        }
+    }, []);
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault()
-    // Here you would typically send the order to your backend
-    alert('Order placed successfully!')
-    localStorage.removeItem('cart')
-    router.push('/')
-  }
+    const total = cart.reduce(
+        (acc, item) => acc + item.price * item.quantity,
+        0
+    );
 
-  return (
-    <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold mb-4">Checkout</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <Label htmlFor="name">Full Name</Label>
-          <Input id="name" required />
-        </div>
-        <div>
-          <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" required />
-        </div>
-        <div>
-          <Label htmlFor="address">Address</Label>
-          <Input id="address" required />
-        </div>
-        <div>
-          <h2 className="text-xl font-semibold mb-2">Order Summary</h2>
-          {cart.map(item => (
-            <div key={item.id} className="flex justify-between">
-              <span>{item.name} x {item.quantity}</span>
-              <span>${(item.price * item.quantity).toFixed(2)}</span>
+    const [vatAmount, setVatAmount] = useState(0);
+
+    const VAT_RATE = 0.15; // 15%
+
+    useEffect(() => {
+        setVatAmount(total * VAT_RATE);
+    }, [total]);
+
+    const totalPriceWithVat = total + vatAmount;
+    const totalPriceAfterDiscount =
+        totalPriceWithVat - (totalPriceWithVat * discount) / 100;
+    const discountPrice = totalPriceWithVat - totalPriceAfterDiscount;
+
+    const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+        if (cart.length <= 0) {
+            return toast.error("Cart is Empty");
+        }
+        const orderData = {
+            userId: session?.user,
+            shopId: cart[0].shopId,
+            products: cart,
+            customer: data,
+            totalAmount: totalPriceAfterDiscount.toFixed(),
+        };
+        const toastId = toast.success("Redrecting to Payment....");
+        const response = await createPayment(orderData).unwrap();
+        toast.dismiss(toastId);
+
+        if (response?.data) {
+            window.location.href = response.data;
+        }
+    };
+
+    return (
+        <section className="relative md:py-24 py-16">
+            <div className="container relative">
+                <div className="grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 gap-6">
+                    <div className="lg:col-span-8">
+                        <div className="p-6 rounded-md border">
+                            <h3 className="text-xl leading-normal font-semibold">
+                                Billing address
+                            </h3>
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <div className="grid lg:grid-cols-12 grid-cols-1 mt-6 gap-5">
+                                    <div className="lg:col-span-6">
+                                        <label className="form-label font-semibold">
+                                            First Name :{" "}
+                                            <span className="text-red-600">
+                                                *
+                                            </span>
+                                        </label>
+                                        <Input
+                                            {...register("firstName", {
+                                                required: true,
+                                            })}
+                                            type="text"
+                                            className="w-full py-2 px-3 h-10 bg-transparent rounded outline-none focus:ring-0 mt-2"
+                                            placeholder="First Name:"
+                                        />
+                                        {errors.firstName && (
+                                            <span className="text-red-500">
+                                                This field is required
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="lg:col-span-6">
+                                        <label className="form-label font-semibold">
+                                            Last Name :{" "}
+                                            <span className="text-red-600">
+                                                *
+                                            </span>
+                                        </label>
+                                        <Input
+                                            {...register("lastName", {
+                                                required: true,
+                                            })}
+                                            type="text"
+                                            className="w-full py-2 px-3 h-10 bg-transparent rounded outline-none focus:ring-0 mt-2"
+                                            placeholder="Last Name:"
+                                        />
+                                        {errors.lastName && (
+                                            <span className="text-red-500">
+                                                This field is required
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="lg:col-span-6">
+                                        <label className="form-label font-semibold">
+                                            Your Email :{" "}
+                                            <span className="text-red-600">
+                                                *
+                                            </span>
+                                        </label>
+                                        <Input
+                                            {...register("email", {
+                                                required: true,
+                                                pattern: /^\S+@\S+$/i,
+                                            })}
+                                            type="email"
+                                            className="w-full py-2 px-3 h-10 bg-transparent rounded outline-none focus:ring-0 mt-2"
+                                            placeholder="Email"
+                                        />
+                                        {errors.email && (
+                                            <span className="text-red-500">
+                                                Please enter a valid email
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="lg:col-span-6">
+                                        <label className="form-label font-semibold">
+                                            Your Phone :{" "}
+                                            <span className="text-red-600">
+                                                *
+                                            </span>
+                                        </label>
+                                        <Input
+                                            {...register("phone", {
+                                                required: true,
+                                            })}
+                                            type="text"
+                                            className="w-full py-2 px-3 h-10 bg-transparent rounded outline-none focus:ring-0 mt-2"
+                                            placeholder="Phone"
+                                        />
+                                        {errors.phone && (
+                                            <span className="text-red-500">
+                                                {errors?.phone?.message}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="lg:col-span-12">
+                                        <label className="form-label font-semibold">
+                                            Address :{" "}
+                                            <span className="text-red-600">
+                                                *
+                                            </span>
+                                        </label>
+                                        <Input
+                                            {...register("address", {
+                                                required: true,
+                                            })}
+                                            type="text"
+                                            className="w-full py-2 px-3 h-10 bg-transparent rounded outline-none focus:ring-0 mt-2"
+                                            placeholder="Address:"
+                                        />
+                                        {errors.address && (
+                                            <span className="text-red-500">
+                                                This field is required
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                                <h3 className="text-xl leading-normal font-semibold mt-6">
+                                    Payment
+                                </h3>
+                                <div>
+                                    <div className="grid lg:grid-cols-12 grid-cols-1 mt-6 gap-5">
+                                        <div className="lg:col-span-12">
+                                            <div className="block">
+                                                <div>
+                                                    <label className="inline-flex items-center">
+                                                        <input
+                                                            {...register(
+                                                                "paymentMethod",
+                                                                {
+                                                                    required:
+                                                                        true,
+                                                                }
+                                                            )}
+                                                            type="radio"
+                                                            className="form-radio border-gray-100 dark:border-gray-800 text-orange-500 focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50 me-2"
+                                                            value="SSL Commerz"
+                                                            defaultChecked
+                                                        />
+                                                        <span className="text-slate-400">
+                                                            SSL Commerz
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-4">
+                                    <Input
+                                        type="submit"
+                                        className="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-orange-500 text-white rounded-md w-full cursor-pointer"
+                                        value="Continue to checkout"
+                                    />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div className="lg:col-span-4">
+                        <div className="p-6 rounded-md border">
+                            <div className="flex justify-between items-center">
+                                <h5 className="text-lg font-semibold">
+                                    Your Cart
+                                </h5>
+                                <Link
+                                    className="bg-orange-500 flex justify-center items-center text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full h-5"
+                                    href="/cart"
+                                >
+                                    {cart.length}
+                                </Link>
+                            </div>
+                            <div className="mt-4">
+                                {cart.map((catItem, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="p-3 border flex justify-between items-center mb-1"
+                                    >
+                                        <div>
+                                            <h5 className="font-semibold">
+                                                {catItem.name}
+                                            </h5>
+                                        </div>
+                                        <p className="text-slate-400 font-semibold">
+                                            ${catItem.price}
+                                        </p>
+                                    </div>
+                                ))}
+
+                                <div className="p-3 flex justify-between items-center border bg-gray-50 dark:bg-slate-800 text-green-600 mb-1">
+                                    <div>
+                                        <h5 className="font-semibold">
+                                            Discount Price
+                                        </h5>
+                                    </div>
+                                    <p className="text-red-600 font-semibold">
+                                        -$ {discountPrice.toFixed(2)}
+                                    </p>
+                                </div>
+                                <div className="p-3 flex justify-between items-center border mb-1">
+                                    <div>
+                                        <h5 className="font-semibold">
+                                            Total (USD)
+                                        </h5>
+                                    </div>
+                                    <p className="font-semibold">
+                                        $ {totalPriceAfterDiscount.toFixed(2)}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          ))}
-          <div className="font-bold mt-2">
-            Total: ${total.toFixed(2)}
-          </div>
-        </div>
-        <Button type="submit">Place Order</Button>
-      </form>
-    </div>
-  )
+        </section>
+    );
 }
-

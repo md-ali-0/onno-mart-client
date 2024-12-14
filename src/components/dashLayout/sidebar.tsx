@@ -115,41 +115,61 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                                         },
                                         {
                                             name: "All Products",
-                                            path: "/dashboard/products",
+                                            path: "/dashboard/seller-products",
                                         },
                                     ]}
                                     setSidebarOpen={setSidebarOpen}
                                 ></SidebarSubMenu>
                             )}
-
                             <SideBarMenuItem
                                 menu={{
-                                    name: "Ratings",
+                                    name: "Reviews",
                                     icon: "StarHalf",
                                     path: "/dashboard/ratings",
                                 }}
                                 setSidebarOpen={setSidebarOpen}
                             />
-                            <SideBarMenuItem
-                                menu={{
-                                    name: "Users",
-                                    icon: "Users",
-                                    path: "/dashboard/all-users",
-                                }}
-                                setSidebarOpen={setSidebarOpen}
-                            />
+                            {session?.role === "ADMIN" && (
+                                <SideBarMenuItem
+                                    menu={{
+                                        name: "Transactions",
+                                        icon: "BadgeDollarSign",
+                                        path: "/dashboard/transactions",
+                                    }}
+                                    setSidebarOpen={setSidebarOpen}
+                                />
+                            )}
+                            {session?.role === "VENDOR" && (
+                                <SideBarMenuItem
+                                    menu={{
+                                        name: "Order History",
+                                        icon: "BadgeDollarSign",
+                                        path: "/dashboard/order-history",
+                                    }}
+                                    setSidebarOpen={setSidebarOpen}
+                                />
+                            )}
 
-                            <h4 className="text-gray-400 font-semibold text-xs mt-2">
-                                Settings
-                            </h4>
-                            <SideBarMenuItem
-                                menu={{
-                                    name: "Settings",
-                                    icon: "Settings",
-                                    path: "/dashboard/settings",
-                                }}
-                                setSidebarOpen={setSidebarOpen}
-                            />
+                            {session?.role === "ADMIN" && (
+                                <>
+                                    <SideBarMenuItem
+                                        menu={{
+                                            name: "Shops",
+                                            icon: "ShoppingBag",
+                                            path: "/dashboard/shops",
+                                        }}
+                                        setSidebarOpen={setSidebarOpen}
+                                    />
+                                    <SideBarMenuItem
+                                        menu={{
+                                            name: "Users",
+                                            icon: "Users",
+                                            path: "/dashboard/users",
+                                        }}
+                                        setSidebarOpen={setSidebarOpen}
+                                    />
+                                </>
+                            )}
                             <SideBarMenuItem
                                 menu={{
                                     name: "Back to Home",

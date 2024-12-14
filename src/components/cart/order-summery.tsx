@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-const OrderSummary = () => {
+const OrderSummary = ({discount}: {discount: number}) => {
     const cart = useAppSelector((state) => state.cart.cart);
 
     const total = cart.reduce(
@@ -24,10 +24,12 @@ const OrderSummary = () => {
     }, [total]);
 
     const totalPriceWithVat = total + vatAmount;
-
+    const totalPriceAfterDiscount = totalPriceWithVat - (totalPriceWithVat * discount / 100)
+    const discountPrice = totalPriceWithVat - totalPriceAfterDiscount
     const router = useRouter();
 
     const handleProceedToCheckout = () => {
+        localStorage.setItem("discount", String(discount))
         toast.success("Proceeding to checkout...", { duration: 500 });
         setTimeout(() => router.push("/checkout"), 500);
     };
@@ -66,10 +68,18 @@ const OrderSummary = () => {
                 </div>
                 <dl className="flex items-center justify-between gap-4 border-t pt-2">
                     <dt className="text-base font-bold text-gray-900 dark:text-gray-200">
+                        Discount
+                    </dt>
+                    <dd className="text-base font-bold text-gray-900 dark:text-gray-200">
+                        ${discountPrice.toFixed()}
+                    </dd>
+                </dl>
+                <dl className="flex items-center justify-between gap-4 border-t pt-2">
+                    <dt className="text-base font-bold text-gray-900 dark:text-gray-200">
                         Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-gray-200">
-                        ${totalPriceWithVat.toFixed(2)}
+                        ${totalPriceAfterDiscount.toFixed(2)}
                     </dd>
                 </dl>
             </div>

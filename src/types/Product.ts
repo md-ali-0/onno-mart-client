@@ -15,6 +15,7 @@ export type Product = {
     inventory: number;
     brand: Brand;
     images: Image[];
+    rating: number;
     category: Category;
     discount: number;
     shopId: string;

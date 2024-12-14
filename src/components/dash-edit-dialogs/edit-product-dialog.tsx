@@ -104,7 +104,7 @@ const EditProductDialog = ({
 
     const onSubmit = async (data: Product) => {
         const loadingToast = toast.loading("Product is Updating...");
-
+            
         const productData = {
             name: data.name,
             price: Number(data.price),

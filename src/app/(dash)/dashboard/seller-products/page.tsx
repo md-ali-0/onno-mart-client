@@ -1,11 +1,11 @@
-import ManageProductTable from "@/components/dash-tables/manage-product-table";
+import ManageSellerProductTable from "@/components/dash-tables/manage-seller-product";
 import BreadcrumbDash from "@/components/shared/breadcumb-dash";
 
 import { Button } from "@/components/ui/button";
 import { getSession } from "@/lib/session";
 import Link from "next/link";
 
-export default async function ProductsPage() {
+export default async function SellerProductsPage() {
     const session = await getSession();
     
     return (
@@ -25,7 +25,7 @@ export default async function ProductsPage() {
                     )}
                 </div>
                 <div className="p-5">
-                    <ManageProductTable />
+                    <ManageSellerProductTable />
                 </div>
             </div>
         </div>

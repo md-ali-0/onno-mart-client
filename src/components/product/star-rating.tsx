@@ -12,7 +12,7 @@ export default function StarRating ({ rating, maxRating = 5 }: StarRatingProps) 
                 <Star
                     key={i}
                     className={`size-4 ${
-                        i < rating ? "text-yellow-400" : "text-gray-200"
+                        i < rating ? "fill-amber-400 text-amber-400" : "fill-gray-300 text-gray-300"
                     } rounded-full`}
                 ></Star>
             ))}

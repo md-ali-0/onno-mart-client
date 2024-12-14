@@ -15,9 +15,15 @@ export type User = {
     avatar: string;
     role: Role;
     shop: Shop;
+    status: UserStatus;
     createdAt: Date;
     updatedAt: Date;
 };
+
+export enum UserStatus {
+    ACTIVE,
+    SUSPEND,
+}
 
 enum Role {
     ADMIN,
