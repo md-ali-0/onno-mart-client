@@ -1,6 +1,6 @@
 export default function Loading() {
     return (
-        <div className="flex items-center justify-center h-screen m-0 bg-gray-100 font-sans">
+        <div className="flex items-center justify-center h-screen m-0 bg-white/50 font-sans">
             <div className="relative w-24 h-24">
                 <svg
                     className="cart-animation w-full h-full text-primary"

@@ -2,6 +2,9 @@
 
 import { Brand, Category } from "@/types";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { Checkbox } from "../ui/checkbox";
 
 function ShopSidebar({
     categories,
@@ -18,12 +21,37 @@ function ShopSidebar({
 }) {
     const router = useRouter();
 
+    const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm || "");
+    const [minPrice, setMinPrice] = useState<number | undefined>();
+    const [maxPrice, setMaxPrice] = useState<number | undefined>();
+
     const handleFilterChange = (filterType: string, value: string) => {
         const params = new URLSearchParams(window.location.search);
         if (value) {
             params.set(filterType, value);
         } else {
             params.delete(filterType);
+        }
+        params.delete("page"); // Reset pagination to the first page
+        router.push(`/products?${params.toString()}`);
+    };
+
+    const handleApplyFilters = () => {
+        const params = new URLSearchParams(window.location.search);
+        if (localSearchTerm) {
+            params.set("searchTerm", localSearchTerm.trim());
+        } else {
+            params.delete("searchTerm");
+        }
+        if (minPrice !== undefined) {
+            params.set("minPrice", minPrice.toString());
+        } else {
+            params.delete("minPrice");
+        }
+        if (maxPrice !== undefined) {
+            params.set("maxPrice", maxPrice.toString());
+        } else {
+            params.delete("maxPrice");
         }
         params.delete("page"); // Reset pagination to the first page
         router.push(`/products?${params.toString()}`);
@@ -37,48 +65,75 @@ function ShopSidebar({
                         Search:
                     </label>
                     <div className="relative mt-2">
-                        <svg
-                            stroke="currentColor"
-                            fill="none"
-                            strokeWidth={2}
-                            viewBox="0 0 24 24"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            className="absolute size-4 top-[9px] end-4 text-slate-900 dark:text-white"
-                            height="1em"
-                            width="1em"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <circle cx={11} cy={11} r={8} />
-                            <line x1={21} y1={21} x2="16.65" y2="16.65" />
-                        </svg>
-
                         <input
                             type="text"
-                            className="h-9 pe-10 rounded px-3 border border-gray-100 dark:border-gray-800 focus:ring-0 outline-none bg-white dark:bg-slate-900"
+                            id="searchname"
+                            className="h-9 w-full rounded px-3 border focus:ring-0 outline-none bg-white dark:bg-slate-900"
                             placeholder="Search..."
-                            defaultValue={searchTerm}
-                            onKeyDown={(e) => {
-                                if (e.key === "Enter") {
-                                    const searchValue = (
-                                        e.target as HTMLInputElement
-                                    ).value.trim();
-                                    handleFilterChange(
-                                        "searchTerm",
-                                        searchValue
-                                    );
-                                }
-                            }}
+                            value={localSearchTerm}
+                            onChange={(e) => setLocalSearchTerm(e.target.value)}
                         />
                     </div>
+                </div>
+                <div className="mt-4">
+                    <label className="font-medium">Price Range:</label>
+                    <div className="flex space-x-2 mt-2">
+                        <input
+                            type="number"
+                            className="h-9 w-full rounded px-3 border focus:ring-0 outline-none bg-white dark:bg-slate-900"
+                            placeholder="Min"
+                            value={minPrice || ""}
+                            onChange={(e) =>
+                                setMinPrice(Number(e.target.value) || undefined)
+                            }
+                        />
+                        <input
+                            type="number"
+                            className="h-9 w-full rounded px-3 border focus:ring-0 outline-none bg-white dark:bg-slate-900"
+                            placeholder="Max"
+                            value={maxPrice || ""}
+                            onChange={(e) =>
+                                setMaxPrice(Number(e.target.value) || undefined)
+                            }
+                        />
+                    </div>
+                </div>
+                <div className="flex justify-between mt-4">
+                    <Button
+                        type="button"
+                        variant={"outline"}
+                        onClick={()=>{
+                            setLocalSearchTerm("")
+                            setMinPrice(undefined)
+                            setMaxPrice(undefined)
+                            router.push(`/products?page=1`)
+                        }}
+                    >
+                        Clear Filters
+                    </Button>
+                    <Button
+                        type="button"
+                        variant={"default"}
+                        onClick={handleApplyFilters}
+                    >
+                        Apply Filters
+                    </Button>
                 </div>
             </form>
             <div className="mt-4">
                 <h5 className="font-medium">Brands:</h5>
-                <ul className="list-none mt-2">
+                <div className="mt-2 space-y-1.5">
                     {brands.map((brand) => (
-                        <li key={brand.id}>
-                            <button
+                        <div
+                            key={brand.id}
+                            className="flex items-center cursor-pointer space-x-1.5"
+                        >
+                            <Checkbox
+                                id={brand.slug}
+                                checked={selectedBrand === brand.slug}
+                            />
+                            <label
+                                htmlFor={brand.slug}
                                 onClick={() =>
                                     handleFilterChange(
                                         "brandId",
@@ -87,22 +142,28 @@ function ShopSidebar({
                                             : brand.slug
                                     )
                                 }
-                                className={`${
-                                    selectedBrand === brand.slug ? "text-primary" : ""
-                                }`}
+                                className="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
                                 {brand.name}
-                            </button>
-                        </li>
+                            </label>
+                        </div>
                     ))}
-                </ul>
+                </div>
             </div>
             <div className="mt-4">
                 <h5 className="font-medium">Categories:</h5>
-                <ul className="list-none mt-2">
+                <div className="mt-2 space-y-1.5">
                     {categories.map((category) => (
-                        <li key={category.id}>
-                            <button
+                        <div
+                            key={category.id}
+                            className="flex items-center cursor-pointer space-x-1.5"
+                        >
+                            <Checkbox
+                                id={category.slug}
+                                checked={selectedCategory === category.slug}
+                            />
+                            <label
+                                htmlFor={category.slug}
                                 onClick={() =>
                                     handleFilterChange(
                                         "categoryId",
@@ -111,17 +172,13 @@ function ShopSidebar({
                                             : category.slug
                                     )
                                 }
-                                className={`${
-                                    selectedCategory === category.id
-                                        ? "text-primary"
-                                        : ""
-                                }`}
+                                className="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                             >
                                 {category.name}
-                            </button>
-                        </li>
+                            </label>
+                        </div>
                     ))}
-                </ul>
+                </div>
             </div>
         </div>
     );

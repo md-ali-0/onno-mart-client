@@ -151,6 +151,12 @@ export default async function ProductsPage({
     const searchTerm = searchParams.searchTerm || "";
     const sortBy = searchParams.sortBy || "price";
     const sortOrder = searchParams.sortOrder || "asc";
+    const minPrice = searchParams.minPrice
+        ? Number(searchParams.minPrice)
+        : undefined;
+    const maxPrice = searchParams.maxPrice
+        ? Number(searchParams.maxPrice)
+        : undefined;
 
     const allBrands = await getBrands();
     const allCategories = await getCategories();
@@ -162,14 +168,16 @@ export default async function ProductsPage({
         brandId,
         searchTerm,
         sortBy,
-        sortOrder as "asc" | "desc"
+        sortOrder as "asc" | "desc",
+        minPrice,
+        maxPrice
     );
 
     return (
         <>
             <Breadcumb />
             <section className="relative py-16">
-                <div className="container relative">
+                <div className="container mx-auto px-4 lg:px-0 relative">
                     <div className="grid md:grid-cols-12 sm:grid-cols-2 grid-cols-1 gap-6">
                         <div className="lg:col-span-3 md:col-span-4">
                             <ShopSidebar
@@ -196,7 +204,9 @@ export default async function ProductsPage({
                             <Pagination
                                 totalPages={totalPages}
                                 currentPage={page}
-                                searchParams={new URLSearchParams(searchParams as unknown as string)}
+                                searchParams={new URLSearchParams(
+                                    searchParams as unknown as string
+                                )}
                             />
                         </div>
                     </div>

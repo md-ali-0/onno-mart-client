@@ -8,14 +8,17 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-
-import { useDeleteCategoryMutation, useGetAllCategoriesQuery } from "@/redux/features/category/categoryApi";
+import {
+    useDeleteCategoryMutation,
+    useGetAllCategoriesQuery,
+} from "@/redux/features/category/categoryApi";
 import { Category, ErrorResponse, TMeta } from "@/types";
 import { SerializedError } from "@reduxjs/toolkit";
 import { ColumnDef } from "@tanstack/react-table";
 import { FC, useEffect, useState } from "react";
 import { LuMoreVertical } from "react-icons/lu";
 import { toast } from "sonner";
+import EditCategoryDialog from "../dash-edit-dialogs/edit-category-dialog";
 import { DataTable } from "../data-table/data-table";
 import DeleteDialog from "../shared/delete-dialog";
 
@@ -24,13 +27,16 @@ const ManageCategoTable: FC = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
 
+    const [editDialogOpen, setEditDialogOpen] = useState(false);
+    const [categoryToEdit, setCategoryToEdit] = useState<Category | null>(null);
+
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [categoryToDelete, setCategoryToDelete] = useState<Category | null>(
         null
     );
 
-    const { data, isError, isLoading, isSuccess, error } = useGetAllCategoriesQuery(
-        [
+    const { data, isError, isLoading, isSuccess, error } =
+        useGetAllCategoriesQuery([
             {
                 name: "limit",
                 value: limit,
@@ -43,14 +49,18 @@ const ManageCategoTable: FC = () => {
                 name: "searchTerm",
                 value: search,
             },
-        ]
-    );
+        ]);
 
     useEffect(() => {
         if (isError) {
             toast.error("Something Went Wrong");
         }
     }, [isError, isSuccess, error]);
+
+    const handleEditClick = (category: Category) => {
+        setCategoryToEdit(category);
+        setEditDialogOpen(true);
+    };
 
     const handleDeleteClick = (category: Category) => {
         setCategoryToDelete(category);
@@ -100,6 +110,11 @@ const ManageCategoTable: FC = () => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
+                            <DropdownMenuItem
+                                onClick={() => handleEditClick(row.original)}
+                            >
+                                Edit
+                            </DropdownMenuItem>
                             <DropdownMenuItem
                                 onClick={() => handleDeleteClick(row.original)}
                             >
@@ -152,7 +167,11 @@ const ManageCategoTable: FC = () => {
                 onPageSizeChange={setLimit}
                 meta={data?.meta as TMeta}
             />
-
+            <EditCategoryDialog
+                category={categoryToEdit}
+                open={editDialogOpen}
+                onClose={() => setEditDialogOpen(false)}
+            />
             <DeleteDialog
                 id={categoryToDelete?.id as string}
                 open={deleteDialogOpen}

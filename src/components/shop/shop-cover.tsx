@@ -86,6 +86,12 @@ export default function ShopCover({ id }: { id: string }) {
                 </div>
                 <div className="flex items-center">
                     <div className="text-right mr-4">
+                        <p className="text-gray-600">Followers</p>
+                        <p className="text-lg font-semibold">
+                            {data?.data?.followers.length}
+                        </p>
+                    </div>
+                    <div className="text-right mr-4">
                         <p className="text-gray-600">Products</p>
                         <p className="text-lg font-semibold">
                             {data?.data?.products.length}

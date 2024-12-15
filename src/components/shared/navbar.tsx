@@ -1,11 +1,13 @@
 "use client";
 
 import { signout } from "@/actions/auth";
+import logoDark from "@/assets/images/logo-dark.png";
 import logo from "@/assets/images/logo.png";
 import { useSession } from "@/provider/session-provider";
 import { useGetMeQuery } from "@/redux/features/user/userApi";
 import { useAppSelector } from "@/redux/hooks";
 import {
+    Box,
     FileText,
     LayoutGrid,
     LogIn,
@@ -13,6 +15,7 @@ import {
     Settings,
     ShoppingBag,
     ShoppingCart,
+    Star,
     User,
     X,
 } from "lucide-react";
@@ -76,7 +79,7 @@ const Navbar: FC = () => {
         <>
             <div className="w-full bg-gradient-to-r from-amber-600 to-orange-600 py-2 text-center text-sm text-white">
                 <p>
-                    🎉 Special Winter Offer! Get 25% OFF on all products with
+                    🚀 Special Winter Offer! Get 25% OFF on all products with
                     code
                     {/* */} <span className="font-semibold">WINTER25</span>
                 </p>
@@ -90,11 +93,11 @@ const Navbar: FC = () => {
                 <div className="container flex flex-wrap items-center justify-between py-3.5 px-4 lg:px-0 lg:gap-y-4 gap-y-6 gap-x-4">
                     <Link href="/">
                         <Image
-                            src={logo}
+                            src={logo.src}
                             alt="logo"
                             width={150}
                             height={80}
-                            className="w-20 sm:w-36"
+                            className="w-28 sm:w-36"
                         />
                     </Link>
                     <div
@@ -107,11 +110,11 @@ const Navbar: FC = () => {
                         >
                             <X />
                         </button>
-                        <ul className="lg:!flex lg:gap-x-10 max-lg:space-y-3 max-lg:fixed max-lg:bg-primary max-lg:w-full max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:px-4 max-lg:py-4 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
+                        <ul className="lg:!flex lg:gap-x-10 max-lg:space-y-3 max-lg:fixed max-lg:bg-slate-900 max-lg:w-full max-lg:min-w-[300px] max-lg:top-0 max-lg:left-0 max-lg:px-4 max-lg:py-4 max-lg:h-full max-lg:shadow-md max-lg:overflow-auto z-50">
                             <li className="mb-6 hidden max-lg:block">
                                 <Link href="/">
                                     <Image
-                                        src={logo}
+                                        src={logoDark.src}
                                         alt="logo"
                                         width={150}
                                         height={80}
@@ -134,6 +137,7 @@ const Navbar: FC = () => {
                                     Home
                                 </Link>
                             </li>
+
                             <li
                                 className={`max-lg:border-b max-lg:py-3 relative lg:after:absolute lg:after:bg-primary ${
                                     path == "/products"
@@ -146,6 +150,20 @@ const Navbar: FC = () => {
                                     className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
                                 >
                                     Products
+                                </Link>
+                            </li>
+                            <li
+                                className={`max-lg:border-b max-lg:py-3 relative lg:after:absolute lg:after:bg-primary ${
+                                    path == "/flash-sale"
+                                        ? "lg:after:w-full"
+                                        : "lg:after:w-0"
+                                } lg:hover:after:w-full lg:after:h-[1px] lg:after:block lg:after:-bottom-1 lg:after:transition-all lg:after:duration-300`}
+                            >
+                                <Link
+                                    href="/flash-sale"
+                                    className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
+                                >
+                                    Flash Sale
                                 </Link>
                             </li>
                             <li
@@ -164,36 +182,22 @@ const Navbar: FC = () => {
                             </li>
                             <li
                                 className={`max-lg:border-b max-lg:py-3 relative lg:after:absolute lg:after:bg-primary ${
-                                    path == "/about"
+                                    path == "/compare"
                                         ? "lg:after:w-full"
                                         : "lg:after:w-0"
                                 } lg:hover:after:w-full lg:after:h-[1px] lg:after:block lg:after:-bottom-1 lg:after:transition-all lg:after:duration-300`}
                             >
                                 <Link
-                                    href="/about"
+                                    href="/compare"
                                     className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
                                 >
-                                    About
-                                </Link>
-                            </li>
-                            <li
-                                className={`max-lg:border-b max-lg:py-3 relative lg:after:absolute lg:after:bg-primary ${
-                                    path == "/contact"
-                                        ? "lg:after:w-full"
-                                        : "lg:after:w-0"
-                                } lg:hover:after:w-full lg:after:h-[1px] lg:after:block lg:after:-bottom-1 lg:after:transition-all lg:after:duration-300`}
-                            >
-                                <Link
-                                    href="/contact"
-                                    className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
-                                >
-                                    Contact
+                                    Compare
                                 </Link>
                             </li>
                         </ul>
                     </div>
                     <div className="flex items-center max-sm:ml-auto">
-                        <ul className="flex gap-1.5 sm:gap-4">
+                        <ul className="flex gap-4">
                             <li className="flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
                                 <Link href="/cart">
                                     <span className="flex items-center justify-center bg-primary size-5 text-[11px] sm:text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-0.5 sm:p-2.5">
@@ -211,14 +215,14 @@ const Navbar: FC = () => {
                             {session?.isAuth ? (
                                 <li className="group flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary">
                                     <button
-                                        className="group-hover:text-white p-[12px] rounded-full"
+                                        className="group-hover:text-white p-[10px] sm:p-[12px] rounded-full"
                                         onClick={() =>
                                             setIsDropDownOpen(!isDropdownOpen)
                                         }
                                     >
                                         {isLoading ? (
                                             <div className="flex items-center space-x-4">
-                                                <Skeleton className="size-9 sm:size-10 rounded-full" />
+                                                <Skeleton className="size-8 sm:size-10 rounded-full" />
                                             </div>
                                         ) : (
                                             <Avatar>
@@ -304,6 +308,23 @@ const Navbar: FC = () => {
                                                     <li className="ms-0">
                                                         <a
                                                             className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                            href="/user/recent-view-products"
+                                                            onClick={() =>
+                                                                setIsDropDownOpen(
+                                                                    false
+                                                                )
+                                                            }
+                                                        >
+                                                            <ShoppingCart
+                                                                size={20}
+                                                                className="h-4 w-4 me-2"
+                                                            />
+                                                            Recent Products
+                                                        </a>
+                                                    </li>
+                                                    <li className="ms-0">
+                                                        <a
+                                                            className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
                                                             href="/user/purchased-items"
                                                             onClick={() =>
                                                                 setIsDropDownOpen(
@@ -321,6 +342,23 @@ const Navbar: FC = () => {
                                                     <li className="ms-0">
                                                         <a
                                                             className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                            href="/user/my-reviews"
+                                                            onClick={() =>
+                                                                setIsDropDownOpen(
+                                                                    false
+                                                                )
+                                                            }
+                                                        >
+                                                            <Star
+                                                                size={20}
+                                                                className="h-4 w-4 me-2"
+                                                            />
+                                                            My Reviews
+                                                        </a>
+                                                    </li>
+                                                    <li className="ms-0">
+                                                        <a
+                                                            className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
                                                             href="/user/transactions"
                                                             onClick={() =>
                                                                 setIsDropDownOpen(
@@ -333,6 +371,23 @@ const Navbar: FC = () => {
                                                                 className="h-4 w-4 me-2"
                                                             />
                                                             Transactions
+                                                        </a>
+                                                    </li>
+                                                    <li className="ms-0">
+                                                        <a
+                                                            className="flex items-center py-2 px-4 hover:text-orange-500 text-[15px]"
+                                                            href="/user/favorite-seller"
+                                                            onClick={() =>
+                                                                setIsDropDownOpen(
+                                                                    false
+                                                                )
+                                                            }
+                                                        >
+                                                            <Box
+                                                                size={20}
+                                                                className="h-4 w-4 me-2"
+                                                            />
+                                                            Favorite Sellers
                                                         </a>
                                                     </li>
                                                     <li className="ms-0">

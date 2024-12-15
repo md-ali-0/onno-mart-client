@@ -12,7 +12,7 @@ const Breadcumb: FC = () => {
     const title = pathnames[lastIndex].replace(/-/g, " ");
     return (
         <section className="relative table w-full py-5 lg:pb-10 bg-gray-100">
-            <div className="container relative">
+            <div className="container mx-auto px-4 lg:px-0 relative">
                 <div className="grid grid-cols-1 mt-12">
                     <h3 className="text-3xl capitalize leading-normal font-semibold">
                         {title}

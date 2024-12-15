@@ -82,7 +82,7 @@ const PopularBrands: FC = () => {
                                     key={brand.id}
                                     className="mobile:!w-24 bg-white rounded-xl border shadow p-3"
                                 >
-                                    <Link href={"/brand/product"}>
+                                    <Link href={`/products?brandId=${brand.slug}`}>
                                         <Image
                                             width={200}
                                             height={150}

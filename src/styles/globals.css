@@ -158,3 +158,22 @@ body {
   }
   
 }
+
+@keyframes draw {
+    0% {
+        stroke-dasharray: 0 300;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 150 300;
+        stroke-dashoffset: -50;
+    }
+    100% {
+        stroke-dasharray: 300 300;
+        stroke-dashoffset: -300;
+    }
+}
+
+.cart-animation {
+    animation: draw 2s infinite;
+}

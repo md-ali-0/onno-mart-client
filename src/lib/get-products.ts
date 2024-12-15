@@ -30,7 +30,9 @@ export async function getProducts(
     brandId?: string,
     searchTerm?: string,
     sortBy: string = "price",
-    sortOrder: "asc" | "desc" = "asc"
+    sortOrder: "asc" | "desc" = "asc",
+    minPrice?: number,
+    maxPrice?: number
 ): Promise<{
     products: Product[];
     totalPages: number;
@@ -44,6 +46,8 @@ export async function getProducts(
         ...(searchTerm ? { searchTerm } : {}),
         ...(sortBy ? { sortBy } : {}),
         ...(sortOrder ? { sortOrder } : {}),
+        ...(minPrice ? { minPrice: minPrice.toString() } : {}),
+        ...(maxPrice ? { maxPrice: maxPrice.toString() } : {}),
     });
 
     const response = await fetch(
@@ -53,6 +57,8 @@ export async function getProducts(
         }
     );
     if (!response.ok) {
+        console.log(response);
+        
         throw new Error(`Failed to fetch products: ${response.status}`);
     }
     const result = await response.json();
