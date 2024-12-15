@@ -49,14 +49,8 @@ function Pagination({
                                 href={
                                     currentPage > 1
                                         ? (() => {
-                                              const newParams =
-                                                  new URLSearchParams(
-                                                      searchParams
-                                                  );
-                                              newParams.set(
-                                                  "shop",
-                                                  (currentPage - 1).toString()
-                                              );
+                                              const newParams = new URLSearchParams(searchParams);
+                                              newParams.set("page", (currentPage - 1).toString());
                                               return `/products?${newParams.toString()}`;
                                           })()
                                         : "#"
@@ -85,21 +79,14 @@ function Pagination({
                         </li>
 
                         {/* Page Numbers */}
-                        {Array.from(
-                            { length: totalPages },
-                            (_, i) => i + 1
-                        ).map((pageNum) => {
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
                             const newParams = new URLSearchParams(searchParams);
                             newParams.set("page", pageNum.toString());
                             return (
                                 <li key={pageNum}>
                                     <Link
                                         href={`/products?${newParams.toString()}`}
-                                        aria-current={
-                                            pageNum === currentPage
-                                                ? "page"
-                                                : undefined
-                                        }
+                                        aria-current={pageNum === currentPage ? "page" : undefined}
                                         className={`size-[40px] inline-flex justify-center items-center ${
                                             pageNum === currentPage
                                                 ? "text-white bg-orange-500 border border-orange-500"
@@ -116,16 +103,10 @@ function Pagination({
                         <li>
                             <Link
                                 href={
-                                    currentPage > 1
+                                    currentPage < totalPages
                                         ? (() => {
-                                              const newParams =
-                                                  new URLSearchParams(
-                                                      searchParams
-                                                  );
-                                              newParams.set(
-                                                  "page",
-                                                  (currentPage - 1).toString()
-                                              );
+                                              const newParams = new URLSearchParams(searchParams);
+                                              newParams.set("page", (currentPage + 1).toString());
                                               return `/products?${newParams.toString()}`;
                                           })()
                                         : "#"
@@ -162,35 +143,27 @@ function Pagination({
 export default async function ProductsPage({
     searchParams,
 }: {
-    searchParams: { [key: string]: string | string[] | undefined };
+    searchParams: { [key: string]: string | undefined };
 }) {
     const page = Number(searchParams.page) || 1;
-    const categories =
-        typeof searchParams.category === "string"
-            ? searchParams.category.split(",")
-            : [];
-    const brands =
-        typeof searchParams.brand === "string"
-            ? searchParams.brand.split(",")
-            : [];
-    const shopId = searchParams.shop ? Number(searchParams.shop) : undefined;
+    const categoryId = searchParams.categoryId;
+    const brandId = searchParams.brandId;
+    const searchTerm = searchParams.searchTerm || "";
+    const sortBy = searchParams.sortBy || "price";
+    const sortOrder = searchParams.sortOrder || "asc";
 
     const allBrands = await getBrands();
     const allCategories = await getCategories();
 
-    const { products, totalPages , totalProducts} = await getProducts(
+    const { products, totalPages } = await getProducts(
         page,
-        categories,
-        brands,
-        shopId
+        6,
+        categoryId,
+        brandId,
+        searchTerm,
+        sortBy,
+        sortOrder as "asc" | "desc"
     );
-
-    const currentSearchParams = new URLSearchParams();
-    Object.entries(searchParams).forEach(([key, value]) => {
-        if (typeof value === "string") {
-            currentSearchParams.append(key, value);
-        }
-    });
 
     return (
         <>
@@ -202,36 +175,20 @@ export default async function ProductsPage({
                             <ShopSidebar
                                 categories={allCategories}
                                 brands={allBrands}
-                                selectedCategories={categories}
-                                selectedBrands={brands}
-                                selectedShop={shopId}
+                                selectedCategory={categoryId}
+                                selectedBrand={brandId}
+                                searchTerm={searchTerm}
                             />
                         </div>
                         <div className="lg:col-span-9 md:col-span-8">
-                            <div className="md:flex justify-between items-center mb-6">
-                                <span className="font-semibold">
-                                    Showing 1-16 of {totalProducts} items
-                                </span>
-                                <div className="md:flex items-center">
-                                    <label className="font-semibold md:me-2">
-                                        Sort by:
-                                    </label>
-                                    <select className="form-select form-input md:w-36 w-full md:mt-0 mt-1 py-2 px-3 h-10 bg-transparent dark:bg-slate-900 dark:text-slate-200 rounded outline-none border border-gray-100 dark:border-gray-800 focus:ring-0">
-                                        <option>Featured</option>
-                                        <option>Sale</option>
-                                        <option>Alfa A-Z</option>
-                                        <option>Alfa Z-A</option>
-                                        <option>Price Low-High</option>
-                                        <option>Price High-Low</option>
-                                    </select>
-                                </div>
-                            </div>
                             <Suspense fallback={<SkeletonGrid />}>
                                 {products.length > 0 ? (
                                     <ProductGrid products={products} />
                                 ) : (
                                     <div className="flex justify-center my-10">
-                                        <h3 className="text-xl font-medium">No Product Available</h3>
+                                        <h3 className="text-xl font-medium">
+                                            No Product Available
+                                        </h3>
                                     </div>
                                 )}
                             </Suspense>
@@ -239,7 +196,7 @@ export default async function ProductsPage({
                             <Pagination
                                 totalPages={totalPages}
                                 currentPage={page}
-                                searchParams={currentSearchParams}
+                                searchParams={new URLSearchParams(searchParams as unknown as string)}
                             />
                         </div>
                     </div>

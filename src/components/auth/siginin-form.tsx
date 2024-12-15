@@ -12,7 +12,6 @@ import { toast } from "sonner";
 import { Checkbox } from "../ui/checkbox";
 import { Label } from "../ui/label";
 
-// Define types for form inputs
 interface FormValues {
     email: string;
     password: string;

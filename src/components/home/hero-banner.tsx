@@ -36,7 +36,7 @@ export default async function HeroBanner() {
                                         categories.map((category) => (
                                             <Link
                                                 key={category?.id}
-                                                href={`/products?category=${category?.slug}`}
+                                                href={`/products?categoryId=${category?.slug}`}
                                                 className="flex items-center gap-3 rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
                                             >
                                                 <span className="mr-1">

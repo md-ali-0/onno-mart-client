@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 export default function RecentViewProducts() {
     const [recentProducts, setRecentProducts] = useState<Product[]>([]);
 
-    // Fetch recent products from localStorage
     useEffect(() => {
         const storedProducts = localStorage.getItem("recentProducts");
         if (storedProducts) {

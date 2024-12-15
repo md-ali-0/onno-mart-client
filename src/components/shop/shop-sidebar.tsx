@@ -1,55 +1,34 @@
 "use client";
 
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
 import { Brand, Category } from "@/types";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
-interface SidebarProps {
-    categories: Category[];
-    brands: Brand[];
-    selectedCategories: string[];
-    selectedBrands: string[];
-    selectedShop?: number;
-}
-export default function ShopSidebar({
+function ShopSidebar({
     categories,
     brands,
-    selectedCategories,
-    selectedBrands,
-    selectedShop,
-}: SidebarProps) {
+    selectedCategory,
+    selectedBrand,
+    searchTerm,
+}: {
+    categories: Category[];
+    brands: Brand[];
+    selectedCategory?: string;
+    selectedBrand?: string;
+    searchTerm?: string;
+}) {
     const router = useRouter();
-    const searchParams = useSearchParams();
 
-    const handleFilterChange = (
-        type: "category" | "brand" | "shop",
-        value: string | number
-    ) => {
-        const params = new URLSearchParams(searchParams.toString());
-
-        if (type === "shop") {
-            if (selectedShop === value) {
-                params.delete("shop");
-            } else {
-                params.set("shop", value.toString());
-            }
+    const handleFilterChange = (filterType: string, value: string) => {
+        const params = new URLSearchParams(window.location.search);
+        if (value) {
+            params.set(filterType, value);
         } else {
-            const current = params.get(type)?.split(",").filter(Boolean) || [];
-            const updated = current.includes(value.toString())
-                ? current.filter((item) => item !== value.toString())
-                : [...current, value.toString()];
-
-            if (updated.length > 0) {
-                params.set(type, updated.join(","));
-            } else {
-                params.delete(type);
-            }
+            params.delete(filterType);
         }
-
-        params.set("page", "1"); // Reset to first page on filter change
+        params.delete("page"); // Reset pagination to the first page
         router.push(`/products?${params.toString()}`);
     };
+
     return (
         <div className="rounded-xl border p-4 sticky top-20">
             <form className="mt-4">
@@ -73,12 +52,23 @@ export default function ShopSidebar({
                             <circle cx={11} cy={11} r={8} />
                             <line x1={21} y1={21} x2="16.65" y2="16.65" />
                         </svg>
+
                         <input
                             type="text"
                             className="h-9 pe-10 rounded px-3 border border-gray-100 dark:border-gray-800 focus:ring-0 outline-none bg-white dark:bg-slate-900"
-                            name="s"
-                            id="searchItem"
                             placeholder="Search..."
+                            defaultValue={searchTerm}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    const searchValue = (
+                                        e.target as HTMLInputElement
+                                    ).value.trim();
+                                    handleFilterChange(
+                                        "searchTerm",
+                                        searchValue
+                                    );
+                                }
+                            }}
                         />
                     </div>
                 </div>
@@ -87,18 +77,22 @@ export default function ShopSidebar({
                 <h5 className="font-medium">Brands:</h5>
                 <ul className="list-none mt-2">
                     {brands.map((brand) => (
-                        <li
-                            key={brand.id}
-                            className="flex items-center space-x-2 mb-2"
-                        >
-                            <Checkbox
-                                id={brand.id}
-                                checked={selectedBrands.includes(brand.slug)}
-                                onCheckedChange={() =>
-                                    handleFilterChange("brand", brand.slug)
+                        <li key={brand.id}>
+                            <button
+                                onClick={() =>
+                                    handleFilterChange(
+                                        "brandId",
+                                        brand.slug === selectedBrand
+                                            ? ""
+                                            : brand.slug
+                                    )
                                 }
-                            />
-                            <Label htmlFor={brand.id}>{brand.name}</Label>
+                                className={`${
+                                    selectedBrand === brand.slug ? "text-primary" : ""
+                                }`}
+                            >
+                                {brand.name}
+                            </button>
                         </li>
                     ))}
                 </ul>
@@ -107,20 +101,24 @@ export default function ShopSidebar({
                 <h5 className="font-medium">Categories:</h5>
                 <ul className="list-none mt-2">
                     {categories.map((category) => (
-                        <li
-                            key={category.id}
-                            className="flex items-center space-x-2 mb-2"
-                        >
-                            <Checkbox
-                                id={category.id}
-                                checked={selectedCategories.includes(
-                                    category.slug
-                                )}
-                                onCheckedChange={() =>
-                                    handleFilterChange("category", category.slug)
+                        <li key={category.id}>
+                            <button
+                                onClick={() =>
+                                    handleFilterChange(
+                                        "categoryId",
+                                        category.slug === selectedCategory
+                                            ? ""
+                                            : category.slug
+                                    )
                                 }
-                            />
-                            <Label htmlFor={category.id}>{category.name}</Label>
+                                className={`${
+                                    selectedCategory === category.id
+                                        ? "text-primary"
+                                        : ""
+                                }`}
+                            >
+                                {category.name}
+                            </button>
                         </li>
                     ))}
                 </ul>
@@ -128,3 +126,5 @@ export default function ShopSidebar({
         </div>
     );
 }
+
+export default ShopSidebar;

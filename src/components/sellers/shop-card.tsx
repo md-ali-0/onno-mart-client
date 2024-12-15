@@ -2,9 +2,9 @@
 
 import { useSession } from "@/provider/session-provider";
 import {
-  useFollowShopMutation,
-  useGetMeQuery,
-  useUnfollowShopMutation,
+    useFollowShopMutation,
+    useGetMeQuery,
+    useUnfollowShopMutation,
 } from "@/redux/features/user/userApi";
 import { Shop } from "@/types";
 import Image from "next/image";
@@ -20,7 +20,6 @@ export default function ShopCard({ shop }: { shop: Shop }) {
     const [unfollowShop, { isLoading: isUnfollowing }] =
         useUnfollowShopMutation();
 
-    // Check if the shop is already followed by the user
     const isShopFollowed = user?.followedShops?.some((s) => s.id === shop.id);
 
     const handleFollowUnfollow = async () => {
@@ -28,10 +27,8 @@ export default function ShopCard({ shop }: { shop: Shop }) {
             toast.warning("You are not LoggedIn");
         }
         if (isShopFollowed) {
-            // If already following, unfollow
             await unfollowShop(shop.id);
         } else {
-            // Otherwise, follow
             await followShop(shop.id);
         }
     };

@@ -44,9 +44,6 @@ export default function MyReviews() {
         {
             accessorKey: "product.name",
             header: "Product Name",
-            // cell: ({ row }) => {
-            //     return <span>{row.original.product.name}</span>;
-            // },
         },
         {
             accessorKey: "rating",

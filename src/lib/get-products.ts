@@ -1,7 +1,6 @@
 import config from "@/config";
 import { Product, Shop, TMeta } from "@/types";
 
-// Function to fetch shops from the API
 export async function getShops(
     page: number
 ): Promise<{ data: Shop[]; meta: TMeta }> {
@@ -27,9 +26,11 @@ export async function getShops(
 export async function getProducts(
     page: number,
     limit: number = 6,
-    categories: string[] = [],
-    brands: string[] = [],
-    shopId?: number
+    categoryId?: string,
+    brandId?: string,
+    searchTerm?: string,
+    sortBy: string = "price",
+    sortOrder: "asc" | "desc" = "asc"
 ): Promise<{
     products: Product[];
     totalPages: number;
@@ -38,9 +39,11 @@ export async function getProducts(
     const query = new URLSearchParams({
         page: page.toString(),
         limit: limit.toString(),
-        categories: categories.join(","),
-        brands: brands.join(","),
-        ...(shopId ? { shopId: shopId.toString() } : {}),
+        ...(categoryId ? { categoryId } : {}),
+        ...(brandId ? { brandId } : {}),
+        ...(searchTerm ? { searchTerm } : {}),
+        ...(sortBy ? { sortBy } : {}),
+        ...(sortOrder ? { sortOrder } : {}),
     });
 
     const response = await fetch(
@@ -50,7 +53,7 @@ export async function getProducts(
         }
     );
     if (!response.ok) {
-        throw new Error("Failed to fetch products.");
+        throw new Error(`Failed to fetch products: ${response.status}`);
     }
     const result = await response.json();
     return {
@@ -60,11 +63,12 @@ export async function getProducts(
     };
 }
 
-// Function to fetch a single product by ID
 export async function getProductBySlug(
     slug: string
 ): Promise<Product | undefined> {
-    const response = await fetch(`${config.host}/api/product/${slug}`);
+    const response = await fetch(`${config.host}/api/product/${slug}`, {
+        cache: "no-store",
+    });
     if (!response.ok) {
         throw new Error("Failed to fetch product.");
     }

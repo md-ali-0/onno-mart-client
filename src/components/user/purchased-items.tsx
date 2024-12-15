@@ -51,15 +51,14 @@ export default function PurchasedItems() {
         }
     }, [isError, isSuccess, error]);
 
-    // Flatten all products from orders into a single array
     const products: any[] =
         data?.data?.flatMap((order) =>
             order.products.map((product) => ({
                 ...product,
-                orderId: order.id, // Add order reference if needed
-                orderStatus: order.status, // Include status for product context
-                orderTranId: order.tranId, // Add transaction ID
-                orderDate: order.createdAt, // Add order date for the product
+                orderId: order.id,
+                orderStatus: order.status,
+                orderTranId: order.tranId,
+                orderDate: order.createdAt,
             }))
         ) || [];
 

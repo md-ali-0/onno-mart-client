@@ -20,7 +20,6 @@ export default function ShopCover({ id }: { id: string }) {
     const [unfollowShop, { isLoading: isUnfollowing }] =
         useUnfollowShopMutation();
 
-    // Check if the shop is already followed by the user
     const isShopFollowed = user?.followedShops?.some((s) => s.id === id);
 
     const handleFollowUnfollow = async () => {
@@ -28,38 +27,30 @@ export default function ShopCover({ id }: { id: string }) {
            toast.warning("You are not LoggedIn") 
         }
         if (isShopFollowed) {
-            // If already following, unfollow
             await unfollowShop(id);
         } else {
-            // Otherwise, follow
             await followShop(id);
         }
     };
     
     if (isLoading) {
         <div className="relative rounded-xl my-8">
-            {/* Background Image Skeleton */}
             <Skeleton className="w-full h-48 rounded-xl" />
 
             <div className="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-between p-4">
                 <div className="flex items-center">
-                    {/* Logo Skeleton */}
                     <Skeleton className="w-12 h-12 rounded-full" />
                     <div className="ml-4">
-                        {/* Title Skeleton */}
                         <Skeleton className="h-5 w-32" />
-                        {/* Description Skeleton */}
                         <Skeleton className="h-4 w-48 mt-2" />
                     </div>
                 </div>
 
                 <div className="flex items-center">
                     <div className="text-right mr-4">
-                        {/* Ratings Skeleton */}
                         <Skeleton className="h-4 w-20" />
                         <Skeleton className="h-5 w-32 mt-2" />
                     </div>
-                    {/* Follow Button Skeleton */}
                     <Skeleton className="h-10 w-20 rounded" />
                 </div>
             </div>

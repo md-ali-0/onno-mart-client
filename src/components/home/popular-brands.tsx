@@ -13,10 +13,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { NavigationOptions } from "swiper/types";
 
 const PopularBrands: FC = () => {
+    const { data, isLoading } = useGetAllBrandsQuery(undefined);
 
-    const { data, isLoading,} = useGetAllBrandsQuery(undefined);
-
-    // Refs for custom navigation buttons
     const prevRef = useRef<HTMLButtonElement | null>(null);
     const nextRef = useRef<HTMLButtonElement | null>(null);
 
@@ -34,11 +32,10 @@ const PopularBrands: FC = () => {
             ) : (
                 <section className="my-10 sm:my-14">
                     <div className="container px-4 lg:px-0 relative">
-                        <h2 className="text-2xl sm:text-4xl font-bold mb-10">
+                        <h2 className="text-2xl font-bold mb-4">
                             Popular Brands
                         </h2>
-
-                        {/* Custom navigation buttons */}
+                        
                         <div className="absolute top-0 right-0 flex gap-2">
                             <button
                                 ref={prevRef}
@@ -58,15 +55,22 @@ const PopularBrands: FC = () => {
                             dir="ltr"
                             speed={1000}
                             loop={true}
-                            navigation={{
-                                prevEl: prevRef.current,
-                                nextEl: nextRef.current,
-                            } as NavigationOptions} // Explicitly cast as Navigation
+                            navigation={
+                                {
+                                    prevEl: prevRef.current,
+                                    nextEl: nextRef.current,
+                                } as NavigationOptions
+                            }
                             onBeforeInit={(swiper) => {
-                                // Pass navigation elements to Swiper
-                                if (swiper.params.navigation && typeof swiper.params.navigation !== "boolean") {
-                                    swiper.params.navigation.prevEl = prevRef.current;
-                                    swiper.params.navigation.nextEl = nextRef.current;
+                                if (
+                                    swiper.params.navigation &&
+                                    typeof swiper.params.navigation !==
+                                        "boolean"
+                                ) {
+                                    swiper.params.navigation.prevEl =
+                                        prevRef.current;
+                                    swiper.params.navigation.nextEl =
+                                        nextRef.current;
                                 }
                             }}
                             modules={[Navigation, Pagination, Autoplay]}
@@ -78,10 +82,7 @@ const PopularBrands: FC = () => {
                                     key={brand.id}
                                     className="mobile:!w-24 bg-white rounded-xl border shadow p-3"
                                 >
-                                    <Link
-                                        href={"/brand/product"}
-                                        
-                                    >
+                                    <Link href={"/brand/product"}>
                                         <Image
                                             width={200}
                                             height={150}

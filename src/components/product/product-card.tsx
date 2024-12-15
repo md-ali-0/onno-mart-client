@@ -14,13 +14,8 @@ const addToRecentProducts = (product: Product) => {
         localStorage.getItem(recentProductsKey) || "[]"
     );
 
-    // Remove existing product if already present
     recentProducts = recentProducts.filter((p) => p.id !== product.id);
-
-    // Add new product at the beginning
     recentProducts.unshift(product);
-
-    // Keep only the latest 10 products
     if (recentProducts.length > MAX_RECENT_PRODUCTS) {
         recentProducts.pop();
     }
@@ -79,7 +74,7 @@ const ProductCard = ({ product }: { product: Product }) => {
                         )}
                     </div>
                     <div>
-                        <StarRating rating={5} />
+                        <StarRating rating={product?.rating} />
                     </div>
                 </div>
                 <AddToCartButton product={product} quantity={1} clx="w-full" />

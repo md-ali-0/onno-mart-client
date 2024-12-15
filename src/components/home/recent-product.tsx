@@ -3,7 +3,6 @@ import Link from "next/link";
 import ProductCard from "../product/product-card";
 
 const  RecentProducts = async () => {
-    // Dummy data for trendy products
 
     const products = await getProducts(1, 8)
 
@@ -11,7 +10,7 @@ const  RecentProducts = async () => {
         <section className="mb-10 sm:mb-20">
             <div className="container px-4 lg:px-0">
                 <div className="flex items-center justify-between gap-4 mb-5 sm:mb-7">
-                    <h2 className="text-2xl sm:text-4xl font-bold capitalize">
+                    <h2 className="text-2xl font-bold capitalize">
                         Lastest Collections
                     </h2>
                     <Link

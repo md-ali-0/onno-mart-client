@@ -40,7 +40,6 @@ const EditMyProfile: FC = () => {
     });
 
     useEffect(() => {
-        // Reset form values when user data is available
         if (user) {
             reset({
                 name: user.name,
@@ -307,14 +306,11 @@ const EditMyProfile: FC = () => {
                             </div>
                         </div>
                     </div>
-                    {/*end row*/}
                     <div className="pt-5">
                         <Button type="submit">Save Changes</Button>
                     </div>
                 </form>
             </div>
-
-            {/* Change Password Section */}
             <div className="p-6 rounded-md border dark:shadow-gray-800 bg-white dark:bg-slate-900 mt-6">
                 <h5 className="text-lg font-semibold mb-4">
                     Change password :
