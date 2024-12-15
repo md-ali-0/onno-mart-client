@@ -244,11 +244,6 @@ const Navbar: FC = () => {
                                         }}
                                     >
                                         <ul className="py-2 text-start">
-                                            <li className="ms-0">
-                                                <p className="text-slate-400 text-[15px] pt-2 px-4">
-                                                    {data?.name}
-                                                </p>
-                                            </li>
                                             {session?.role === "ADMIN" && (
                                                 <li>
                                                     <a

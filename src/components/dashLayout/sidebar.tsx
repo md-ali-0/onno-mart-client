@@ -141,14 +141,24 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                                 />
                             )}
                             {session?.role === "VENDOR" && (
-                                <SideBarMenuItem
-                                    menu={{
-                                        name: "Order History",
-                                        icon: "ListOrdered",
-                                        path: "/dashboard/order-history",
-                                    }}
-                                    setSidebarOpen={setSidebarOpen}
-                                />
+                                <>
+                                    <SideBarMenuItem
+                                        menu={{
+                                            name: "Order History",
+                                            icon: "ListOrdered",
+                                            path: "/dashboard/order-history",
+                                        }}
+                                        setSidebarOpen={setSidebarOpen}
+                                    />
+                                    <SideBarMenuItem
+                                        menu={{
+                                            name: "Edit Shop",
+                                            icon: "ShoppingBag",
+                                            path: "/dashboard/edit-shop",
+                                        }}
+                                        setSidebarOpen={setSidebarOpen}
+                                    />
+                                </>
                             )}
 
                             {session?.role === "ADMIN" && (

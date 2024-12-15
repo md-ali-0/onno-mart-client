@@ -29,17 +29,16 @@ const ManageReviewsTable: FC = () => {
     ]);
 
     useEffect(() => {
-        // Update query only when `user?.shop` changes
         if (user?.shop) {
             setQuery((prevQuery) => [
-                ...prevQuery.filter((param) => param.name !== "shopId"), // Remove previous `shopId` if present
+                ...prevQuery.filter((param) => param.name !== "shopId"),
                 {
                     name: "shopId",
                     value: user?.shop?.id,
                 },
             ]);
         }
-    }, [user?.shop]); // This will trigger the effect only when `user?.shop` changes
+    }, [user?.shop]);
 
     const { data, isError, isLoading, isSuccess, error } =
         useGetAllReviewsQuery(query);

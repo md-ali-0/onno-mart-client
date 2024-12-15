@@ -8,8 +8,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { ErrorResponse, Shop, ShopStatus, TMeta } from "@/types";
-import { SerializedError } from "@reduxjs/toolkit";
+import { Shop, ShopStatus, TMeta } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { FC, useEffect, useState } from "react";
 import { LuMoreVertical } from "react-icons/lu";
@@ -17,14 +16,11 @@ import { toast } from "sonner";
 
 import { useSession } from "@/provider/session-provider";
 import {
-    useDeleteShopMutation,
-    useGetAllShopsQuery,
+    useGetAllShopsQuery
 } from "@/redux/features/shop/shopApi";
 import Image from "next/image";
-import EditShopDialog from "../dash-edit-dialogs/edit-shop-dialog";
 import EditShopStatusDialog from "../dash-edit-dialogs/edit-shop-status-dialog";
 import { DataTable } from "../data-table/data-table";
-import DeleteDialog from "../shared/delete-dialog";
 import { Badge } from "../ui/badge";
 
 const ManageShopTable: FC = () => {
@@ -32,12 +28,8 @@ const ManageShopTable: FC = () => {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const { session } = useSession();
-    const [viewDialogOpen, setViewDialogOpen] = useState(false);
     const [statusDialogOpen, setStatusDialogOpen] = useState(false);
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [shopToStatus, setShopToStatus] = useState<Shop | null>(null);
-    const [shopToEdit, setShopToEdit] = useState<Shop | null>(null);
-    const [shopToDelete, setShopToDelete] = useState<Shop | null>(null);
 
     const { data, isError, isLoading, isSuccess, error } = useGetAllShopsQuery([
         {
@@ -60,18 +52,9 @@ const ManageShopTable: FC = () => {
         }
     }, [isError, isSuccess, error]);
 
-    const handleViewClick = (shop: Shop) => {
-        setShopToEdit(shop);
-        setViewDialogOpen(true);
-    };
     const handleStatusClick = (shop: Shop) => {
         setShopToStatus(shop);
         setStatusDialogOpen(true);
-    };
-
-    const handleDeleteClick = (shop: Shop) => {
-        setShopToDelete(shop);
-        setDeleteDialogOpen(true);
     };
 
     const columns: ColumnDef<Shop>[] = [
@@ -177,15 +160,6 @@ const ManageShopTable: FC = () => {
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            {session?.role === "VENDOR" && (
-                                <DropdownMenuItem
-                                    onClick={() =>
-                                        handleViewClick(row.original)
-                                    }
-                                >
-                                    Edit
-                                </DropdownMenuItem>
-                            )}
                             {session?.role === "ADMIN" && (
                                 <DropdownMenuItem
                                     onClick={() =>
@@ -195,46 +169,12 @@ const ManageShopTable: FC = () => {
                                     Change Status
                                 </DropdownMenuItem>
                             )}
-                            <DropdownMenuItem
-                                onClick={() => handleDeleteClick(row.original)}
-                            >
-                                Remove
-                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 );
             },
         },
     ];
-
-    const [
-        deleteShop,
-        {
-            isSuccess: isDeleteSuccess,
-            isError: isDeleteError,
-            error: deleteError,
-        },
-    ] = useDeleteShopMutation();
-
-    useEffect(() => {
-        if (isDeleteError) {
-            const errorResponse = deleteError as
-                | ErrorResponse
-                | SerializedError;
-
-            const errorMessage =
-                (errorResponse as ErrorResponse)?.data?.message ||
-                "Something Went Wrong";
-
-            toast.error(errorMessage);
-        } else if (isDeleteSuccess) {
-            toast.success("User Deleted successfully");
-        }
-    }, [isDeleteError, isDeleteSuccess, deleteError]);
-
-    const handleDelete = async (id: string) => {
-        await deleteShop(id);
-    };
 
     return (
         <>
@@ -247,21 +187,10 @@ const ManageShopTable: FC = () => {
                 onPageSizeChange={setLimit}
                 meta={data?.meta as TMeta}
             />
-            <EditShopDialog
-                shop={shopToEdit as Shop}
-                open={viewDialogOpen}
-                onClose={() => setViewDialogOpen(false)}
-            />
             <EditShopStatusDialog
                 shop={shopToStatus as Shop}
                 open={statusDialogOpen}
                 onClose={() => setStatusDialogOpen(false)}
-            />
-            <DeleteDialog
-                id={shopToDelete?.id as string}
-                open={deleteDialogOpen}
-                onClose={() => setDeleteDialogOpen(false)}
-                handleDelete={handleDelete}
             />
         </>
     );
