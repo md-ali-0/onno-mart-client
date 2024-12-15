@@ -19,7 +19,7 @@ export default function PurchasedItems() {
     const [limit, setLimit] = useState(10);
     const { session } = useSession();
     const [reviewDialogOpen, setReviewDialogOpen] = useState(false);
-    const [reviewToEdit, setReviewToEdit] = useState<string | null>(null);
+    const [reviewToEdit, setReviewToEdit] = useState<Product | null>(null);
     const { data, isError, isLoading, isSuccess, error } = useGetAllOrdersQuery(
         [
             {
@@ -37,6 +37,10 @@ export default function PurchasedItems() {
             {
                 name: "userId",
                 value: session?.user,
+            },
+            {
+                name: "status",
+                value: "COMPLETED",
             },
         ]
     );
@@ -60,7 +64,7 @@ export default function PurchasedItems() {
         ) || [];
 
     const handleReviewClick = (product: Product) => {
-        setReviewToEdit(product.id);
+        setReviewToEdit(product);
         setReviewDialogOpen(true);
     };
     const columns: ColumnDef<any>[] = [
@@ -159,7 +163,7 @@ export default function PurchasedItems() {
                 onPageSizeChange={setLimit}
                 meta={data?.meta as TMeta}
             />
-            <ReviewDialog productId={reviewToEdit as string} open={reviewDialogOpen}  onClose={() => setReviewDialogOpen(false)} />
+            <ReviewDialog product={reviewToEdit as unknown as Product} open={reviewDialogOpen}  onClose={() => setReviewDialogOpen(false)} />
         </>
     );
 }

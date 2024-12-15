@@ -2,7 +2,7 @@
 
 import { useSession } from "@/provider/session-provider";
 import { useCreateReviewMutation } from "@/redux/features/review/reviewApi";
-import { ErrorResponse } from "@/types";
+import { ErrorResponse, Product } from "@/types";
 import { SerializedError } from "@reduxjs/toolkit";
 import { Star } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -28,7 +28,7 @@ import {
 import { Textarea } from "../ui/textarea";
 
 interface ReviewDialogProps {
-    productId: string;
+    product: Product;
     open: boolean;
     onClose: () => void;
 }
@@ -38,7 +38,7 @@ interface FormInputProps {
 }
 
 export default function ReviewDialog({
-    productId,
+    product,
     open,
     onClose,
 }: ReviewDialogProps) {
@@ -80,7 +80,8 @@ export default function ReviewDialog({
         const loadingToast = toast.loading("Review is Creating...");
         const reviewData = {
             userId: session?.user,
-            productId,
+            productId: product.id,
+            shopId: product.shopId,
             rating: selectedRating,
             comment: data.comment,
         };

@@ -236,6 +236,7 @@ const EditProductDialog = ({
                                                                 ? "Loading.."
                                                                 : "Select Category"
                                                         }
+                                                        
                                                     />
                                                 </SelectTrigger>
                                                 <SelectContent>
@@ -243,9 +244,9 @@ const EditProductDialog = ({
                                                         (item) => (
                                                             <SelectItem
                                                                 value={String(
-                                                                    item?.id
+                                                                    item?.slug
                                                                 )}
-                                                                key={item?.id}
+                                                                key={item?.slug}
                                                             >
                                                                 {item.name}
                                                             </SelectItem>
@@ -292,9 +293,9 @@ const EditProductDialog = ({
                                                         (item) => (
                                                             <SelectItem
                                                                 value={String(
-                                                                    item?.id
+                                                                    item?.slug
                                                                 )}
-                                                                key={item?.id}
+                                                                key={item?.slug}
                                                             >
                                                                 <Image
                                                                     src={

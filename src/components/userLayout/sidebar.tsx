@@ -9,6 +9,7 @@ import {
     LogOut,
     Settings,
     ShoppingBag,
+    ShoppingCart,
     Star,
 } from "lucide-react";
 import Link from "next/link";
@@ -17,6 +18,11 @@ import { toast } from "sonner";
 
 const sidebarLinks = [
     { icon: LayoutDashboard, label: "Dashboard", href: "/user/dashboard" },
+    {
+        icon: ShoppingCart,
+        label: "Recent Products",
+        href: "/user/recent-view-products",
+    },
     {
         icon: ShoppingBag,
         label: "Purchased Items",

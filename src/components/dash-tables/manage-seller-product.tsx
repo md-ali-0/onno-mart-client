@@ -8,9 +8,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {
-    useDeleteBrandMutation
-} from "@/redux/features/brand/brandApi";
+import { useDeleteBrandMutation } from "@/redux/features/brand/brandApi";
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import { useGetMeQuery } from "@/redux/features/user/userApi";
 import { ErrorResponse, Product, TMeta } from "@/types";
@@ -20,6 +18,7 @@ import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import { LuMoreVertical } from "react-icons/lu";
 import { toast } from "sonner";
+import DuplicateProductDialog from "../dash-edit-dialogs/duplicate-product-dialog";
 import EditProductDialog from "../dash-edit-dialogs/edit-product-dialog";
 import { DataTable } from "../data-table/data-table";
 import DeleteDialog from "../shared/delete-dialog";
@@ -28,7 +27,10 @@ const ManageSellerProductTable: FC = () => {
     const [search, setSearch] = useState<string | undefined>(undefined);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
-    const { data: user } = useGetMeQuery(undefined)
+    const { data: user } = useGetMeQuery(undefined);
+
+    const [duplicateDialogOpen, setDuokucateDialogOpen] = useState(false);
+    const [productToDuplicate, setProductToDuplicate] = useState<string | null>(null);
     const [editDialogOpen, setEditDialogOpen] = useState(false);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [productToEdit, setProductToEdit] = useState<Product | null>(null);
@@ -36,8 +38,8 @@ const ManageSellerProductTable: FC = () => {
         null
     );
 
-    const { data, isError, isLoading, isSuccess, error } = useGetAllProductsQuery(
-        [
+    const { data, isError, isLoading, isSuccess, error } =
+        useGetAllProductsQuery([
             {
                 name: "limit",
                 value: limit,
@@ -54,14 +56,18 @@ const ManageSellerProductTable: FC = () => {
                 name: "shopId",
                 value: user?.shop?.id,
             },
-        ]
-    );
+        ]);
 
     useEffect(() => {
         if (isError) {
             toast.error("Something Went Wrong");
         }
     }, [isError, isSuccess, error]);
+
+    const handleDuplicateProduct = (product: Product) => {
+        setProductToDuplicate(product.id);
+        setDuokucateDialogOpen(true);
+    };
 
     const handleEditClick = (product: Product) => {
         setProductToEdit(product);
@@ -161,6 +167,11 @@ const ManageSellerProductTable: FC = () => {
                                 Edit
                             </DropdownMenuItem>
                             <DropdownMenuItem
+                                onClick={() => handleDuplicateProduct(row.original)}
+                            >
+                                Duplicate
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
                                 onClick={() => handleDeleteClick(row.original)}
                             >
                                 Delete
@@ -222,6 +233,11 @@ const ManageSellerProductTable: FC = () => {
                 open={deleteDialogOpen}
                 onClose={() => setDeleteDialogOpen(false)}
                 handleDelete={handleDelete}
+            />
+            <DuplicateProductDialog
+                id={productToDuplicate as string}
+                open={duplicateDialogOpen}
+                onClose={() => setDuokucateDialogOpen(false)}
             />
         </>
     );

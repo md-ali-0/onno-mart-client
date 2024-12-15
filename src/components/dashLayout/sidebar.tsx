@@ -1,5 +1,7 @@
 // import logo from "@/assets/images/logo.png";
+import logo from "@/assets/images/logo-dark.png";
 import { useSession } from "@/provider/session-provider";
+import Image from "next/image";
 import Link from "next/link";
 import { Dispatch, FC, SetStateAction } from "react";
 import SideBarMenuItem from "./sidebar-menu-item";
@@ -29,14 +31,13 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
             >
                 <div className="flex items-center justify-center border-b border-gray-800 py-3 h-16">
                     <Link href="/" className="text-white">
-                        {/* <Image
-                            src={logo}
+                        <Image
+                            src={logo.src}
                             alt=""
                             width={112}
                             height={50}
-                            className="invert w-28"
-                        /> */}
-                        OnnoMart
+                            className="w-28"
+                        />
                     </Link>
                 </div>
                 <div className="overflow-y-auto custom-scroll">
@@ -125,7 +126,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                                 menu={{
                                     name: "Reviews",
                                     icon: "StarHalf",
-                                    path: "/dashboard/ratings",
+                                    path: "/dashboard/reviews",
                                 }}
                                 setSidebarOpen={setSidebarOpen}
                             />
@@ -143,7 +144,7 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                                 <SideBarMenuItem
                                     menu={{
                                         name: "Order History",
-                                        icon: "BadgeDollarSign",
+                                        icon: "ListOrdered",
                                         path: "/dashboard/order-history",
                                     }}
                                     setSidebarOpen={setSidebarOpen}

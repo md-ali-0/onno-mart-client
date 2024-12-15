@@ -21,6 +21,7 @@ export type User = {
     country?: string;
     role: Role;
     shop: Shop;
+    followedShops: Shop[]
     status: UserStatus;
     createdAt: Date;
     updatedAt: Date;

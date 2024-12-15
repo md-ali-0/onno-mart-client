@@ -1,4 +1,4 @@
-import { TResponseRedux, User } from "@/types";
+import { Shop, TResponseRedux, User } from "@/types";
 import { baseApi } from "../../api/baseApi";
 
 const userApi = baseApi.injectEndpoints({
@@ -21,6 +21,21 @@ const userApi = baseApi.injectEndpoints({
                 };
             },
             transformResponse: (response: TResponseRedux<User[]>) => {
+                return {
+                    data: response.data,
+                    meta: response.meta,
+                };
+            },
+
+            providesTags: ["users"],
+        }),
+        getAllFavoriteShops: builder.query({
+            query: () => {
+                return {
+                    url: `/user/favorite-shop`,
+                };
+            },
+            transformResponse: (response: TResponseRedux<Shop[]>) => {
                 return {
                     data: response.data,
                     meta: response.meta,
@@ -61,13 +76,34 @@ const userApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["userData"],
         }),
+        followShop: builder.mutation({
+            query: (shopId) => {
+                return {
+                    url: `/user/followShop/${shopId}`,
+                    method: "POST",
+                };
+            },
+            invalidatesTags: ["userData"],
+        }),
+        unfollowShop: builder.mutation({
+            query: (shopId) => {
+                return {
+                    url: `/user/unfollowShop/${shopId}`,
+                    method: "POST",
+                };
+            },
+            invalidatesTags: ["userData"],
+        }),
     }),
 });
 
 export const {
     useGetMeQuery,
     useGetAllUsersQuery,
+    useGetAllFavoriteShopsQuery,
     useDeleteUserMutation,
     useUpdateProfileMutation,
     useUpdateUserMutation,
+    useFollowShopMutation,
+    useUnfollowShopMutation
 } = userApi;

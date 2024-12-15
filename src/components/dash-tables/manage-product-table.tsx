@@ -29,6 +29,7 @@ const ManageProductTable: FC = () => {
     const [limit, setLimit] = useState(10);
 
     const [editDialogOpen, setEditDialogOpen] = useState(false);
+
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [productToEdit, setProductToEdit] = useState<Product | null>(null);
     const [productToDelete, setProductToDelete] = useState<Product | null>(
@@ -57,6 +58,7 @@ const ManageProductTable: FC = () => {
             toast.error("Something Went Wrong");
         }
     }, [isError, isSuccess, error]);
+
 
     const handleEditClick = (product: Product) => {
         setProductToEdit(product);

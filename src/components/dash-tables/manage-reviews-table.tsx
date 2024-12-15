@@ -1,38 +1,48 @@
 "use client";
 
-import { DataTable } from "@/components/data-table/data-table";
-import { useSession } from "@/provider/session-provider";
 import { useGetAllReviewsQuery } from "@/redux/features/review/reviewApi";
+import { useGetMeQuery } from "@/redux/features/user/userApi";
 import { Review, TMeta } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { toast } from "sonner";
+import { DataTable } from "../data-table/data-table";
 
-export default function MyReviews() {
+const ManageReviewsTable: FC = () => {
     const [search, setSearch] = useState<string | undefined>(undefined);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
-    const {session} = useSession()
-    const { data, isError, isLoading, isSuccess, error } = useGetAllReviewsQuery(
-        [
-            {
-                name: "limit",
-                value: limit,
-            },
-            {
-                name: "page",
-                value: page,
-            },
-            {
-                name: "searchTerm",
-                value: search,
-            },
-            {
-                name: "userId",
-                value: session?.user,
-            },
-        ]
-    );
+    const { data: user } = useGetMeQuery(undefined);
+    const [query, setQuery] = useState([
+        {
+            name: "limit",
+            value: limit,
+        },
+        {
+            name: "page",
+            value: page,
+        },
+        {
+            name: "searchTerm",
+            value: search,
+        },
+    ]);
+
+    useEffect(() => {
+        // Update query only when `user?.shop` changes
+        if (user?.shop) {
+            setQuery((prevQuery) => [
+                ...prevQuery.filter((param) => param.name !== "shopId"), // Remove previous `shopId` if present
+                {
+                    name: "shopId",
+                    value: user?.shop?.id,
+                },
+            ]);
+        }
+    }, [user?.shop]); // This will trigger the effect only when `user?.shop` changes
+
+    const { data, isError, isLoading, isSuccess, error } =
+        useGetAllReviewsQuery(query);
 
     useEffect(() => {
         if (isError) {
@@ -44,9 +54,13 @@ export default function MyReviews() {
         {
             accessorKey: "product.name",
             header: "Product Name",
-            // cell: ({ row }) => {
-            //     return <span>{row.original.product.name}</span>;
-            // },
+        },
+        {
+            accessorKey: "user.name",
+            header: "User Name",
+            cell: ({ row }) => {
+                return <span className="whitespace-nowrap">{row.original.user.name}</span>;
+            },
         },
         {
             accessorKey: "rating",
@@ -83,16 +97,16 @@ export default function MyReviews() {
     ];
 
     return (
-        <>
-            <DataTable
-                columns={columns}
-                data={data?.data || []}
-                isLoading={isLoading}
-                onSearchValueChange={setSearch}
-                onPageChange={setPage}
-                onPageSizeChange={setLimit}
-                meta={data?.meta as TMeta}
-            />
-        </>
+        <DataTable
+            columns={columns}
+            data={data?.data || []}
+            isLoading={isLoading}
+            onSearchValueChange={setSearch}
+            onPageChange={setPage}
+            onPageSizeChange={setLimit}
+            meta={data?.meta as TMeta}
+        />
     );
-}
+};
+
+export default ManageReviewsTable;
