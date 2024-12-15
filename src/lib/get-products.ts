@@ -1,20 +1,32 @@
 import config from "@/config";
-import { Product, Shop } from "@/types";
+import { Product, Shop, TMeta } from "@/types";
 
 // Function to fetch shops from the API
-export async function getShops(): Promise<Shop[]> {
-    const response = await fetch(`${config.host}/api/shop`);
+export async function getShops(
+    page: number
+): Promise<{ data: Shop[]; meta: TMeta }> {
+    const limit: number = 8;
+    const query = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+    });
+
+    const response = await fetch(
+        `${config.host}/api/shop?${query.toString()}`,
+        {
+            cache: "no-store",
+        }
+    );
     if (!response.ok) {
         throw new Error("Failed to fetch shops.");
     }
     const result = await response.json();
-    return result.data
+    return result;
 }
 
-// Function to fetch products with filters and pagination
 export async function getProducts(
     page: number,
-    limit: number = 10, // Set the default value here
+    limit: number = 6,
     categories: string[] = [],
     brands: string[] = [],
     shopId?: number
@@ -32,7 +44,10 @@ export async function getProducts(
     });
 
     const response = await fetch(
-        `${config.host}/api/product?${query.toString()}`
+        `${config.host}/api/product?${query.toString()}`,
+        {
+            cache: "no-store",
+        }
     );
     if (!response.ok) {
         throw new Error("Failed to fetch products.");
@@ -46,7 +61,9 @@ export async function getProducts(
 }
 
 // Function to fetch a single product by ID
-export async function getProductBySlug(slug: string): Promise<Product | undefined> {
+export async function getProductBySlug(
+    slug: string
+): Promise<Product | undefined> {
     const response = await fetch(`${config.host}/api/product/${slug}`);
     if (!response.ok) {
         throw new Error("Failed to fetch product.");
@@ -54,4 +71,3 @@ export async function getProductBySlug(slug: string): Promise<Product | undefine
     const result = await response.json();
     return result?.data;
 }
-

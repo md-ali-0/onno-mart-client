@@ -101,9 +101,9 @@ const SignInForm: React.FC = () => {
                     </Label>
                 </div>
                     <div className="text-sm">
-                        <a href="#" className="text-primary hover:underline font-semibold">
+                        <Link href="/auth/forgot-password" className="text-primary hover:underline font-semibold">
                             Forgot your password?
-                        </a>
+                        </Link>
                     </div>
                 </div>
 

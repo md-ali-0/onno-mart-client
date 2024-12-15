@@ -2,7 +2,9 @@ import config from "@/config";
 import { Brand } from "@/types";
 
 export async function getBrands(): Promise<Brand[]> {
-    const response = await fetch(`${config.host}/api/brand?limit=999`);
+    const response = await fetch(`${config.host}/api/brand?limit=999`, {
+        cache: "no-store",
+    });
     if (!response.ok) {
         throw new Error("Failed to fetch brands.");
     }

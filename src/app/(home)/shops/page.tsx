@@ -1,32 +1,7 @@
-import ProductCard from "@/components/product/product-card";
-import ProductSkeletonCard from "@/components/product/product-skeleton-card";
+import ShopCard from "@/components/sellers/shop-card";
 import Breadcumb from "@/components/shared/breadcumb";
-import ShopCover from "@/components/shop/shop-cover";
-import { getProductsByShop } from "@/lib/get-products-by-shop";
-import { Product } from "@/types";
+import { getShops } from "@/lib/get-products";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { Suspense } from "react";
-
-function ProductGrid({ products }: { products: Product[] }) {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-            ))}
-        </div>
-    );
-}
-
-function SkeletonGrid() {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {Array.from({ length: 6 }).map((_, index) => (
-                <ProductSkeletonCard key={index} />
-            ))}
-        </div>
-    );
-}
 
 function Pagination({
     totalPages,
@@ -48,14 +23,8 @@ function Pagination({
                                 href={
                                     currentPage > 1
                                         ? (() => {
-                                              const newParams =
-                                                  new URLSearchParams(
-                                                      searchParams
-                                                  );
-                                              newParams.set(
-                                                  "page",
-                                                  (currentPage - 1).toString()
-                                              );
+                                              const newParams = new URLSearchParams(searchParams);
+                                              newParams.set("page", (currentPage - 1).toString());
                                               return `/shops?${newParams.toString()}`;
                                           })()
                                         : "#"
@@ -84,21 +53,14 @@ function Pagination({
                         </li>
 
                         {/* Page Numbers */}
-                        {Array.from(
-                            { length: totalPages },
-                            (_, i) => i + 1
-                        ).map((pageNum) => {
+                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
                             const newParams = new URLSearchParams(searchParams);
                             newParams.set("page", pageNum.toString());
                             return (
                                 <li key={pageNum}>
                                     <Link
                                         href={`/shops?${newParams.toString()}`}
-                                        aria-current={
-                                            pageNum === currentPage
-                                                ? "page"
-                                                : undefined
-                                        }
+                                        aria-current={pageNum === currentPage ? "page" : undefined}
                                         className={`size-[40px] inline-flex justify-center items-center ${
                                             pageNum === currentPage
                                                 ? "text-white bg-orange-500 border border-orange-500"
@@ -117,14 +79,8 @@ function Pagination({
                                 href={
                                     currentPage < totalPages
                                         ? (() => {
-                                              const newParams =
-                                                  new URLSearchParams(
-                                                      searchParams
-                                                  );
-                                              newParams.set(
-                                                  "page",
-                                                  (currentPage + 1).toString()
-                                              );
+                                              const newParams = new URLSearchParams(searchParams);
+                                              newParams.set("page", (currentPage + 1).toString());
                                               return `/shops?${newParams.toString()}`;
                                           })()
                                         : "#"
@@ -158,17 +114,14 @@ function Pagination({
     );
 }
 
-export default async function Page({
+
+export default async function SellerPage({
     searchParams,
 }: {
-    searchParams: { [key: string]: string | undefined };
+    searchParams: { [key: string]: string | string[] | undefined };
 }) {
     const page = Number(searchParams.page) || 1;
-    const shopId = searchParams.shopId;
-    if (!shopId) {
-        return notFound;
-    }
-    const products = await getProductsByShop(page, shopId);
+    const shops = await getShops(page);
 
     const currentSearchParams = new URLSearchParams();
     Object.entries(searchParams).forEach(([key, value]) => {
@@ -176,30 +129,24 @@ export default async function Page({
             currentSearchParams.append(key, value);
         }
     });
+
     return (
         <>
             <Breadcumb />
-            <div className="container px-4 lg:px-0">
-                <ShopCover id={shopId} />
-                <Suspense fallback={<SkeletonGrid />}>
-                    {products?.data?.length > 0 ? (
-                        <ProductGrid products={products?.data} />
-                    ) : (
-                        <div className="flex justify-center my-10">
-                            <h3 className="text-xl font-medium">
-                                No Product Available
-                            </h3>
-                        </div>
-                    )}
-                </Suspense>
-            </div>
-            <div className="py-8">
+            <section className="relative py-16">
+                <div className="container relative">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        {shops?.data?.map((shop) => (
+                            <ShopCard key={shop.id} shop={shop} />
+                        ))}
+                    </div>
+                </div>
                 <Pagination
-                    totalPages={products?.meta.totalPage}
+                    totalPages={shops?.meta.totalPage}
                     currentPage={page}
                     searchParams={currentSearchParams}
                 />
-            </div>
+            </section>
         </>
     );
 }

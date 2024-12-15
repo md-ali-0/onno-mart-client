@@ -3,6 +3,14 @@ import { baseApi } from "../../api/baseApi";
 
 const shopApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
+        getSingleShop: builder.query({
+            query: (id) => {
+                return {
+                    url: `/shop/${id.id}`,
+                };
+            },
+        }),
+
         getAllShops: builder.query({
             query: () => {
                 return {
@@ -42,6 +50,7 @@ const shopApi = baseApi.injectEndpoints({
 
 export const {
     useGetAllShopsQuery,
+    useGetSingleShopQuery,
     useUpdateShopMutation,
     useDeleteShopMutation,
 } = shopApi;

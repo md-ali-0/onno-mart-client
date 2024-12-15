@@ -1,9 +1,10 @@
 "use client";
 
+import { useGetAllBrandsQuery } from "@/redux/features/brand/brandApi";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -11,84 +12,13 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { NavigationOptions } from "swiper/types";
 
-// Define the Brand type
-interface Brand {
-    id: number;
-    name: string;
-    slug: string;
-    image: string;
-}
-
 const PopularBrands: FC = () => {
-    const [loading, setLoading] = useState<boolean>(true);
-    const [brands, setBrands] = useState<Brand[]>([]);
+
+    const { data, isLoading,} = useGetAllBrandsQuery(undefined);
 
     // Refs for custom navigation buttons
     const prevRef = useRef<HTMLButtonElement | null>(null);
     const nextRef = useRef<HTMLButtonElement | null>(null);
-
-    // Dummy Brand data
-    useEffect(() => {
-        setLoading(true);
-        const dummyBrands: Brand[] = [
-            {
-                id: 1,
-                name: "Electronics",
-                slug: "electronics",
-                image: "https://demo.shopperz.xyz/storage/33/conversions/burberry-cover.png",
-            },
-            {
-                id: 2,
-                name: "Fashion",
-                slug: "fashion",
-                image: "https://demo.shopperz.xyz/storage/34/conversions/camper-cover.png",
-            },
-            {
-                id: 3,
-                name: "Books",
-                slug: "books",
-                image: "https://demo.shopperz.xyz/storage/35/conversions/chanel-cover.png",
-            },
-            {
-                id: 4,
-                name: "Sports",
-                slug: "sports",
-                image: "https://demo.shopperz.xyz/storage/36/conversions/dr._martens-cover.png",
-            },
-            {
-                id: 5,
-                name: "Furniture",
-                slug: "furniture",
-                image: "https://demo.shopperz.xyz/storage/37/conversions/fila-cover.png",
-            },
-            {
-                id: 6,
-                name: "Toys",
-                slug: "toys",
-                image: "https://demo.shopperz.xyz/storage/38/conversions/levi's-cover.png",
-            },
-            {
-                id: 7,
-                name: "Sports",
-                slug: "sports",
-                image: "https://demo.shopperz.xyz/storage/39/conversions/puma-cover.png",
-            },
-            {
-                id: 8,
-                name: "Furniture",
-                slug: "furniture",
-                image: "https://demo.shopperz.xyz/storage/37/conversions/fila-cover.png",
-            },
-            {
-                id: 9,
-                name: "Toys",
-                slug: "toys",
-                image: "https://demo.shopperz.xyz/storage/38/conversions/levi's-cover.png",
-            },
-        ];
-        setBrands(dummyBrands);
-        setLoading(false);
-    }, []);
 
     const breakpoints = {
         0: { slidesPerView: 2, spaceBetween: 16 },
@@ -99,7 +29,7 @@ const PopularBrands: FC = () => {
 
     return (
         <div>
-            {loading ? (
+            {isLoading ? (
                 <div>Loading...</div>
             ) : (
                 <section className="my-10 sm:my-14">
@@ -143,7 +73,7 @@ const PopularBrands: FC = () => {
                             className="navigate-swiper"
                             breakpoints={breakpoints}
                         >
-                            {brands.map((brand) => (
+                            {data?.data?.map((brand) => (
                                 <SwiperSlide
                                     key={brand.id}
                                     className="mobile:!w-24 bg-white rounded-xl border shadow p-3"

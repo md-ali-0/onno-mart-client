@@ -156,10 +156,10 @@ const Navbar: FC = () => {
                                 } lg:hover:after:w-full lg:after:h-[1px] lg:after:block lg:after:-bottom-1 lg:after:transition-all lg:after:duration-300`}
                             >
                                 <Link
-                                    href="/sellers"
+                                    href="/shops"
                                     className="text-white sm:text-[#1f0300] block uppercase text-[15px]"
                                 >
-                                    Sellers
+                                    Shops
                                 </Link>
                             </li>
                             <li

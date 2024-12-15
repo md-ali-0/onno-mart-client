@@ -67,7 +67,7 @@ export default function FavoriteShops() {
             accessorKey: "products",
             header: "Total Products",
             cell: ({ row }) => {
-                return <span>${row.original?.products.length}</span>;
+                return <span>{row.original?.products.length}</span>;
             },
         },
         {

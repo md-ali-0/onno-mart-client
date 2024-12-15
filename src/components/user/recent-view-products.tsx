@@ -17,7 +17,7 @@ export default function RecentViewProducts() {
     }, []);
 
     return (
-        <>
+        <div className="overflow-x-scroll md:overflow-auto">
             {recentProducts.length > 0 ? (
                 <table className="w-full border-collapse border border-gray-300">
                     <thead>
@@ -85,6 +85,6 @@ export default function RecentViewProducts() {
             ) : (
                 <p className="text-gray-500">No recently viewed products.</p>
             )}
-        </>
+        </div>
     );
 }

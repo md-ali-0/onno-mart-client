@@ -68,6 +68,7 @@ const brandsApi = baseApi.injectEndpoints({
 
 export const {
     useGetAllBrandsQuery,
+    useLazyGetAllBrandsQuery,
     useGetSingleBrandQuery,
     useCreateBrandMutation,
     useUpdateBrandMutation,
