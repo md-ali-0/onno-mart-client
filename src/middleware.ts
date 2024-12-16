@@ -5,6 +5,7 @@ import { decrypt, DecryptedSession } from "./lib/session";
 const roleBasedAccess: { [key: string]: string[] } = {
     "/dashboard": ["ADMIN", "VENDOR"],
     "/user": ["USER", "ADMIN"],
+    "/checkout": ["USER", "ADMIN"],
 };
 
 export async function middleware(req: NextRequest) {
@@ -48,5 +49,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*", "/user/:path*", "/auth/:path*"],
+    matcher: ["/dashboard/:path*", "/user/:path*", "/checkout", "/auth/:path*"],
 };

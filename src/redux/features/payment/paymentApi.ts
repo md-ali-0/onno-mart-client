@@ -5,9 +5,9 @@ const paymentApi = baseApi.injectEndpoints({
         createPaymentIntent: builder.mutation({
             query: (data) => {
                 return {
-                    url: "/payment/create-payment",
+                    url: `/payment/create-payment/${data?.paymentMethod}`,
                     method: "POST",
-                    body: data,
+                    body: data?.orderData,
                 };
             },
             invalidatesTags: ["orders"],

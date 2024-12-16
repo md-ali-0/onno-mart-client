@@ -352,7 +352,7 @@ const EditMyProfile: FC = () => {
             </div>
 
             {/* Delete Account Section */}
-            <div className="p-6 rounded-md border dark:shadow-gray-800 bg-white dark:bg-slate-900 mt-6">
+            {/* <div className="p-6 rounded-md border dark:shadow-gray-800 bg-white dark:bg-slate-900 mt-6">
                 <h5 className="text-lg font-semibold mb-5 text-red-600">
                     Delete Account :
                 </h5>
@@ -367,7 +367,7 @@ const EditMyProfile: FC = () => {
                 >
                     Delete
                 </Button>
-            </div>
+            </div> */}
             <DeleteDialog
                 id={session?.user as unknown as string}
                 open={deleteDialogOpen}

@@ -23,6 +23,7 @@ export default function CheckoutPage() {
     const cart = useAppSelector((state) => state.cart.cart);
     const [discount, setDiscount] = useState(0);
     const [createPayment] = useCreatePaymentIntentMutation();
+    // const [paymentMethod, setPaymentMethod] = useState("")
 
     const {
         register,
@@ -67,7 +68,7 @@ export default function CheckoutPage() {
             totalAmount: totalPriceAfterDiscount.toFixed(),
         };
         const toastId = toast.success("Redrecting to Payment....");
-        const response = await createPayment(orderData).unwrap();
+        const response = await createPayment({orderData, paymentMethod: data.paymentMethod}).unwrap();
         toast.dismiss(toastId);
 
         if (response?.data) {
@@ -212,8 +213,28 @@ export default function CheckoutPage() {
                                                             )}
                                                             type="radio"
                                                             className="form-radio border-gray-100 dark:border-gray-800 text-orange-500 focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50 me-2"
-                                                            value="SSL Commerz"
+                                                            value="AmarPay"
                                                             defaultChecked
+                                                        />
+                                                        <span className="text-slate-400">
+                                                            AmarPay
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                                <div>
+                                                    <label className="inline-flex items-center">
+                                                        <input
+                                                            {...register(
+                                                                "paymentMethod",
+                                                                {
+                                                                    required:
+                                                                        true,
+                                                                }
+                                                            )}
+                                                            type="radio"
+                                                            className="form-radio border-gray-100 dark:border-gray-800 text-orange-500 focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50 me-2"
+                                                            value="SSLCommerz"
+                                                            
                                                         />
                                                         <span className="text-slate-400">
                                                             SSL Commerz

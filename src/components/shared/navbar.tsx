@@ -199,7 +199,7 @@ const Navbar: FC = () => {
                     <div className="flex items-center max-sm:ml-auto">
                         <ul className="flex gap-4">
                             <li className="flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary hover:text-white">
-                                <Link href="/cart">
+                                <Link href="/cart" className="p-3">
                                     <span className="flex items-center justify-center bg-primary size-5 text-[11px] sm:text-xs absolute -top-[8px] -right-[8px] rounded-full text-white p-0.5 sm:p-2.5">
                                         {cartProduct.length}
                                     </span>
@@ -215,7 +215,7 @@ const Navbar: FC = () => {
                             {session?.isAuth ? (
                                 <li className="group flex items-center justify-center bg-[#f8f7f7] size-9 sm:size-10 rounded-full relative transition-all cursor-pointer transform duration-300 hover:bg-primary">
                                     <button
-                                        className="group-hover:text-white p-[10px] sm:p-[12px] rounded-full"
+                                        className="group-hover:text-white p-[10px] sm:p-3 rounded-full"
                                         onClick={() =>
                                             setIsDropDownOpen(!isDropdownOpen)
                                         }
