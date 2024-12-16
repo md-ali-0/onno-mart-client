@@ -81,3 +81,14 @@ export async function getProductBySlug(
     const result = await response.json();
     return result?.data;
 }
+
+export async function getSaleProducts(): Promise<Product[] | []> {
+    const response = await fetch(`${config.host}/api/product?sortBy=discount&limit=8`, {
+        cache: "no-store",
+    });
+    if (!response.ok) {
+        throw new Error("Failed to fetch product.");
+    }
+    const result = await response.json();
+    return result?.data;
+}

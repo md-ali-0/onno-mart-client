@@ -1,4 +1,5 @@
 import ProductDetailsFooter from "@/components/product/product-details-footer";
+import RelatedProducts from "@/components/product/related-product";
 import StarRating from "@/components/product/star-rating";
 import { getProductBySlug } from "@/lib/get-products";
 import Image from "next/image";
@@ -145,6 +146,7 @@ export default async function ProductPage({
                     </div>
                 </div>
                 <ProductDetailsFooter product={product} />
+                <RelatedProducts categoryId={product.categoryId} />
             </div>
         </section>
     );
