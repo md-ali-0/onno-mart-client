@@ -73,51 +73,6 @@ The **OnnoMart - E-Commerce Application** is a complete online shopping platform
 -   Node.js and npm installed
 -   PostgreSQL database running
 
-### Backend Setup:
-
-1. Clone the repository:
-    ```bash
-    git clone https://github.com/md-ali-0/onno-mart-client.git
-    ```
-2. Navigate to the backend directory:
-    ```bash
-    cd backend
-    ```
-3. Install dependencies:
-    ```bash
-    npm install
-    ```
-4. Create a `.env` file in the root of the backend directory and add the following:
-   `env
-   NODE_ENV="development"
-   PORT=3000
-   DATABASE_URL="postgresql://DB_USER:DB_PASS@localhost:5432/DB_NAME?schema=public"
-   JWT_SECRET="YOUR SECRET"
-   EXPIRES_IN="30d"
-   REFRESH_TOKEN_SECRET="YOUR SECRET"
-   REFRESH_TOKEN_EXPIRES_IN="30d"
-   RESET_PASS_TOKEN="YOUR TOKEN SECRET"
-   RESET_PASS_TOKEN_EXPIRES_IN="5m"
-   RESET_PASS_LINK="FRONT-END RESET PASSWORD FORM LINK"
-   EMAIL = "YOUR EMAIL"
-   APP_PASS = "YOUR APP PASSWORD"
-   STORE_ID = "SSL STORE ID"
-   STORE_PASS = "SSL STORE PASSWORD"
-   SUCCESS_URL = "http://localhost:3030/success"
-   CANCEL_URL = "http://localhost:3030/cancel"
-   FAIL_URL = "http://localhost:3030/fail"
-   SSL_PAYMENT_API = "PAYMENT API"
-   SSL_VALIDATIOIN_API = "PAYMENT VALIDATION API"
-    `
-5. Run database migrations:
-    ```bash
-    npx prisma migrate dev
-    ```
-6. Start the backend server:
-    ```bash
-    npm start
-    ```
-
 ### Frontend Setup:
 
 1. Navigate to the frontend directory:
@@ -150,6 +105,18 @@ The **OnnoMart - E-Commerce Application** is a complete online shopping platform
 -   Responsive design for both mobile and desktop platforms.
 
 ---
+
+### Admin:
+- Email: admin@gmail.com
+- Password: 123456
+
+### Vendor:
+- Email: vendor1@gmail.com
+- Password: 123456
+
+### Customer:
+- Email: ali@gmail.com
+- Password: 123456
 
 ## Contact
 For queries or support, reach out via [Mohammad Ali](mailto:md.ali.office@gmail.com). or the project repository.
