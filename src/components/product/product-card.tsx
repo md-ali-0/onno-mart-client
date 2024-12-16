@@ -1,9 +1,13 @@
 "use client";
 
+import { addProduct } from "@/redux/features/compare/compareSlice";
+import { useAppDispatch } from "@/redux/hooks";
 import { Product } from "@/types";
+import { ArrowLeftRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { AddToCartButton } from "../shared/add-to-cart";
+import { Button } from "../ui/button";
 import StarRating from "./star-rating";
 
 const MAX_RECENT_PRODUCTS = 10;
@@ -24,6 +28,8 @@ const addToRecentProducts = (product: Product) => {
 };
 
 const ProductCard = ({ product }: { product: Product }) => {
+    const dispatch = useAppDispatch();
+
     const handleProductClick = () => {
         addToRecentProducts(product);
     };
@@ -77,7 +83,16 @@ const ProductCard = ({ product }: { product: Product }) => {
                         <StarRating rating={product?.rating} />
                     </div>
                 </div>
-                <AddToCartButton product={product} quantity={1} clx="w-full" />
+                <div className="flex gap-3.5">
+                    <AddToCartButton
+                        product={product}
+                        quantity={1}
+                        clx="w-full bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white mt-2"
+                    />
+                    <Button onClick={()=>dispatch(addProduct(product))} size={'icon'} className="bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white mt-2 min-w-10">
+                        <ArrowLeftRight />
+                    </Button>
+                </div>
             </div>
         </div>
     );

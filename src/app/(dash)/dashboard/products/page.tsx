@@ -1,13 +1,8 @@
 import ManageProductTable from "@/components/dash-tables/manage-product-table";
 import BreadcrumbDash from "@/components/shared/breadcumb-dash";
 
-import { Button } from "@/components/ui/button";
-import { getSession } from "@/lib/session";
-import Link from "next/link";
-
 export default async function ProductsPage() {
-    const session = await getSession();
-    
+
     return (
         <div>
             <BreadcrumbDash />
@@ -16,13 +11,6 @@ export default async function ProductsPage() {
                     <h3 className="font-medium text-black dark:text-white">
                         Manage Products
                     </h3>
-                    {session.role === "VENDOR" && (
-                        <Button asChild variant={"default"} size={"sm"}>
-                            <Link href={"/dashboard/create-product"}>
-                                Create Product
-                            </Link>
-                        </Button>
-                    )}
                 </div>
                 <div className="p-5">
                     <ManageProductTable />

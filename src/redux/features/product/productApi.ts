@@ -16,7 +16,7 @@ const productApi = baseApi.injectEndpoints({
                 const params = new URLSearchParams();
                 if (args) {
                     args.forEach((item: TQueryParam) => {
-                        if (item.value !== undefined) {
+                        if (item.value !== undefined && item.value !== "all") {
                             params.append(item.name, item.value as string);
                         }
                     });

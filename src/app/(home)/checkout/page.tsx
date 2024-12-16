@@ -2,8 +2,9 @@
 
 import { Input } from "@/components/ui/input";
 import { useSession } from "@/provider/session-provider";
+import { clearCart } from "@/redux/features/cart/cartSlice";
 import { useCreatePaymentIntentMutation } from "@/redux/features/payment/paymentApi";
-import { useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -24,6 +25,7 @@ export default function CheckoutPage() {
     const [discount, setDiscount] = useState(0);
     const [createPayment] = useCreatePaymentIntentMutation();
     // const [paymentMethod, setPaymentMethod] = useState("")
+    const dispatch = useAppDispatch();
 
     const {
         register,
@@ -72,6 +74,7 @@ export default function CheckoutPage() {
         toast.dismiss(toastId);
 
         if (response?.data) {
+            dispatch(clearCart());
             window.location.href = response.data;
         }
     };

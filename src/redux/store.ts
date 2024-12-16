@@ -1,5 +1,6 @@
 import { baseApi } from "./api/baseApi";
 import cartReducer from "./features/cart/cartSlice";
+import compareReducer from "./features/compare/compareSlice";
 
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
@@ -31,11 +32,19 @@ const cartPersistConfig = {
     whitelist: ["cart"],
 };
 
+const comparePersistConfig = {
+    key: "compare",
+    storage,
+    whitelist: ["compare"],
+};
+
 const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
+const persistedCompareReducer = persistReducer(comparePersistConfig, compareReducer);
 
 export const store = configureStore({
     reducer: {
         cart: persistedCartReducer,
+        compare: persistedCompareReducer,
         [baseApi.reducerPath]: baseApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
