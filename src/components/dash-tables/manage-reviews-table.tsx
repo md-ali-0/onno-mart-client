@@ -6,13 +6,18 @@ import { Review, TMeta } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { FC, useEffect, useState } from "react";
 import { toast } from "sonner";
+import ReplyDialog from "../dash-edit-dialogs/reply-review-dialog";
 import { DataTable } from "../data-table/data-table";
+import { Button } from "../ui/button";
 
 const ManageReviewsTable: FC = () => {
     const [search, setSearch] = useState<string | undefined>(undefined);
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const { data: user } = useGetMeQuery(undefined);
+    const [replyDialogOpen, setReplyDialogOpen] = useState(false);
+    const [reviewToReply, setReviewToReply] = useState<Review | null>(null);
+
     const [query, setQuery] = useState([
         {
             name: "limit",
@@ -49,6 +54,11 @@ const ManageReviewsTable: FC = () => {
         }
     }, [isError, isSuccess, error]);
 
+    const handleReviewReply = (review: Review) => {
+        setReviewToReply(review);
+        setReplyDialogOpen(true);
+    };
+
     const columns: ColumnDef<Review>[] = [
         {
             accessorKey: "product.name",
@@ -58,7 +68,11 @@ const ManageReviewsTable: FC = () => {
             accessorKey: "user.name",
             header: "User Name",
             cell: ({ row }) => {
-                return <span className="whitespace-nowrap">{row.original.user.name}</span>;
+                return (
+                    <span className="whitespace-nowrap">
+                        {row.original.user.name}
+                    </span>
+                );
             },
         },
         {
@@ -93,18 +107,40 @@ const ManageReviewsTable: FC = () => {
                 );
             },
         },
+        {
+            accessorKey: "action",
+            header: "Action",
+            cell: ({ row }) => {
+                return (
+                    <Button
+                        variant="outline"
+                        onClick={() => handleReviewReply(row.original)}
+                    >
+                        Reply
+                    </Button>
+                );
+            },
+        },
     ];
 
     return (
-        <DataTable
-            columns={columns}
-            data={data?.data || []}
-            isLoading={isLoading}
-            onSearchValueChange={setSearch}
-            onPageChange={setPage}
-            onPageSizeChange={setLimit}
-            meta={data?.meta as TMeta}
-        />
+        <>
+            <DataTable
+                columns={columns}
+                data={data?.data || []}
+                isLoading={isLoading}
+                onSearchValueChange={setSearch}
+                onPageChange={setPage}
+                onPageSizeChange={setLimit}
+                meta={data?.meta as TMeta}
+            />
+
+            <ReplyDialog
+                review={reviewToReply as Review}
+                open={replyDialogOpen}
+                onClose={() => setReplyDialogOpen(false)}
+            />
+        </>
     );
 };
 

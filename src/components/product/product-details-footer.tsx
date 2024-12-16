@@ -13,7 +13,6 @@ export default function ProductDetailsFooter({
     const [activeTab, setActiveTab] = useState<"description" | "review">(
         "description"
     );
-    console.log(product);
     
     return (
         <div className="grid md:grid-cols-12 grid-cols-1 mt-6 gap-6">
@@ -104,7 +103,7 @@ export default function ProductDetailsFooter({
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="p-4 bg-gray-50 dark:bg-slate-800 rounded-md border  mt-6">
+                                            <div className="p-4 bg-gray-50 dark:bg-slate-800 rounded-md border mt-6">
                                                 <StarRating
                                                     rating={review.rating}
                                                 />
@@ -112,6 +111,61 @@ export default function ProductDetailsFooter({
                                                     {review.comment}
                                                 </p>
                                             </div>
+                                            {/* Replies Section */}
+                                            {review.replies?.length > 0 && (
+                                                <div className="mt-4 pl-6 border-l border-gray-200 dark:border-slate-700">
+                                                    <h4 className="text-md font-semibold mb-3">
+                                                        Replies:
+                                                    </h4>
+                                                    {review.replies.map(
+                                                        (reply) => (
+                                                            <div
+                                                                key={reply.id}
+                                                                className="flex items-start gap-3 mb-4"
+                                                            >
+                                                                <Image
+                                                                    src={
+                                                                        reply.user.avatar
+                                                                    }
+                                                                    className="h-8 w-8 rounded-full shadow"
+                                                                    width={40}
+                                                                    height={40}
+                                                                    alt={
+                                                                        reply.user.name
+                                                                    }
+                                                                />
+                                                                <div>
+                                                                    <div className="text-sm font-semibold hover:text-orange-500 duration-500">
+                                                                        {
+                                                                            reply.user
+                                                                                .name
+                                                                        }
+                                                                    </div>
+                                                                    <p className="text-xs text-slate-400 mb-2">
+                                                                        {new Date(
+                                                                            reply.createdAt
+                                                                        ).toLocaleDateString(
+                                                                            "en-US",
+                                                                            {
+                                                                                weekday:
+                                                                                    "short",
+                                                                                year: "numeric",
+                                                                                month: "long",
+                                                                                day: "numeric",
+                                                                            }
+                                                                        )}
+                                                                    </p>
+                                                                    <p className="text-slate-400">
+                                                                        {
+                                                                            reply.comment
+                                                                        }
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        )
+                                                    )}
+                                                </div>
+                                            )}
                                         </div>
                                     ))
                                 ) : (

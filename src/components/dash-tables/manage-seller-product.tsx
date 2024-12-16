@@ -8,8 +8,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { useDeleteBrandMutation } from "@/redux/features/brand/brandApi";
-import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+import { useDeleteProductMutation, useGetAllProductsQuery } from "@/redux/features/product/productApi";
 import { useGetMeQuery } from "@/redux/features/user/userApi";
 import { ErrorResponse, Product, TMeta } from "@/types";
 import { SerializedError } from "@reduxjs/toolkit";
@@ -190,7 +189,7 @@ const ManageSellerProductTable: FC = () => {
             isError: isDeleteError,
             error: deleteError,
         },
-    ] = useDeleteBrandMutation();
+    ] = useDeleteProductMutation();
 
     useEffect(() => {
         if (isDeleteError) {
@@ -204,7 +203,7 @@ const ManageSellerProductTable: FC = () => {
 
             toast.error(errorMessage);
         } else if (isDeleteSuccess) {
-            toast.success("Brand Deleted successfully");
+            toast.success("Product Deleted successfully");
         }
     }, [isDeleteError, isDeleteSuccess, deleteError]);
 

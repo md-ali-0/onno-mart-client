@@ -1,11 +1,12 @@
 "use client";
 
 import { addProduct } from "@/redux/features/compare/compareSlice";
-import { useAppDispatch } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Product } from "@/types";
 import { ArrowLeftRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
 import { AddToCartButton } from "../shared/add-to-cart";
 import { Button } from "../ui/button";
 import StarRating from "./star-rating";
@@ -29,9 +30,20 @@ const addToRecentProducts = (product: Product) => {
 
 const ProductCard = ({ product }: { product: Product }) => {
     const dispatch = useAppDispatch();
-
+    const compare = useAppSelector((state) => state.compare.compare);
     const handleProductClick = () => {
         addToRecentProducts(product);
+    };
+
+    const addToCompare = () => {
+        if (
+            compare.length > 0 &&
+            compare[0].categoryId !== product.categoryId
+        ) {
+            return toast.warning("You can compare Only Same Category Products");
+        } else {
+            dispatch(addProduct(product));
+        }
     };
 
     return (
@@ -89,7 +101,11 @@ const ProductCard = ({ product }: { product: Product }) => {
                         quantity={1}
                         clx="w-full bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white mt-2"
                     />
-                    <Button onClick={()=>dispatch(addProduct(product))} size={'icon'} className="bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white mt-2 min-w-10">
+                    <Button
+                        onClick={addToCompare}
+                        size={"icon"}
+                        className="bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white mt-2 min-w-10"
+                    >
                         <ArrowLeftRight />
                     </Button>
                 </div>

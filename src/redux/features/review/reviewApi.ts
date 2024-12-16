@@ -44,6 +44,16 @@ const reviewApi = baseApi.injectEndpoints({
             },
             invalidatesTags: ["reviews"],
         }),
+        createReply: builder.mutation({
+            query: (data) => {
+                return {
+                    url: `/review/create-reply`,
+                    method: "POST",
+                    body: data,
+                };
+            },
+            invalidatesTags: ["reviews"],
+        }),
         updateReview: builder.mutation({
             query: (data) => {
                 return {
@@ -69,6 +79,7 @@ const reviewApi = baseApi.injectEndpoints({
 export const {
     useGetAllReviewsQuery,
     useGetSingleReviewQuery,
+    useCreateReplyMutation,
     useUpdateReviewMutation,
     useCreateReviewMutation,
     useDeleteReviewMutation,
