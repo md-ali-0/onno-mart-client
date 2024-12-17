@@ -43,10 +43,8 @@ export default function ProductsPage() {
         }
     }, [isError, error]);
 
-    // Pagination metadata
     const totalPage = data?.meta?.totalPage || 1;
 
-    // Handle pagination change
     const handlePageChange = (newPage: number) => {
         setPage(newPage);
     };

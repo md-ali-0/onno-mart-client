@@ -53,7 +53,6 @@ const SignUpForm: React.FC = () => {
                 Sign Up
             </h2>
             <form onSubmit={handleSubmit(onSubmit)} className="mt-8 space-y-4">
-                {/* Name Field */}
                 <div>
                     <label className="text-gray-800 text-sm mb-2 block">Name</label>
                     <Input
@@ -73,7 +72,6 @@ const SignUpForm: React.FC = () => {
                     )}
                 </div>
 
-                {/* Email Field */}
                 <div>
                     <label className="text-gray-800 text-sm mb-2 block">Email</label>
                     <Input
@@ -93,7 +91,6 @@ const SignUpForm: React.FC = () => {
                     )}
                 </div>
 
-                {/* Password Field */}
                 <div>
                     <label className="text-gray-800 text-sm mb-2 block">Password</label>
                     <Input
@@ -113,14 +110,12 @@ const SignUpForm: React.FC = () => {
                     )}
                 </div>
 
-                {/* Submit Button */}
                 <div className="!mt-8">
                     <Button type="submit" className="w-full">
                         Sign Up
                     </Button>
                 </div>
 
-                {/* Login Link */}
                 <p className="text-gray-800 text-sm !mt-8 text-center">
                     Already have an account?{" "}
                     <Link

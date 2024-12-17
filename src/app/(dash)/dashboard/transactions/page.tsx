@@ -12,9 +12,6 @@ export default function TransectionsPage() {
                     <h3 className="font-medium text-black dark:text-white">
                         Manage Transactions
                     </h3>
-                    {/* <Button asChild variant={"default"} size={"sm"}>
-                        <Link href={"/dashboard/create-brand"}>Create Brand</Link>
-                    </Button> */}
                 </div>
                 <div className="p-5">
                 <ManageTransectionsTable />

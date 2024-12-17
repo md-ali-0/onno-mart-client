@@ -11,9 +11,6 @@ export default function ReviewsPage() {
                     <h3 className="font-medium text-black dark:text-white">
                         Manage Reviews
                     </h3>
-                    {/* <Button asChild variant={"default"} size={"sm"}>
-                        <Link href={"/dashboard/create-brand"}>Create Brand</Link>
-                    </Button> */}
                 </div>
                 <div className="p-5">
                 <ManageReviewsTable />

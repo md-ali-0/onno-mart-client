@@ -40,7 +40,6 @@ function Pagination({
             <div className="md:col-span-12 text-center">
                 <nav aria-label="Page navigation example">
                     <ul className="inline-flex items-center -space-x-px">
-                        {/* Previous Button */}
                         <li>
                             <Link
                                 href={
@@ -81,7 +80,6 @@ function Pagination({
                             </Link>
                         </li>
 
-                        {/* Page Numbers */}
                         {Array.from(
                             { length: totalPages },
                             (_, i) => i + 1
@@ -109,7 +107,6 @@ function Pagination({
                             );
                         })}
 
-                        {/* Next Button */}
                         <li>
                             <Link
                                 href={
