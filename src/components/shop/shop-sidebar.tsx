@@ -1,55 +1,66 @@
 "use client";
 
-import { Brand, Category } from "@/types";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { useGetAllBrandsQuery } from "@/redux/features/brand/brandApi";
+import { useGetAllCategoriesQuery } from "@/redux/features/category/categoryApi";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "../ui/button";
-import { Checkbox } from "../ui/checkbox";
 
 function ShopSidebar({
-    categories,
-    brands,
     selectedCategory,
+    setCategory,
     selectedBrand,
-    searchTerm,
+    setBrand,
+    search,
+    setSearch,
+    setMinPrice,
+    setMaxPrice,
 }: {
-    categories: Category[];
-    brands: Brand[];
-    selectedCategory?: string;
-    selectedBrand?: string;
-    searchTerm?: string;
+    selectedCategory: string | undefined;
+    setCategory: Dispatch<SetStateAction<string | undefined>>;
+    selectedBrand: string | undefined;
+    setBrand: Dispatch<SetStateAction<string | undefined>>;
+    search: string | undefined;
+    setSearch: Dispatch<SetStateAction<string | undefined>>;
+    setMinPrice: Dispatch<SetStateAction<number | undefined>>;
+    setMaxPrice: Dispatch<SetStateAction<number | undefined>>;
 }) {
     const router = useRouter();
+    const [localMinPrice, setLocalMinPrice] = useState<number | undefined>();
+    const [localMaxPrice, setLocalMaxPrice] = useState<number | undefined>();
+    const [localSearch, setLocalSearch] = useState<string | undefined>(search);
 
-    const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm || "");
-    const [minPrice, setMinPrice] = useState<number | undefined>();
-    const [maxPrice, setMaxPrice] = useState<number | undefined>();
+    const { data: categories, isLoading: isCategoryLoading } =
+        useGetAllCategoriesQuery([{ name: "limit", value: 999 }]);
 
-    const handleFilterChange = (filterType: string, value: string) => {
-        const params = new URLSearchParams(window.location.search);
-        if (value) {
-            params.set(filterType, value);
-        } else {
-            params.delete(filterType);
-        }
-        params.delete("page"); // Reset pagination to the first page
-        router.push(`/products?${params.toString()}`);
-    };
+    const { data: brands, isLoading: isBrandLoading } = useGetAllBrandsQuery([
+        { name: "limit", value: 999 },
+    ]);
 
     const handleApplyFilters = () => {
+        setSearch(localSearch);
+        setMinPrice(localMinPrice || undefined);
+        setMaxPrice(localMaxPrice || undefined);
         const params = new URLSearchParams(window.location.search);
-        if (localSearchTerm) {
-            params.set("searchTerm", localSearchTerm.trim());
+        if (localSearch) {
+            params.set("searchTerm", localSearch.trim());
         } else {
             params.delete("searchTerm");
         }
-        if (minPrice !== undefined) {
-            params.set("minPrice", minPrice.toString());
+        if (localMinPrice !== undefined) {
+            params.set("minPrice", localMinPrice.toString());
         } else {
             params.delete("minPrice");
         }
-        if (maxPrice !== undefined) {
-            params.set("maxPrice", maxPrice.toString());
+        if (localMaxPrice !== undefined) {
+            params.set("maxPrice", localMaxPrice.toString());
         } else {
             params.delete("maxPrice");
         }
@@ -70,8 +81,8 @@ function ShopSidebar({
                             id="searchname"
                             className="h-9 w-full rounded px-3 border focus:ring-0 outline-none bg-white dark:bg-slate-900"
                             placeholder="Search..."
-                            value={localSearchTerm}
-                            onChange={(e) => setLocalSearchTerm(e.target.value)}
+                            value={localSearch || ""}
+                            onChange={(e) => setLocalSearch(e.target.value)}
                         />
                     </div>
                 </div>
@@ -82,18 +93,22 @@ function ShopSidebar({
                             type="number"
                             className="h-9 w-full rounded px-3 border focus:ring-0 outline-none bg-white dark:bg-slate-900"
                             placeholder="Min"
-                            value={minPrice || ""}
+                            value={localMinPrice || ""}
                             onChange={(e) =>
-                                setMinPrice(Number(e.target.value) || undefined)
+                                setLocalMinPrice(
+                                    Number(e.target.value) || undefined
+                                )
                             }
                         />
                         <input
                             type="number"
                             className="h-9 w-full rounded px-3 border focus:ring-0 outline-none bg-white dark:bg-slate-900"
                             placeholder="Max"
-                            value={maxPrice || ""}
+                            value={localMaxPrice || ""}
                             onChange={(e) =>
-                                setMaxPrice(Number(e.target.value) || undefined)
+                                setLocalMaxPrice(
+                                    Number(e.target.value) || undefined
+                                )
                             }
                         />
                     </div>
@@ -102,11 +117,15 @@ function ShopSidebar({
                     <Button
                         type="button"
                         variant={"outline"}
-                        onClick={()=>{
-                            setLocalSearchTerm("")
-                            setMinPrice(undefined)
-                            setMaxPrice(undefined)
-                            router.push(`/products?page=1`)
+                        onClick={() => {
+                            setLocalSearch(undefined);
+                            setLocalMinPrice(undefined);
+                            setLocalMaxPrice(undefined);
+                            setSearch(undefined);
+                            setMinPrice(undefined);
+                            setMaxPrice(undefined);
+                            setCategory("all");
+                            setBrand("all");
                         }}
                     >
                         Clear Filters
@@ -123,61 +142,65 @@ function ShopSidebar({
             <div className="mt-4">
                 <h5 className="font-medium">Brands:</h5>
                 <div className="mt-2 space-y-1.5">
-                    {brands.map((brand) => (
-                        <div
-                            key={brand.id}
-                            className="flex items-center cursor-pointer space-x-1.5"
-                        >
-                            <Checkbox
-                                id={brand.slug}
-                                checked={selectedBrand === brand.slug}
-                            />
-                            <label
-                                htmlFor={brand.slug}
-                                onClick={() =>
-                                    handleFilterChange(
-                                        "brandId",
-                                        brand.slug === selectedBrand
-                                            ? ""
-                                            : brand.slug
-                                    )
+                    <Select
+                        onValueChange={(value) => setBrand(value)}
+                        value={selectedBrand}
+                        disabled={isBrandLoading}
+                    >
+                        <SelectTrigger>
+                            <SelectValue
+                                placeholder={
+                                    isBrandLoading
+                                        ? "Loading..."
+                                        : "Select Brand"
                                 }
-                                className="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                                {brand.name}
-                            </label>
-                        </div>
-                    ))}
+                            />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Brands</SelectItem>
+
+                            {brands?.data?.map((item) => (
+                                <SelectItem
+                                    key={item.slug}
+                                    value={String(item.slug)}
+                                >
+                                    {item.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
             <div className="mt-4">
                 <h5 className="font-medium">Categories:</h5>
                 <div className="mt-2 space-y-1.5">
-                    {categories.map((category) => (
-                        <div
-                            key={category.id}
-                            className="flex items-center cursor-pointer space-x-1.5"
-                        >
-                            <Checkbox
-                                id={category.slug}
-                                checked={selectedCategory === category.slug}
-                            />
-                            <label
-                                htmlFor={category.slug}
-                                onClick={() =>
-                                    handleFilterChange(
-                                        "categoryId",
-                                        category.slug === selectedCategory
-                                            ? ""
-                                            : category.slug
-                                    )
+                    <Select
+                        onValueChange={(value) => setCategory(value)}
+                        value={selectedCategory}
+                        disabled={isCategoryLoading}
+                    >
+                        <SelectTrigger>
+                            <SelectValue
+                                placeholder={
+                                    isCategoryLoading
+                                        ? "Loading..."
+                                        : "Select Category"
                                 }
-                                className="leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                            >
-                                {category.name}
-                            </label>
-                        </div>
-                    ))}
+                            />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All Categories</SelectItem>
+
+                            {categories?.data?.map((item) => (
+                                <SelectItem
+                                    key={item.slug}
+                                    value={String(item.slug)}
+                                >
+                                    {item.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
                 </div>
             </div>
         </div>

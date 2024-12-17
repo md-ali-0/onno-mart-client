@@ -1,177 +1,55 @@
-import ProductCard from "@/components/product/product-card";
-import ProductSkeletonCard from "@/components/product/product-skeleton-card";
+"use client";
+
+import ProductGrid from "@/components/product/product-card-grids";
+import SkeletonGrid from "@/components/product/product-skleton-card-grids";
 import Breadcumb from "@/components/shared/breadcumb";
 import ShopSidebar from "@/components/shop/shop-sidebar";
-import { getBrands } from "@/lib/get-brands";
-import { getCategories } from "@/lib/get-categories";
-import { getProducts } from "@/lib/get-products";
-import { Product } from "@/types";
-import Link from "next/link";
-import { Suspense } from "react";
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination";
+import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-function ProductGrid({ products }: { products: Product[] }) {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-            ))}
-        </div>
-    );
-}
+export default function ProductsPage() {
+    const [search, setSearch] = useState<string | undefined>(undefined);
+    const [page, setPage] = useState<number>(1);
 
-function SkeletonGrid() {
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {Array.from({ length: 6 }).map((_, index) => (
-                <ProductSkeletonCard key={index} />
-            ))}
-        </div>
-    );
-}
+    const [limit] = useState<number>(6);
+    const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
+    const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
+    const [category, setCategory] = useState<string | undefined>(undefined);
+    const [brand, setBrand] = useState<string | undefined>(undefined);
 
-function Pagination({
-    totalPages,
-    currentPage,
-    searchParams,
-}: {
-    totalPages: number;
-    currentPage: number;
-    searchParams: URLSearchParams;
-}) {
-    return (
-        <div className="grid md:grid-cols-12 grid-cols-1 mt-6">
-            <div className="md:col-span-12 text-center">
-                <nav aria-label="Page navigation example">
-                    <ul className="inline-flex items-center -space-x-px">
-                        {/* Previous Button */}
-                        <li>
-                            <Link
-                                href={
-                                    currentPage > 1
-                                        ? (() => {
-                                              const newParams = new URLSearchParams(searchParams);
-                                              newParams.set("page", (currentPage - 1).toString());
-                                              return `/products?${newParams.toString()}`;
-                                          })()
-                                        : "#"
-                                }
-                                className={`size-[40px] inline-flex justify-center items-center text-slate-400 bg-white dark:bg-slate-900 rounded-s-3xl hover:text-white border border-gray-100 dark:border-gray-800 ${
-                                    currentPage === 1
-                                        ? "cursor-not-allowed opacity-50"
-                                        : "hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-500 dark:hover:bg-orange-500"
-                                }`}
-                            >
-                                <svg
-                                    stroke="currentColor"
-                                    fill="none"
-                                    strokeWidth={2}
-                                    viewBox="0 0 24 24"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="size-5 rtl:rotate-180 rtl:-mt-1"
-                                    height="1em"
-                                    width="1em"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <polyline points="15 18 9 12 15 6" />
-                                </svg>
-                            </Link>
-                        </li>
+    const { data, isError, isLoading, isFetching, error } =
+        useGetAllProductsQuery([
+            { name: "limit", value: limit },
+            { name: "page", value: page },
+            { name: "searchTerm", value: search || undefined },
+            { name: "brandId", value: brand || undefined },
+            { name: "categoryId", value: category || undefined },
+            { name: "minPrice", value: minPrice || undefined },
+            { name: "maxPrice", value: maxPrice || undefined },
+        ]);
 
-                        {/* Page Numbers */}
-                        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => {
-                            const newParams = new URLSearchParams(searchParams);
-                            newParams.set("page", pageNum.toString());
-                            return (
-                                <li key={pageNum}>
-                                    <Link
-                                        href={`/products?${newParams.toString()}`}
-                                        aria-current={pageNum === currentPage ? "page" : undefined}
-                                        className={`size-[40px] inline-flex justify-center items-center ${
-                                            pageNum === currentPage
-                                                ? "text-white bg-orange-500 border border-orange-500"
-                                                : "text-slate-400 hover:text-white bg-white dark:bg-slate-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-500 dark:hover:bg-orange-500"
-                                        }`}
-                                    >
-                                        {pageNum}
-                                    </Link>
-                                </li>
-                            );
-                        })}
+    useEffect(() => {
+        if (isError) {
+            toast.error("Something Went Wrong");
+        }
+    }, [isError, error]);
 
-                        {/* Next Button */}
-                        <li>
-                            <Link
-                                href={
-                                    currentPage < totalPages
-                                        ? (() => {
-                                              const newParams = new URLSearchParams(searchParams);
-                                              newParams.set("page", (currentPage + 1).toString());
-                                              return `/products?${newParams.toString()}`;
-                                          })()
-                                        : "#"
-                                }
-                                className={`size-[40px] inline-flex justify-center items-center text-slate-400 bg-white dark:bg-slate-900 rounded-e-3xl hover:text-white border border-gray-100 dark:border-gray-800 ${
-                                    currentPage === totalPages
-                                        ? "cursor-not-allowed opacity-50"
-                                        : "hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-500 dark:hover:bg-orange-500"
-                                }`}
-                            >
-                                <svg
-                                    stroke="currentColor"
-                                    fill="none"
-                                    strokeWidth={2}
-                                    viewBox="0 0 24 24"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="size-5 rtl:rotate-180 rtl:-mt-1"
-                                    height="1em"
-                                    width="1em"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <polyline points="9 18 15 12 9 6" />
-                                </svg>
-                            </Link>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-    );
-}
+    // Pagination metadata
+    const totalPage = data?.meta?.totalPage || 1;
 
-export default async function ProductsPage({
-    searchParams,
-}: {
-    searchParams: { [key: string]: string | undefined };
-}) {
-    const page = Number(searchParams.page) || 1;
-    const categoryId = searchParams.categoryId;
-    const brandId = searchParams.brandId;
-    const searchTerm = searchParams.searchTerm || "";
-    const sortBy = searchParams.sortBy || "price";
-    const sortOrder = searchParams.sortOrder || "asc";
-    const minPrice = searchParams.minPrice
-        ? Number(searchParams.minPrice)
-        : undefined;
-    const maxPrice = searchParams.maxPrice
-        ? Number(searchParams.maxPrice)
-        : undefined;
-
-    const allBrands = await getBrands();
-    const allCategories = await getCategories();
-
-    const { products, totalPages } = await getProducts(
-        page,
-        6,
-        categoryId,
-        brandId,
-        searchTerm,
-        sortBy,
-        sortOrder as "asc" | "desc",
-        minPrice,
-        maxPrice
-    );
+    // Handle pagination change
+    const handlePageChange = (newPage: number) => {
+        setPage(newPage);
+    };
 
     return (
         <>
@@ -181,33 +59,81 @@ export default async function ProductsPage({
                     <div className="grid md:grid-cols-12 sm:grid-cols-2 grid-cols-1 gap-6">
                         <div className="lg:col-span-3 md:col-span-4">
                             <ShopSidebar
-                                categories={allCategories}
-                                brands={allBrands}
-                                selectedCategory={categoryId}
-                                selectedBrand={brandId}
-                                searchTerm={searchTerm}
+                                selectedCategory={category}
+                                setCategory={setCategory}
+                                selectedBrand={brand}
+                                setBrand={setBrand}
+                                search={search}
+                                setSearch={setSearch}
+                                setMinPrice={setMinPrice}
+                                setMaxPrice={setMaxPrice}
                             />
                         </div>
                         <div className="lg:col-span-9 md:col-span-8">
-                            <Suspense fallback={<SkeletonGrid />}>
-                                {products.length > 0 ? (
-                                    <ProductGrid products={products} />
-                                ) : (
-                                    <div className="flex justify-center my-10">
-                                        <h3 className="text-xl font-medium">
-                                            No Product Available
-                                        </h3>
-                                    </div>
-                                )}
-                            </Suspense>
+                            {isLoading || isFetching ? (
+                                <SkeletonGrid />
+                            ) : data?.data && data?.data.length > 0 ? (
+                                <ProductGrid products={data?.data || []} />
+                            ) : (
+                                <div className="flex justify-center my-10">
+                                    <h3 className="text-xl font-medium">
+                                        No Product Available
+                                    </h3>
+                                </div>
+                            )}
 
-                            <Pagination
-                                totalPages={totalPages}
-                                currentPage={page}
-                                searchParams={new URLSearchParams(
-                                    searchParams as unknown as string
+                            <div className="py-8">
+                                {totalPage > 1 && (
+                                    <Pagination>
+                                        <PaginationContent>
+                                            <PaginationItem>
+                                                <PaginationPrevious
+                                                    className={"cursor-pointer"}
+                                                    onClick={() =>
+                                                        page > 1 &&
+                                                        handlePageChange(
+                                                            page - 1
+                                                        )
+                                                    }
+                                                />
+                                            </PaginationItem>
+                                            {Array.from(
+                                                { length: totalPage },
+                                                (_, index) => index + 1
+                                            ).map((pageNumber) => (
+                                                <PaginationItem
+                                                    key={pageNumber}
+                                                >
+                                                    <PaginationLink
+                                                        className={"cursor-pointer"}
+                                                        onClick={() =>
+                                                            handlePageChange(
+                                                                pageNumber
+                                                            )
+                                                        }
+                                                        isActive={
+                                                            page === pageNumber
+                                                        }
+                                                    >
+                                                        {pageNumber}
+                                                    </PaginationLink>
+                                                </PaginationItem>
+                                            ))}
+                                            <PaginationItem>
+                                                <PaginationNext
+                                                    className={"cursor-pointer"}
+                                                    onClick={() =>
+                                                        page < totalPage &&
+                                                        handlePageChange(
+                                                            page + 1
+                                                        )
+                                                    }
+                                                />
+                                            </PaginationItem>
+                                        </PaginationContent>
+                                    </Pagination>
                                 )}
-                            />
+                            </div>
                         </div>
                     </div>
                 </div>
