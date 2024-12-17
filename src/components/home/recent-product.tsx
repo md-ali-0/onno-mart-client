@@ -191,7 +191,7 @@ const RecentProducts = () => {
                                           product={product}
                                       />
                                   ))}
-                            {isLoading &&
+                            {hasMore &&
                                 Array.from({ length: 4 }).map((_, idx) => (
                                     <ProductCardSkeleton
                                         key={`loading-${idx}`}
