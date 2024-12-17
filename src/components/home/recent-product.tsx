@@ -81,9 +81,7 @@ const RecentProducts = () => {
     useEffect(() => {
         if (data) {
             setProducts((prev) => [...prev, ...(data?.data || [])]);
-            setHasMore(
-                (data?.meta?.page || 1) < (data?.meta?.totalPage || 1)
-            );
+            setHasMore((data?.meta?.page || 1) < (data?.meta?.totalPage || 1));
             setIsFiltering(false);
         }
     }, [data]);
@@ -183,7 +181,7 @@ const RecentProducts = () => {
                     </div>
                     <div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                            {isFiltering || !products.length
+                            {isFiltering && !products.length
                                 ? Array.from({ length: 4 }).map((_, idx) => (
                                       <ProductCardSkeleton key={idx} />
                                   ))
@@ -193,11 +191,20 @@ const RecentProducts = () => {
                                           product={product}
                                       />
                                   ))}
+                            {isLoading &&
+                                Array.from({ length: 4 }).map((_, idx) => (
+                                    <ProductCardSkeleton
+                                        key={`loading-${idx}`}
+                                    />
+                                ))}
                         </div>
-                        {isLoading &&
-                            Array.from({ length: 2 }).map((_, idx) => (
-                                <ProductCardSkeleton key={`loading-${idx}`} />
-                            ))}
+                        {!isFiltering && products.length === 0 && (
+                            <div className="flex items-center justify-center py-10">
+                                <h3 className="text-xl font-medium">
+                                    No Products Aavailable
+                                </h3>
+                            </div>
+                        )}
                         <div ref={observerRef}></div>
                     </div>
                 </div>
