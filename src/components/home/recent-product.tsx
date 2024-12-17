@@ -16,6 +16,16 @@ import { toast } from "sonner";
 import ProductCard from "../product/product-card";
 import { Input } from "../ui/input";
 
+import { Skeleton } from "@/components/ui/skeleton";
+
+const ProductCardSkeleton = () => (
+    <div className="p-4 border rounded-lg bg-white dark:bg-slate-900">
+        <Skeleton className="h-40 w-full rounded mb-3" />
+        <Skeleton className="h-6 w-3/4 rounded mb-2" />
+        <Skeleton className="h-4 w-1/2 rounded" />
+    </div>
+);
+
 const RecentProducts = () => {
     const [search, setSearch] = useState<string>("");
     const [page, setPage] = useState<number>(1);
@@ -82,7 +92,6 @@ const RecentProducts = () => {
         if (isError) toast.error("Something Went Wrong");
     }, [isError, error]);
 
-    // Reset and filter products when filters change
     const handleFilterChange = useCallback(() => {
         setPage(1);
         setProducts([]);
@@ -174,18 +183,21 @@ const RecentProducts = () => {
                     </div>
                     <div>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-                            {products.map((product) => (
-                                <ProductCard
-                                    key={product.id}
-                                    product={product}
-                                />
-                            ))}
+                            {isFiltering || !products.length
+                                ? Array.from({ length: 4 }).map((_, idx) => (
+                                      <ProductCardSkeleton key={idx} />
+                                  ))
+                                : products.map((product) => (
+                                      <ProductCard
+                                          key={product.id}
+                                          product={product}
+                                      />
+                                  ))}
                         </div>
-                        {isLoading && (
-                            <div className="text-center mt-4">
-                                Loading more products...
-                            </div>
-                        )}
+                        {isLoading &&
+                            Array.from({ length: 2 }).map((_, idx) => (
+                                <ProductCardSkeleton key={`loading-${idx}`} />
+                            ))}
                         <div ref={observerRef}></div>
                     </div>
                 </div>
