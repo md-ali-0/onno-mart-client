@@ -13,18 +13,20 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination";
 import { useGetAllProductsQuery } from "@/redux/features/product/productApi";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function ProductsPage() {
+    const searchParams = useSearchParams()
     const [search, setSearch] = useState<string | undefined>(undefined);
     const [page, setPage] = useState<number>(1);
 
     const [limit] = useState<number>(6);
     const [minPrice, setMinPrice] = useState<number | undefined>(undefined);
     const [maxPrice, setMaxPrice] = useState<number | undefined>(undefined);
-    const [category, setCategory] = useState<string | undefined>(undefined);
-    const [brand, setBrand] = useState<string | undefined>(undefined);
+    const [category, setCategory] = useState<string | undefined>(searchParams.get("categoryId") || undefined);
+    const [brand, setBrand] = useState<string | undefined>(searchParams.get("brandId") || undefined);
 
     const { data, isError, isLoading, isFetching, error } =
         useGetAllProductsQuery([
