@@ -1,100 +1,114 @@
-import bannerBg from "@/assets/banner/hero-bg.png";
-import { Button } from "@/components/ui/button";
+"use client";
+
 import { Card } from "@/components/ui/card";
-import { getCategories } from "@/lib/get-categories";
 import { DollarSign, HeadphonesIcon, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
-import { Skeleton } from "../ui/skeleton";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Autoplay, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-export function SkeletonList() {
-    return (
-        <div>
-            {[...Array(10)].map((item, idx) => (
-                <Skeleton className="bg-gray-300 w-36 h-5 mx-2.5" key={idx} />
-            ))}
-        </div>
-    );
-}
-
-export default async function HeroBanner() {
-    const categories = await getCategories();
+export default function HeroBannerSlider() {
+    const banners = [
+        {
+            bg: "/assets/banner/hero-bg.png",
+            title: "WINTER SALE",
+            discount: "25% OFF",
+            code: "WINTER25",
+            description: "For limited time only!",
+            link: "/products",
+            linkText: "Shop Now",
+            image: "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png",
+            bgColor: "bg-primary/20",
+            textColor: "text-primary",
+        },
+        {
+            bg: "/assets/banner/hero-bg.png",
+            title: "SUMMER COLLECTION",
+            discount: "40% OFF",
+            code: "SUMMER40",
+            description: "Explore our summer collection!",
+            link: "/summer-collection",
+            linkText: "Discover Now",
+            image: "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png",
+            bgColor: "bg-orange-100",
+            textColor: "text-orange-500",
+        },
+        {
+            bg: "/assets/banner/hero-bg.png",
+            title: "NEW ARRIVALS",
+            discount: "UP TO 30% OFF",
+            code: "NEW30",
+            description: "Check out the latest trends!",
+            link: "/new-arrivals",
+            linkText: "Shop Latest",
+            image: "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png",
+            bgColor: "bg-blue-100",
+            textColor: "text-blue-500",
+        },
+    ];
 
     return (
         <section className="container px-4 lg:px-0 sm:mb-20">
-            <div className="flex gap-6 py-6">
-                <div className="hidden w-64 shrink-0 md:block h-fit">
-                    <Card className="h-full">
-                        <div className="py-2.5 px-3 font-semibold underline-offset-4 hover:underline transform transition-all hover:text-primary duration-300">
-                            Top Categories
-                        </div>
-                        <div className="h-[400px] overflow-y-auto category-scroll">
-                            <div className="space-y-1 p-2">
-                                <Suspense fallback={<SkeletonList />}>
-                                    {categories.length > 0 ? (
-                                        categories.map((category) => (
-                                            <Link
-                                                key={category?.id}
-                                                href={`/products?categoryId=${category?.slug}`}
-                                                className="flex items-center gap-3 rounded-md px-3 py-2 text-sm hover:bg-accent hover:text-accent-foreground"
-                                            >
-                                                <span className="mr-1">
-                                                    {category?.icon}
-                                                </span>
-                                                {category?.name}
-                                            </Link>
-                                        ))
-                                    ) : (
-                                        <p>No Category Available</p>
-                                    )}
-                                </Suspense>
-                            </div>
-                        </div>
-                        <div className="py-2.5 px-3">
-                            <Button
-                                className="w-full bg-primary text-primary-foreground"
-                                variant="default"
+            <div className="py-5">
+                <Swiper
+                    modules={[Autoplay, Pagination]}
+                    autoplay={{ delay: 5000 }}
+                    
+                    pagination={{ clickable: true }}
+                    loop
+                    className="rounded-lg"
+                >
+                    {banners.map((banner, index) => (
+                        <SwiperSlide key={index}>
+                            <div
+                                className={`flex items-center rounded-lg px-6 py-16 md:px-12 md:min-h-[485px] ${banner.bgColor}`}
+                                style={{ backgroundImage: `url(${banner.bg})` }}
                             >
-                                SAVE NOW - 10-25% OFF
-                            </Button>
-                        </div>
-                    </Card>
-                </div>
-                <div className="flex-1 h-full">
-                    <div
-                        className="flex items-center rounded-lg bg-primary/20 px-6 py-16 text-white md:px-12 md:min-h-[485px]"
-                        style={{ backgroundImage: `url(${bannerBg.src})` }}
-                    >
-                        <div className="grid lg:grid-cols-2 items-center justify-items-center gap-5">
-                            <div className="order-2 lg:order-1 flex flex-col justify-center items-center">
-                                <span className="bg-primary/50 px-2 py-0.5 rounded-xl">WINTER25</span>
-                                <p className="text-4xl font-bold md:text-7xl text-primary">
-                                    25% OFF
-                                </p>
-                                <p className="text-4xl text-center text-black font-bold md:text-7xl">
-                                    WINTER SALE
-                                </p>
-                                <p className="mt-2 text-sm text-slate-800 md:text-lg">
-                                    For limited time only!
-                                </p>
-                                <Link href={'/products'} className="text-lg md:text-2xl bg-black text-white py-2 px-5 mt-10 hover:bg-zinc-800">
-                                    Shop Now
-                                </Link>
+                                <div className="grid lg:grid-cols-2 items-center justify-items-center gap-5">
+                                    <div className="order-2 lg:order-1 flex flex-col justify-center items-center">
+                                        <span
+                                            className={`px-2 py-0.5 rounded-xl ${banner.textColor}`}
+                                        >
+                                            {banner.code}
+                                        </span>
+                                        <p
+                                            className={`text-4xl font-bold md:text-7xl ${banner.textColor}`}
+                                        >
+                                            {banner.discount}
+                                        </p>
+                                        <p className="text-4xl text-center text-black font-bold md:text-7xl">
+                                            {banner.title}
+                                        </p>
+                                        <p className="mt-2 text-sm text-slate-800 md:text-lg">
+                                            {banner.description}
+                                        </p>
+                                        <Link
+                                            href={banner.link}
+                                            className="text-lg md:text-2xl bg-black text-white py-2 px-5 mt-10 hover:bg-zinc-800"
+                                        >
+                                            {banner.linkText}
+                                        </Link>
+                                    </div>
+                                    <div className="order-1 rounded-xl lg:order-2">
+                                        <Image
+                                            className="h-80 w-80 object-cover lg:w-[480px] lg:h-[380px]"
+                                            src={banner.image}
+                                            alt={banner.title}
+                                            width={450}
+                                            height={500}
+                                        />
+                                    </div>
+                                </div>
                             </div>
-                            <div className="order-1 bg-primary/40 rounded-xl lg:order-2">
-                                <Image
-                                    className="h-80 w-80 object-cover lg:w-[480px] lg:h-[380px]"
-                                    src="https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png"
-                                    alt=""
-                                    width={450}
-                                    height={500}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
             </div>
+
+            {/* Features Section */}
             <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
                 {features.map((feature) => (
                     <Card key={feature.title} className="p-4">

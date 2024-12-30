@@ -19,7 +19,7 @@ import { toast } from "sonner";
 
 export default function ProductsPage() {
     const searchParams = useSearchParams()
-    const [search, setSearch] = useState<string | undefined>(undefined);
+    const [search, setSearch] = useState<string | undefined>(searchParams.get("searchTerm") || undefined);
     const [page, setPage] = useState<number>(1);
 
     const [limit] = useState<number>(6);

@@ -34,6 +34,29 @@ const productApi = baseApi.injectEndpoints({
             },
             providesTags: ["products"],
         }),
+        getFlashSaleProducts: builder.query({
+            query: (args) => {
+                const params = new URLSearchParams();
+                if (args) {
+                    args.forEach((item: TQueryParam) => {
+                        if (item.value !== undefined && item.value !== "all") {
+                            params.append(item.name, item.value as string);
+                        }
+                    });
+                }
+                return {
+                    url: `/product/flash-sale`,
+                    params: params,
+                };
+            },
+            transformResponse: (response: TResponseRedux<Product[]>) => {
+                return {
+                    data: response.data,
+                    meta: response.meta,
+                };
+            },
+            providesTags: ["products"],
+        }),
         createProduct: builder.mutation({
             query: (data) => {
                 return {
@@ -79,6 +102,7 @@ export const {
     useCreateProductMutation,
     useDuplicateProductMutation,
     useGetAllProductsQuery,
+    useGetFlashSaleProductsQuery,
     useGetSingleProductQuery,
     useUpdateProductMutation,
     useDeleteProductMutation

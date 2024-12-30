@@ -1,3 +1,4 @@
+import BrowseByCategory from "@/components/home/browse-by-category";
 import FlashSale from "@/components/home/flash-sale";
 import HeroBanner from "@/components/home/hero-banner";
 import PopularBrands from "@/components/home/popular-brands";
@@ -11,6 +12,7 @@ export default async function Home() {
     return (
         <>
             <HeroBanner />
+            <BrowseByCategory/>
             <PopularBrands />
             {session.isAuth && <PopularShops />}
             <FlashSale />

@@ -1,7 +1,7 @@
 import { getSaleProducts } from "@/lib/get-products";
 import { Product } from "@/types";
 import Link from "next/link";
-import FlashSaleProductCard from "../product/fash-sale-product";
+import ProductCard from "../product/product-card";
 
 const FlashSale = async () => {
     const products = await getSaleProducts()
@@ -22,7 +22,7 @@ const FlashSale = async () => {
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                     {products?.filter(product => product.discount > 0).map((product: Product) => (
-                        <FlashSaleProductCard key={product.id} product={product}/>
+                        <ProductCard key={product.id} product={product}/>
                     ))}
                 </div>
             </div>
