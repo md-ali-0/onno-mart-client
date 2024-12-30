@@ -26,20 +26,23 @@ const SignInForm: React.FC = () => {
     } = useForm<FormValues>();
 
     const router = useRouter();
+    const { setIsLoading } = useSession();
 
-
-    const { setIsLoading } = useSession()
-    const onSubmit: SubmitHandler<FormValues> = async (data) => {
-        const response = await signin(data);
-        setIsLoading(true)
+    const handleQuickLogin = async (email: string, password: string) => {
+        setIsLoading(true);
+        const response = await signin({ email, password, rememberMe: false });
         
         if (response.success) {
-            toast.success("User Logged In Successfully");
+            toast.success(`${email} Logged In Successfully`);
             router.push("/");
-            localStorage.setItem('accessToken', response.data)
+            localStorage.setItem("accessToken", response.data);
         } else {
-            toast.error(response?.message);
+            toast.error(response?.message || "Login failed");
         }
+    };
+
+    const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        handleQuickLogin(data.email, data.password);
     };
 
     return (
@@ -93,14 +96,17 @@ const SignInForm: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center space-x-2">
-                    <Checkbox id="remember-me" {...register("rememberMe")} />
-                    <Label htmlFor="remember-me" className="ml-2 block text-sm">
-                        Keep me signed in
-                    </Label>
-                </div>
+                    <div className="flex items-center space-x-2">
+                        <Checkbox id="remember-me" {...register("rememberMe")} />
+                        <Label htmlFor="remember-me" className="ml-2 block text-sm">
+                            Keep me signed in
+                        </Label>
+                    </div>
                     <div className="text-sm">
-                        <Link href="/auth/forgot-password" className="text-primary hover:underline font-semibold">
+                        <Link
+                            href="/auth/forgot-password"
+                            className="text-primary hover:underline font-semibold"
+                        >
                             Forgot your password?
                         </Link>
                     </div>
@@ -122,6 +128,28 @@ const SignInForm: React.FC = () => {
                     </Link>
                 </p>
             </form>
+
+            {/* One-click login buttons */}
+            <div className="mt-8 space-y-4">
+                <Button
+                    onClick={() => handleQuickLogin("admin@gmail.com", "123456")}
+                    className="w-full bg-blue-600 text-white"
+                >
+                    Login as Admin
+                </Button>
+                <Button
+                    onClick={() => handleQuickLogin("vendor1@gmail.com", "123456")}
+                    className="w-full bg-green-600 text-white"
+                >
+                    Login as Vendor
+                </Button>
+                <Button
+                    onClick={() => handleQuickLogin("ali@gmail.com", "123456")}
+                    className="w-full bg-purple-600 text-white"
+                >
+                    Login as Customer
+                </Button>
+            </div>
         </div>
     );
 };
