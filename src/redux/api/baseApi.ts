@@ -30,5 +30,7 @@ export const baseApi = createApi({
         "payments",
         "shops",
         "statistics",
+        "newsletters",
+        "coupons",
     ],
 });

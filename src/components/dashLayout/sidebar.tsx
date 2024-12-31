@@ -94,14 +94,41 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                                 </>
                             )}
                             {session?.role === "ADMIN" && (
-                                <SideBarMenuItem
-                                    menu={{
-                                        name: "Products",
-                                        icon: "ShoppingBasket",
-                                        path: "/dashboard/products",
-                                    }}
-                                    setSidebarOpen={setSidebarOpen}
-                                />
+                                <>
+                                    <SideBarMenuItem
+                                        menu={{
+                                            name: "Products",
+                                            icon: "ShoppingBasket",
+                                            path: "/dashboard/products",
+                                        }}
+                                        setSidebarOpen={setSidebarOpen}
+                                    />
+                                    <SidebarSubMenu
+                                        menu={{
+                                            name: "Coupons",
+                                            icon: "Percent",
+                                        }}
+                                        subMenu={[
+                                            {
+                                                name: "Create Coupon",
+                                                path: "/dashboard/create-coupon",
+                                            },
+                                            {
+                                                name: "All Coupons",
+                                                path: "/dashboard/coupon",
+                                            },
+                                        ]}
+                                        setSidebarOpen={setSidebarOpen}
+                                    ></SidebarSubMenu>
+                                    <SideBarMenuItem
+                                        menu={{
+                                            name: "News Letter",
+                                            icon: "Mail",
+                                            path: "/dashboard/newsletter",
+                                        }}
+                                        setSidebarOpen={setSidebarOpen}
+                                    />
+                                </>
                             )}
                             {session?.role === "VENDOR" && (
                                 <SidebarSubMenu

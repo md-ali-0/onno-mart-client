@@ -3,16 +3,37 @@
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { useCreateNewsletterMutation } from "@/redux/features/newsletter/newsletterApi";
+import { ErrorResponse } from "@/types";
+import { SerializedError } from "@reduxjs/toolkit";
 import { motion } from "framer-motion";
 import { CheckCircle, Send, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function NewsletterForm() {
     const [email, setEmail] = useState("");
     const [agreed, setAgreed] = useState(false);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [submitNewsletter, { isSuccess, isLoading, isError, error }] =
+        useCreateNewsletterMutation();
+
+    useEffect(() => {
+        if (isError) {
+            const errorResponse = error as ErrorResponse | SerializedError;
+
+            const errorMessage =
+                (errorResponse as ErrorResponse)?.data?.message ||
+                "Something Went Wrong";
+            if (errorMessage === "Duplicate Key error") {
+                toast.error("You Already Subscribed");
+                return;
+            }
+            toast.error(errorMessage);
+        }
+        if (isSuccess) {
+            toast.success("User Created Successfully");
+        }
+    }, [error, isError, isSuccess]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,12 +42,7 @@ export default function NewsletterForm() {
             return;
         }
 
-        setIsSubmitting(true);
-        // Simulate API call
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        setIsSubmitting(false);
-        setIsSubscribed(true);
-        toast.success("Successfully subscribed to newsletter!");
+        await submitNewsletter({email})
     };
 
     return (
@@ -36,7 +52,7 @@ export default function NewsletterForm() {
             className="container mx-auto py-8"
         >
             <div className="bg-primary rounded-xl px-4 sm:px-8 py-5">
-                {!isSubscribed ? (
+                {!isSuccess ? (
                     <>
                         <div className="text-center mb-3.5">
                             <motion.div
@@ -85,10 +101,10 @@ export default function NewsletterForm() {
                                 />
                                 <Button
                                     type="submit"
-                                    disabled={isSubmitting || !email || !agreed}
+                                    disabled={isLoading || !email || !agreed}
                                     className="absolute right-1 top-1 h-10"
                                 >
-                                    {isSubmitting ? (
+                                    {isLoading ? (
                                         <motion.div
                                             animate={{ rotate: 360 }}
                                             transition={{
