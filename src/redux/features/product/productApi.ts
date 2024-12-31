@@ -34,6 +34,52 @@ const productApi = baseApi.injectEndpoints({
             },
             providesTags: ["products"],
         }),
+        getTopRatedProducts: builder.query({
+            query: (args) => {
+                const params = new URLSearchParams();
+                if (args) {
+                    args.forEach((item: TQueryParam) => {
+                        if (item.value !== undefined && item.value !== "all") {
+                            params.append(item.name, item.value as string);
+                        }
+                    });
+                }
+                return {
+                    url: `/product/top-rated`,
+                    params: params,
+                };
+            },
+            transformResponse: (response: TResponseRedux<Product[]>) => {
+                return {
+                    data: response.data,
+                    meta: response.meta,
+                };
+            },
+            providesTags: ["products"],
+        }),
+        getBestSellingProducts: builder.query({
+            query: (args) => {
+                const params = new URLSearchParams();
+                if (args) {
+                    args.forEach((item: TQueryParam) => {
+                        if (item.value !== undefined && item.value !== "all") {
+                            params.append(item.name, item.value as string);
+                        }
+                    });
+                }
+                return {
+                    url: `/product/best-selling`,
+                    params: params,
+                };
+            },
+            transformResponse: (response: TResponseRedux<Product[]>) => {
+                return {
+                    data: response.data,
+                    meta: response.meta,
+                };
+            },
+            providesTags: ["products"],
+        }),
         getFlashSaleProducts: builder.query({
             query: (args) => {
                 const params = new URLSearchParams();
@@ -103,6 +149,8 @@ export const {
     useDuplicateProductMutation,
     useGetAllProductsQuery,
     useGetFlashSaleProductsQuery,
+    useGetBestSellingProductsQuery,
+    useGetTopRatedProductsQuery,
     useGetSingleProductQuery,
     useUpdateProductMutation,
     useDeleteProductMutation

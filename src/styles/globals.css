@@ -66,6 +66,10 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --chart-canceled: 357, 100%, 59%;
+    --chart-failed: 5, 100%, 53%;
+    --chart-pending: 31, 100%, 50%;
+    --chart-completed: 142, 100%, 56%;
   }
 }
 

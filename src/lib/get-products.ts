@@ -83,7 +83,7 @@ export async function getProductBySlug(
 }
 
 export async function getSaleProducts(): Promise<Product[] | []> {
-    const response = await fetch(`${config.host}/api/product?sortBy=discount&limit=8`, {
+    const response = await fetch(`${config.host}/api/product/flash-sale?limit=4`, {
         cache: "no-store",
     });
     if (!response.ok) {

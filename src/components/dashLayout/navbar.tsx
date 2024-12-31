@@ -1,15 +1,7 @@
-
 import { signout } from "@/actions/auth";
 import { useSession } from "@/provider/session-provider";
 import { useGetMeQuery } from "@/redux/features/user/userApi";
-import {
-    Command,
-    LucideLogOut,
-    LucideUserCircle,
-    Plus,
-    Search,
-} from "lucide-react";
-import Link from "next/link";
+import { Command, LucideLogOut, Plus, Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import { toast } from "sonner";
@@ -27,14 +19,14 @@ const DashNavbar: FC<DashNavbarProps> = ({ sidebarOpen, setSidebarOpen }) => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const { data: userData, isLoading } = useGetMeQuery(undefined);
     const { setIsLoading } = useSession();
-    const router = useRouter()
+    const router = useRouter();
     const handleLogout = async () => {
         try {
             setIsLoading(true);
-            localStorage.removeItem("accessToken")
+            localStorage.removeItem("accessToken");
             await signout();
             setIsLoading(false);
-            router.replace('/auth/signin')
+            router.replace("/auth/signin");
             toast.success("Logout Successfully");
         } catch (error) {
             console.error("Logout failed:", error);
@@ -149,13 +141,6 @@ const DashNavbar: FC<DashNavbarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                                 dropdownOpen ? "" : "hidden"
                             }`}
                         >
-                            <Link
-                                href="/profile"
-                                className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-[#0C1427] dark:hover:bg-slate-600 hover:text-white"
-                            >
-                                <LucideUserCircle size={18} />
-                                <span>Profile</span>
-                            </Link>
                             <div
                                 onClick={handleLogout}
                                 className="flex items-center gap-2 px-4 cursor-pointer py-2 text-sm hover:bg-[#0C1427] dark:hover:bg-slate-600 hover:text-white"

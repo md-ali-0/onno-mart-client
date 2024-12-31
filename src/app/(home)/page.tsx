@@ -5,7 +5,6 @@ import NewsletterForm from "@/components/home/news-letter-banner";
 import PopularBrands from "@/components/home/popular-brands";
 import PopularShops from "@/components/home/popular-shops";
 import ProductListing from "@/components/home/product-listing";
-import FeaturedBlogs from "@/components/home/recent-blogs";
 import RecentProducts from "@/components/home/recent-product";
 import { getSession } from "@/lib/session";
 
@@ -21,7 +20,7 @@ export default async function Home() {
             <FlashSale />
             <RecentProducts />
             <ProductListing/>
-            <FeaturedBlogs/>
+            {/* <FeaturedBlogs/> */}
             <NewsletterForm/>
         </>
     );

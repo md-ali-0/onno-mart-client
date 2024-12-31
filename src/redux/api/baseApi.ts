@@ -29,5 +29,6 @@ export const baseApi = createApi({
         "reviews",
         "payments",
         "shops",
+        "statistics",
     ],
 });

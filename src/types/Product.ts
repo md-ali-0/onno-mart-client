@@ -1,6 +1,7 @@
 import { Brand } from "./Brand";
 import { Category } from "./Category";
 import { Image } from "./Image";
+import { OrderItem } from "./Order";
 import { Review } from "./Review";
 import { Shop } from "./Shop";
 
@@ -22,6 +23,7 @@ export type Product = {
     shopId: string;
     shop: Shop;
     reviews: Review[];
+    OrderItem: OrderItem[]
     createdAt: Date;
     updatedAt: Date;
 };
