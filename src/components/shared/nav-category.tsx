@@ -2,6 +2,7 @@
 
 import { useGetAllCategoriesQuery } from "@/redux/features/category/categoryApi";
 import { ChevronDown, Menu } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -50,7 +51,7 @@ export default function NavCategory() {
                         <span className="absolute -top-[6px] left-6 -z-10 h-3 w-3 rotate-45 rounded-sm border-[.5px] border-r-0 border-b-0 border-stroke dark:border-dark-3 bg-white dark:bg-dark-2 lg:block"></span>
                         {isLoading && <p>Loading...</p>}
                         {data?.data?.map((category) => (
-                            <div key={category.id} className="pl-6 pr-[18px]">
+                            <div key={category.id} className="px-2">
                                 <a
                                     onClick={() =>
                                         handleCategoryClick(category.id)
@@ -58,7 +59,7 @@ export default function NavCategory() {
                                     className="flex cursor-pointer items-center py-[6px] text-sm text-body-color dark:text-dark-6 hover:text-primary gap-3"
                                 >
                                     <span className="mr-1">
-                                        {category?.icon}
+                                        <Image src={category?.image} alt={category?.name} width={100} height={100} className="size-6" />
                                     </span>
                                     {category.name}
                                 </a>

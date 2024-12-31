@@ -21,7 +21,7 @@ import { toast } from "sonner";
 type CategoryFormValues = {
     name: string;
     slug: string;
-    icon: string;
+    image: File | null;
 };
 
 export default function CategoryForm() {
@@ -29,7 +29,7 @@ export default function CategoryForm() {
         defaultValues: {
             name: "",
             slug: "",
-            icon: ""
+            image: null,
         },
     });
 
@@ -61,7 +61,18 @@ export default function CategoryForm() {
 
     const onSubmit = async (data: CategoryFormValues) => {
         const loadingToast = toast.loading("Category is Creating...");
-        await addCategory(data);
+        const categoryData = {
+            name: data.name,
+            slug: data.slug,
+        };
+
+        const formData = new FormData();
+        if (data.image) {
+            formData.append("image", data.image);
+        }
+        formData.append("data", JSON.stringify(categoryData));
+
+        await addCategory(formData);
         toast.dismiss(loadingToast);
     };
 
@@ -110,16 +121,17 @@ export default function CategoryForm() {
                     />
                     <FormField
                         control={form.control}
-                        name="icon"
+                        name="image"
                         render={({ field }) => (
-                            <FormItem className="col-span-1">
-                                <FormLabel htmlFor="icon">Icon</FormLabel>
+                            <FormItem className="md:col-span-2">
+                                <FormLabel htmlFor="image">Image</FormLabel>
                                 <FormControl>
                                     <Input
-                                        id="icon"
-                                        placeholder="Enter Category icon symbol"
-                                        {...field}
-                                        required
+                                        id="image"
+                                        type="file"
+                                        onChange={(e) =>
+                                            field.onChange(e.target.files?.[0])
+                                        }
                                     />
                                 </FormControl>
                                 <FormMessage />

@@ -29,11 +29,12 @@ const SignInForm: React.FC = () => {
     const { setIsLoading } = useSession();
 
     const handleQuickLogin = async (email: string, password: string) => {
-        setIsLoading(true);
+        setIsLoading(true)
+        
         const response = await signin({ email, password, rememberMe: false });
         
         if (response.success) {
-            toast.success(`${email} Logged In Successfully`);
+            toast.success(`Logged In Successfully`);
             router.push("/");
             localStorage.setItem("accessToken", response.data);
         } else {
@@ -42,6 +43,7 @@ const SignInForm: React.FC = () => {
     };
 
     const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        
         handleQuickLogin(data.email, data.password);
     };
 
@@ -134,18 +136,21 @@ const SignInForm: React.FC = () => {
                 <Button
                     onClick={() => handleQuickLogin("admin@gmail.com", "123456")}
                     className="w-full bg-blue-600 text-white"
+                    variant={'default'}
                 >
                     Login as Admin
                 </Button>
                 <Button
                     onClick={() => handleQuickLogin("vendor1@gmail.com", "123456")}
                     className="w-full bg-green-600 text-white"
+                    variant={'default'}
                 >
                     Login as Vendor
                 </Button>
                 <Button
                     onClick={() => handleQuickLogin("ali@gmail.com", "123456")}
                     className="w-full bg-purple-600 text-white"
+                    variant={'default'}
                 >
                     Login as Customer
                 </Button>

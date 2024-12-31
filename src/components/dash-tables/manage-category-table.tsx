@@ -15,6 +15,7 @@ import {
 import { Category, ErrorResponse, TMeta } from "@/types";
 import { SerializedError } from "@reduxjs/toolkit";
 import { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import { LuMoreVertical } from "react-icons/lu";
 import { toast } from "sonner";
@@ -69,8 +70,23 @@ const ManageCategoTable: FC = () => {
 
     const columns: ColumnDef<Category>[] = [
         {
-            accessorKey: "icon",
-            header: "Icon",
+            accessorKey: "image",
+            header: "Image",
+            cell: ({ row }) => {
+                return (
+                    <div className="rounded-md overflow-hidden w-16">
+                        {row.original?.image && (
+                            <Image
+                                src={row.original?.image}
+                                alt={row.original.name}
+                                width={100}
+                                height={100}
+                                className="rounded-md transition-all transform ease-in-out duration-200 hover:scale-105"
+                            />
+                        )}
+                    </div>
+                );
+            },
         },
         {
             accessorKey: "name",

@@ -86,13 +86,13 @@ export default function Navbar() {
 
     return (
         <header className="w-full bg-white dark:bg-dark">
-            <div className="w-full bg-gradient-to-r from-amber-600 to-orange-600 py-2 text-center text-sm text-white">
+            {/* <div className="w-full bg-gradient-to-r from-amber-600 to-orange-600 py-2 text-center text-sm text-white">
                 <p>
                     🚀 Special Winter Offer! Get 25% OFF on all products with
                     code
-                    {/* */} <span className="font-semibold">WINTER25</span>
+                    <span className="font-semibold">WINTER25</span>
                 </p>
-            </div>
+            </div> */}
             <div
                 className={`border-b ${
                     isScrolled
@@ -595,12 +595,12 @@ export default function Navbar() {
                                             </li>
                                             <li
                                                 className={`max-lg:border-b max-lg:py-3 relative lg:after:absolute hover:text-primary lg:after:bg-primary ${
-                                                    path == "/shop"
+                                                    path == "/shops" || path == "/shop"
                                                         ? "lg:after:w-full !text-primary"
                                                         : "lg:after:w-0"
                                                 } lg:hover:after:w-full font-medium lg:after:h-[2px] lg:after:block lg:after:-bottom-1 lg:after:transition-all lg:after:duration-300 lg:mx-4 lg:inline-flex`}
                                             >
-                                                <Link href="/shop">Shop</Link>
+                                                <Link href="/shops">Shop</Link>
                                             </li>
                                             <li
                                                 className={`max-lg:border-b max-lg:py-3 relative lg:after:absolute hover:text-primary lg:after:bg-primary ${

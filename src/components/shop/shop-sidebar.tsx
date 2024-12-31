@@ -69,7 +69,7 @@ function ShopSidebar({
     };
 
     return (
-        <div className="rounded-xl border p-4 sticky top-20">
+        <div className="rounded-xl border p-4 sticky top-40">
             <form className="mt-4">
                 <div>
                     <label htmlFor="searchname" className="font-medium">

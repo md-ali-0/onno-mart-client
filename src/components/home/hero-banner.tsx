@@ -33,8 +33,8 @@ export default function HeroBannerSlider() {
             link: "/summer-collection",
             linkText: "Discover Now",
             image: "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png",
-            bgColor: "bg-orange-100",
-            textColor: "text-orange-500",
+            bgColor: "bg-red-100",
+            textColor: "text-red-500",
         },
         {
             bg: "/assets/banner/hero-bg.png",
@@ -56,7 +56,7 @@ export default function HeroBannerSlider() {
                 <Swiper
                     modules={[Autoplay, Pagination]}
                     autoplay={{ delay: 5000 }}
-                    
+                    speed={1000}
                     pagination={{ clickable: true }}
                     loop
                     className="rounded-lg"

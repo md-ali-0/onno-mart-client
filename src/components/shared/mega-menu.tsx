@@ -13,11 +13,7 @@ export function MegaMenu() {
     ]);
 
     if (isLoading) {
-        return (
-            <div className="absolute left-1/2 -translate-x-1/2 top-full z-50 bg-white py-4 shadow-lg rounded-xl min-w-[550px] flex justify-center items-center">
-                <p className="text-gray-500 font-medium">Loading...</p>
-            </div>
-        );
+        return null
     }
 
     return (

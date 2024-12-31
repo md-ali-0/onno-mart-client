@@ -40,7 +40,7 @@ const EditCategoryDialog = ({
         defaultValues: category || {
             name: "",
             slug: "",
-            icon: "",
+            image: "",
         },
         values: category || undefined,
     });
@@ -74,7 +74,7 @@ const EditCategoryDialog = ({
             category || {
                 name: "",
                 slug: "",
-                icon: "",
+                image: "",
             }
         );
     }, [category, reset]);
@@ -82,8 +82,20 @@ const EditCategoryDialog = ({
     const onSubmit = async (data: Category) => {
         const loadingToast = toast.loading("Category is Updating...");
 
+        const formData = new FormData();
+
+        const categoryData = {
+            name: data.name,
+            slug: data.slug,
+        };
+
+        if ((data.image as any) instanceof File) {
+            formData.append("image", data.image);
+        }
+        formData.append("data", JSON.stringify(categoryData));
+
         if (category) {
-            await updatecategory({ data, id: category?.id });
+            await updatecategory({ formData, id: category?.id });
         }
         onClose();
         toast.dismiss(loadingToast);
@@ -143,21 +155,23 @@ const EditCategoryDialog = ({
                                 </FormItem>
                             )}
                         />
-
                         <FormField
                             control={form.control}
-                            name="icon"
+                            name="image"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel htmlFor="icon">
-                                        Category Icon
+                                    <FormLabel htmlFor="image">
+                                        Image
                                     </FormLabel>
                                     <FormControl>
                                         <Input
-                                            id="icon"
-                                            placeholder="Enter Category Icon"
-                                            {...field}
-                                            required
+                                            id="image"
+                                            type="file"
+                                            onChange={(e) =>
+                                                field.onChange(
+                                                    e.target.files?.[0]
+                                                )
+                                            }
                                         />
                                     </FormControl>
                                     <FormMessage />
