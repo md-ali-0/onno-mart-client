@@ -3,35 +3,59 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { clearCart } from "@/redux/features/cart/cartSlice";
+import { useGetSingleCouponMutation } from "@/redux/features/coupon/couponApi";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { ErrorResponse } from "@/types";
+import { SerializedError } from "@reduxjs/toolkit";
 import { ShoppingBag } from "lucide-react";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 import CartProduct from "./cart-product";
 import OrderSummary from "./order-summery";
 
 const CartDetails: React.FC = () => {
     const cart = useAppSelector((state) => state.cart.cart);
-    const [discount, setDiscount] = useState(0)
+    const [discount, setDiscount] = useState(0);
     const dispatch = useAppDispatch();
+    const [checkCoupon, { isLoading, isError, error, isSuccess, data }] = useGetSingleCouponMutation();
 
     const handleClearCart = () => {
         dispatch(clearCart());
     };
+    
+    useEffect(() => {
+        if (isError) {
+            const errorResponse = error as ErrorResponse | SerializedError;
+            const errorMessage =
+                (errorResponse as ErrorResponse)?.data?.message ||
+                "Something Went Wrong";
 
-    const handleDiscount = async (e: FormEvent<HTMLFormElement>)=>{
-        e.preventDefault()
-        const formData = new FormData(e.currentTarget)
-        const cuponCode = formData.get("cupon")
-
-        if (cuponCode === "WINTER25") {
-            setDiscount(25)
-            toast.success("Coupon Applied Successfully")
-        } else {
-            toast.error("Coupon Code is Invalid")
+            toast.error(errorMessage);
         }
-    }
+
+        if (isSuccess && data) {
+            if (data?.data?.isActive && new Date(data?.data?.endDate) >= new Date()) {
+                setDiscount(data?.data?.discount);
+                toast.success("Coupon Applied Successfully");
+            } else {
+                toast.error("Coupon has expired or is no longer active");
+            }
+        }
+    }, [isError, isSuccess, error, data]);
+
+    const handleDiscount = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const couponCode = formData.get("cupon") as string;
+
+        if (!couponCode) {
+            toast.error("Please enter a coupon code");
+            return;
+        }
+
+        await checkCoupon({ code: couponCode });
+    };
 
     return (
         <>
@@ -76,7 +100,7 @@ const CartDetails: React.FC = () => {
                             <form onSubmit={handleDiscount} className="flex items-center mb-4 md:mb-0">
                                 <Input type="text" placeholder="Coupon code" name="cupon" />
                                 <Button type="submit" className="px-4 py-2 ml-2 w-full md:w-auto">
-                                    Apply coupon
+                                    {isLoading ? "Validating..." : "Apply coupon"}
                                 </Button>
                             </form>
                             <Button

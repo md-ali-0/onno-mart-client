@@ -5,13 +5,12 @@ import { baseApi } from "../../api/baseApi";
 
 const couponApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        getSingleCoupon: builder.query({
-            query: (id) => {
+        getSingleCoupon: builder.mutation({
+            query: (code) => {
                 return {
-                    url: `/coupon/${id}`,
+                    url: `/coupon/${code.code}`,
                 };
             },
-            providesTags: ["coupons"],
         }),
         getAllCoupons: builder.query({
             query: (args) => {
@@ -70,7 +69,7 @@ const couponApi = baseApi.injectEndpoints({
 
 export const {
     useGetAllCouponsQuery,
-    useGetSingleCouponQuery,
+    useGetSingleCouponMutation,
     useCreateCouponMutation,
     useDeleteCouponMutation,
     useUpdateCouponMutation

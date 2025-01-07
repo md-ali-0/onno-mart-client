@@ -17,6 +17,7 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 type CouponFormValues = {
     code: string;
@@ -62,7 +63,17 @@ export default function CouponForm() {
 
     const onSubmit = async (data: CouponFormValues) => {
         const loadingToast = toast.loading("Creating Coupon...");
-        await createCoupon(data);
+        const couponData = {
+            code: data.code,
+            discount: Number(data.discount),
+            description: data.description,
+            type: data.type,
+            startDate: new Date(data.startDate),
+            endDate: new Date(data.endDate),
+            isActive: data.isActive,
+        };
+
+        await createCoupon(couponData);
         toast.dismiss(loadingToast);
     };
 
@@ -135,19 +146,24 @@ export default function CouponForm() {
                             <FormItem>
                                 <FormLabel htmlFor="type">Coupon Type</FormLabel>
                                 <FormControl>
-                                    <select
-                                        id="type"
-                                        className="border rounded-md p-2 w-full"
-                                        {...field}
-                                        required
-                                    >
-                                        <option value={CouponType.FIXED_AMOUNT}>
-                                            Fixed Amount
-                                        </option>
-                                        <option value={CouponType.PERCENTAGE}>
-                                            Percentage
-                                        </option>
-                                    </select>
+                                <Select
+                                            onValueChange={(value) =>
+                                                field.onChange(value as "FIXED_AMOUNT" | "PERCENTAGE")
+                                            }
+                                            required
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select Type" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="FIXED_AMOUNT">
+                                                    Fixed
+                                                </SelectItem>
+                                                <SelectItem value="PERCENTAGE">
+                                                    Percentage
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

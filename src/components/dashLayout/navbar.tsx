@@ -56,7 +56,7 @@ const DashNavbar: FC<DashNavbarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                     </svg>
                 </button>
 
-                <div className="relative">
+                <div className="relative hidden md:block">
                     <div className="absolute inset-y-0 start-0 flex items-center pointer-events-none z-20 ps-3.5">
                         <Search className="shrink-0 size-4 text-gray-400 dark:text-white/60" />
                     </div>

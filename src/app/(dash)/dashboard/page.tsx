@@ -6,8 +6,18 @@ import {
     ChartTooltip,
     ChartTooltipContent,
 } from "@/components/ui/chart";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { useGetBestSellingProductsQuery, useGetTopRatedProductsQuery } from "@/redux/features/product/productApi";
+import {
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableHeader,
+    TableRow,
+} from "@/components/ui/table";
+import {
+    useGetBestSellingProductsQuery,
+    useGetTopRatedProductsQuery,
+} from "@/redux/features/product/productApi";
 import { useGetDashboardStatisticsQuery } from "@/redux/features/statistics/statisticsApi";
 import { Product } from "@/types";
 import { useEffect } from "react";
@@ -41,7 +51,7 @@ export default function Dashboard() {
     }
     return (
         <div className="flex-col md:flex">
-            <div className="flex-1 space-y-4 p-8 pt-6">
+            <div className="flex-1 space-y-4 sm:p-8 pt-6">
                 <div className="flex items-center justify-between space-y-2">
                     <h2 className="text-3xl font-bold tracking-tight">
                         Dashboard
@@ -155,8 +165,8 @@ export default function Dashboard() {
                             </CardContent>
                         </Card>
                     </div>
-                    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                        <Card className="col-span-4">
+                    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
+                        <Card className="sm:col-span-4">
                             <CardHeader>
                                 <CardTitle>Total Sales</CardTitle>
                             </CardHeader>
@@ -168,7 +178,7 @@ export default function Dashboard() {
                                             color: "#4CAF50",
                                         },
                                     }}
-                                    className="h-[300px]"
+                                    className="sm:h-[300px]"
                                 >
                                     <ResponsiveContainer
                                         width="100%"
@@ -195,7 +205,7 @@ export default function Dashboard() {
                                 </ChartContainer>
                             </CardContent>
                         </Card>
-                        <Card className="col-span-3">
+                        <Card className="sm:col-span-3">
                             <CardHeader>
                                 <CardTitle>Order Status Distribution</CardTitle>
                             </CardHeader>
@@ -274,7 +284,7 @@ export default function Dashboard() {
                             </CardContent>
                         </Card>
                     </div>
-                    <div className="grid gap-4 md:grid-cols-2">
+                    <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                         <Card>
                             <CardHeader>
                                 <CardTitle>Best Selling Products</CardTitle>
@@ -283,33 +293,44 @@ export default function Dashboard() {
                                 {isBestSellingLoading ? (
                                     <p>Loading...</p>
                                 ) : (
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead>Name</TableHead>
-                                                <TableHead>Price</TableHead>
-                                                <TableHead>Sold</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {(bestSellingProducts as { data: Product[] })?.data?.map(
-                                                (product: Product) => (
-                                                    <TableRow key={product.id}>
-                                                        <TableCell>
-                                                            {product?.name}
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            ${product?.price}
-                                                        </TableCell>
-                                                        <TableCell>
-                                                            {product?.OrderItem?.length || 0}
-                                                            
-                                                        </TableCell>
-                                                    </TableRow>
-                                                )
-                                            )}
-                                        </TableBody>
-                                    </Table>
+                                    <div className="overflow-x-auto">
+                                        <Table className="sm:min-w-full overflow-x-auto">
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead>Name</TableHead>
+                                                    <TableHead>Price</TableHead>
+                                                    <TableHead>Sold</TableHead>
+                                                </TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {(
+                                                    bestSellingProducts as {
+                                                        data: Product[];
+                                                    }
+                                                )?.data?.map(
+                                                    (product: Product) => (
+                                                        <TableRow
+                                                            key={product.id}
+                                                        >
+                                                            <TableCell>
+                                                                {product?.name}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                $
+                                                                {product?.price}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {product
+                                                                    ?.OrderItem
+                                                                    ?.length ||
+                                                                    0}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )
+                                                )}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
                                 )}
                             </CardContent>
                         </Card>
@@ -321,30 +342,42 @@ export default function Dashboard() {
                                 {isTopRatedLoading ? (
                                     <p>Loading...</p>
                                 ) : (
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead>Name</TableHead>
-                                                <TableHead>Price</TableHead>
-                                                <TableHead>Rating</TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            {(topRatedProducts as { data: Product[] })?.data?.map((product: Product) => (
-                                                <TableRow key={product.id}>
-                                                    <TableCell>
-                                                        {product.name}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        ${product.price}
-                                                    </TableCell>
-                                                    <TableCell>
-                                                        {product.rating}
-                                                    </TableCell>
+                                    <div className="overflow-x-auto">
+                                        <Table className="sm:min-w-full overflow-x-auto">
+                                            <TableHeader>
+                                                <TableRow>
+                                                    <TableHead>Name</TableHead>
+                                                    <TableHead>Price</TableHead>
+                                                    <TableHead>
+                                                        Rating
+                                                    </TableHead>
                                                 </TableRow>
-                                            ))}
-                                        </TableBody>
-                                    </Table>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {(
+                                                    topRatedProducts as {
+                                                        data: Product[];
+                                                    }
+                                                )?.data?.map(
+                                                    (product: Product) => (
+                                                        <TableRow
+                                                            key={product.id}
+                                                        >
+                                                            <TableCell>
+                                                                {product.name}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                ${product.price}
+                                                            </TableCell>
+                                                            <TableCell>
+                                                                {product.rating}
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    )
+                                                )}
+                                            </TableBody>
+                                        </Table>
+                                    </div>
                                 )}
                             </CardContent>
                         </Card>

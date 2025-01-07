@@ -1,4 +1,5 @@
-'use client'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+"use client";
 
 import { signin } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
@@ -6,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useSession } from "@/provider/session-provider";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Checkbox } from "../ui/checkbox";
@@ -22,17 +23,29 @@ const SignInForm: React.FC = () => {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<FormValues>();
 
     const router = useRouter();
     const { setIsLoading } = useSession();
 
-    const handleQuickLogin = async (email: string, password: string) => {
-        setIsLoading(true)
-        
-        const response = await signin({ email, password, rememberMe: false });
-        
+    const [credentials, setCredentials] = useState({
+        email: "",
+        password: "",
+    });
+
+    const handleQuickSetCredentials = (email: string, password: string) => {
+        setCredentials({ email, password });
+        setValue("email", email);
+        setValue("password", password);
+        toast.success(`Credentials set for ${email}`);
+    };
+
+    const onSubmit: SubmitHandler<FormValues> = async (data) => {
+        setIsLoading(true);
+        const response = await signin(data);
+
         if (response.success) {
             toast.success(`Logged In Successfully`);
             router.push("/");
@@ -40,11 +53,7 @@ const SignInForm: React.FC = () => {
         } else {
             toast.error(response?.message || "Login failed");
         }
-    };
-
-    const onSubmit: SubmitHandler<FormValues> = async (data) => {
-        
-        handleQuickLogin(data.email, data.password);
+        setIsLoading(false);
     };
 
     return (
@@ -131,29 +140,38 @@ const SignInForm: React.FC = () => {
                 </p>
             </form>
 
-            {/* One-click login buttons */}
+            {/* Quick login credentials */}
             <div className="mt-8 space-y-4">
-                <Button
-                    onClick={() => handleQuickLogin("admin@gmail.com", "123456")}
-                    className="w-full bg-blue-600 text-white"
-                    variant={'default'}
-                >
-                    Login as Admin
-                </Button>
-                <Button
-                    onClick={() => handleQuickLogin("vendor1@gmail.com", "123456")}
-                    className="w-full bg-green-600 text-white"
-                    variant={'default'}
-                >
-                    Login as Vendor
-                </Button>
-                <Button
-                    onClick={() => handleQuickLogin("ali@gmail.com", "123456")}
-                    className="w-full bg-purple-600 text-white"
-                    variant={'default'}
-                >
-                    Login as Customer
-                </Button>
+                <div className="flex items-center justify-between bg-blue-100 p-3 rounded-lg">
+                    <span className="text-blue-800">Admin: admin@gmail.com / 123456</span>
+                    <Button
+                        onClick={() => handleQuickSetCredentials("admin@gmail.com", "123456")}
+                        className="bg-blue-600 text-white"
+                        variant="default"
+                    >
+                        Copy Admin
+                    </Button>
+                </div>
+                <div className="flex items-center justify-between bg-green-100 p-3 rounded-lg">
+                    <span className="text-green-800">Vendor: vendor1@gmail.com / 123456</span>
+                    <Button
+                        onClick={() => handleQuickSetCredentials("vendor1@gmail.com", "123456")}
+                        className="bg-green-600 text-white"
+                        variant="default"
+                    >
+                        Copy Vendor
+                    </Button>
+                </div>
+                <div className="flex items-center justify-between bg-purple-100 p-3 rounded-lg">
+                    <span className="text-purple-800">Customer: ali@gmail.com / 123456</span>
+                    <Button
+                        onClick={() => handleQuickSetCredentials("ali@gmail.com", "123456")}
+                        className="bg-purple-600 text-white"
+                        variant="default"
+                    >
+                        Copy Customer
+                    </Button>
+                </div>
             </div>
         </div>
     );

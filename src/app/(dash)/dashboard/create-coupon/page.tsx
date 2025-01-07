@@ -1,4 +1,4 @@
-import BrandForm from "@/components/dash-form/brand-form";
+import CouponForm from "@/components/dash-form/coupon-form";
 import BreadcrumbDash from "@/components/shared/breadcumb-dash";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -18,7 +18,7 @@ const CreateCoupon: FC = () => {
                     </Button>
                 </div>
                 <div className="p-7">
-                    <BrandForm />
+                    <CouponForm />
                 </div>
             </div>
         </div>
