@@ -13,7 +13,8 @@ everything from one dashboard.
 | Area | Routes |
 | --- | --- |
 | Shopping | `/`, `/products`, `/product/[slug]`, `/shops`, `/shop`, `/flash-sale`, `/compare` |
-| Account | `/auth/signin`, `/auth/signup`, `/auth/signup-vendor`, `/auth/forgot-password` |
+| Account | `/auth/signin`, `/auth/signup`, `/auth/vendor-signup`, `/auth/forgot-password` |
+| Shop pages | `/shop/[id]` (canonical; `/shop?shopId=…` redirects here) |
 | Customer area | `/user/dashboard`, `/user/purchased-items`, `/user/my-reviews`, `/user/favorite-seller`, `/user/recent-view-products` |
 | Vendor + admin | `/dashboard` and its children — products, categories, brands, coupons, orders, reviews, newsletter, users, shops |
 | Checkout | `/cart`, `/payment/success`, `/payment/cancel`, `/payment/failed` |

@@ -17,6 +17,21 @@ export async function getShops(
     );
 }
 
+export async function getShopById(id: string): Promise<Shop | null> {
+    try {
+        const result = await apiGet<{ data?: Shop }>(
+            `/shop/${encodeURIComponent(id)}`,
+            {
+                tags: [cacheTags.shops, cacheTags.shop(id)],
+                revalidate: REVALIDATE.shops,
+            }
+        );
+        return result?.data ?? null;
+    } catch {
+        return null;
+    }
+}
+
 export async function getProducts(
     page: number,
     limit: number = 6,

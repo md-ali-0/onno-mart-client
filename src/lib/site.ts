@@ -40,7 +40,7 @@ export const site = {
         cart: "/cart",
         signin: "/auth/signin",
         signup: "/auth/signup",
-        vendorSignup: "/auth/signup-vendor",
+        vendorSignup: "/auth/vendor-signup",
     },
 } as const;
 
