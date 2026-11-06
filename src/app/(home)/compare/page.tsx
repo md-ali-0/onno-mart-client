@@ -1,5 +1,6 @@
 "use client";
 
+import { formatPrice } from "@/lib/format";
 import Breadcumb from "@/components/shared/breadcumb";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -116,7 +117,7 @@ export default function ProductComparisonDemo() {
                                                 key={product.id}
                                                 className="text-center"
                                             >
-                                                ${product.price}
+                                                {formatPrice(product.price)}
                                                 {product.discount > 0 && (
                                                     <span className="text-green-600 ml-2">
                                                         ({product.discount}%

@@ -1,5 +1,6 @@
 "use client";
 
+import { formatPrice } from "@/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
     ChartContainer,
@@ -316,8 +317,7 @@ export default function Dashboard() {
                                                                 {product?.name}
                                                             </TableCell>
                                                             <TableCell>
-                                                                $
-                                                                {product?.price}
+                                                                {formatPrice(product?.price ?? 0)}
                                                             </TableCell>
                                                             <TableCell>
                                                                 {product
@@ -367,7 +367,7 @@ export default function Dashboard() {
                                                                 {product.name}
                                                             </TableCell>
                                                             <TableCell>
-                                                                ${product.price}
+                                                                {formatPrice(product.price)}
                                                             </TableCell>
                                                             <TableCell>
                                                                 {product.rating}

@@ -1,5 +1,6 @@
 "use client";
 
+import { formatPrice } from "@/lib/format";
 import { Input } from "@/components/ui/input";
 import { useSession } from "@/provider/session-provider";
 import { clearCart } from "@/redux/features/cart/cartSlice";
@@ -283,7 +284,7 @@ export default function CheckoutPage() {
                                             </h5>
                                         </div>
                                         <p className="text-slate-400 font-semibold">
-                                            ${catItem.price}
+                                            {formatPrice(catItem.price)}
                                         </p>
                                     </div>
                                 ))}
@@ -295,17 +296,17 @@ export default function CheckoutPage() {
                                         </h5>
                                     </div>
                                     <p className="text-red-600 font-semibold">
-                                        -$ {discountPrice.toFixed(2)}
+                                        -{formatPrice(discountPrice)}
                                     </p>
                                 </div>
                                 <div className="p-3 flex justify-between items-center border mb-1">
                                     <div>
                                         <h5 className="font-semibold">
-                                            Total (USD)
+                                            Total (BDT)
                                         </h5>
                                     </div>
                                     <p className="font-semibold">
-                                        $ {totalPriceAfterDiscount.toFixed(2)}
+                                        {formatPrice(totalPriceAfterDiscount)}
                                     </p>
                                 </div>
                             </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { formatPrice } from "@/lib/format";
 import { useGetAllOrdersQuery } from "@/redux/features/order/orderApi";
 import { Order, TMeta } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
@@ -47,7 +48,7 @@ const ManageTransectionsTable: FC = () => {
             accessorKey: "totalAmount",
             header: "Total Price",
             cell: ({ row }) => {
-                return <span>${row.original.totalAmount}</span>;
+                return <span>{formatPrice(Number(row.original.totalAmount))}</span>;
             },
         },
         {

@@ -1,5 +1,6 @@
 "use client";
 
+import { discountedPrice, formatPrice } from "@/lib/format";
 import { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -59,10 +60,7 @@ export default function RecentViewProducts() {
                                     </Link>
                                 </td>
                                 <td className="border border-gray-300 px-4 py-2">
-                                    ${(
-                                        product.price -
-                                        (product.price * product.discount) / 100
-                                    ).toFixed(2)}
+                                    {formatPrice(discountedPrice(product))}
                                 </td>
                                 <td className="border border-gray-300 px-4 py-2">
                                     {product.discount > 0

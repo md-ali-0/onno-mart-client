@@ -80,3 +80,40 @@ export async function getSaleProducts(): Promise<Product[] | []> {
     );
     return result?.data ?? [];
 }
+
+/**
+ * Ranked collections used by the home page tabs. These used to be fetched by a
+ * client-side Redux query, which meant the products never reached the HTML.
+ * A failed API call degrades to an empty section instead of failing the build.
+ */
+export async function getRankedProducts(
+    kind: "best-selling" | "top-rated",
+    limit = 4
+): Promise<Product[]> {
+    try {
+        const result = await apiGet<{ data?: Product[] }>(
+            `/product/${kind}${buildQuery({ limit })}`,
+            { tags: [cacheTags.products], revalidate: REVALIDATE.catalogue }
+        );
+        return result?.data ?? [];
+    } catch {
+        return [];
+    }
+}
+
+export async function getRecentProducts(limit = 8): Promise<Product[]> {
+    try {
+        const result = await apiGet<{ data?: Product[] }>(
+            `/product${buildQuery({
+                page: 1,
+                limit,
+                sortBy: "createdAt",
+                sortOrder: "desc",
+            })}`,
+            { tags: [cacheTags.products], revalidate: REVALIDATE.catalogue }
+        );
+        return result?.data ?? [];
+    } catch {
+        return [];
+    }
+}

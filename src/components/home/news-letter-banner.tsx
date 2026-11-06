@@ -1,164 +1,47 @@
-"use client";
+import { BellRing, ShieldCheck, Tag } from "lucide-react";
+import NewsletterFields from "./newsletter-fields";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { useCreateNewsletterMutation } from "@/redux/features/newsletter/newsletterApi";
-import { ErrorResponse } from "@/types";
-import { SerializedError } from "@reduxjs/toolkit";
-import { motion } from "framer-motion";
-import { CheckCircle, Send, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+const perks = [
+    { icon: Tag, label: "Price drops first" },
+    { icon: BellRing, label: "One email a week" },
+    { icon: ShieldCheck, label: "No spam, ever" },
+];
 
-export default function NewsletterForm() {
-    const [email, setEmail] = useState("");
-    const [agreed, setAgreed] = useState(false);
-    const [submitNewsletter, { isSuccess, isLoading, isError, error }] =
-        useCreateNewsletterMutation();
-
-    useEffect(() => {
-        if (isError) {
-            const errorResponse = error as ErrorResponse | SerializedError;
-
-            const errorMessage =
-                (errorResponse as ErrorResponse)?.data?.message ||
-                "Something Went Wrong";
-            if (errorMessage === "Duplicate Key error") {
-                toast.error("You Already Subscribed");
-                return;
-            }
-            toast.error(errorMessage);
-        }
-        if (isSuccess) {
-            toast.success("User Created Successfully");
-        }
-    }, [error, isError, isSuccess]);
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!email || !agreed) {
-            toast.error("Please fill in all fields and accept the terms");
-            return;
-        }
-
-        await submitNewsletter({email})
-    };
-
+/** Server wrapper: the copy is static HTML, only the form hydrates. */
+export default function NewsletterSection() {
     return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="container mx-auto py-8"
-        >
-            <div className="bg-primary rounded-xl px-4 sm:px-8 py-5">
-                {!isSuccess ? (
-                    <>
-                        <div className="text-center mb-3.5">
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="text-primary/80 font-medium mb-2 flex items-center justify-center gap-2"
-                            >
-                                <Sparkles className="w-4 h-4" />
-                                SUBSCRIBE AREA
-                                <Sparkles className="w-4 h-4" />
-                            </motion.div>
-                            <motion.h2
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.2 }}
-                                className="text-4xl font-bold tracking-tight text-white mb-4"
-                            >
-                                Sign Up For Latest News
-                            </motion.h2>
-                            <motion.p
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.3 }}
-                                className="text-white"
-                            >
-                                Join our newsletter and stay updated with the
-                                latest trends and insights.
-                            </motion.p>
-                        </div>
-
-                        <motion.form
-                            onSubmit={handleSubmit}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.4 }}
-                            className="space-y-6"
-                        >
-                            <div className="relative max-w-md mx-auto">
-                                <Input
-                                    type="email"
-                                    placeholder="Enter your email address"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="h-12 pl-4 pr-32 text-base"
-                                    required
-                                />
-                                <Button
-                                    type="submit"
-                                    disabled={isLoading || !email || !agreed}
-                                    className="absolute right-1 top-1 h-10"
-                                >
-                                    {isLoading ? (
-                                        <motion.div
-                                            animate={{ rotate: 360 }}
-                                            transition={{
-                                                duration: 1,
-                                                repeat: Infinity,
-                                                ease: "linear",
-                                            }}
-                                        >
-                                            <Send className="w-4 h-4 mr-2" />
-                                        </motion.div>
-                                    ) : (
-                                        <>
-                                            <Send className="w-4 h-4 mr-2" />
-                                            Subscribe
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
-
-                            <div className="flex justify-center items-center space-x-2">
-                                <Checkbox
-                                    id="terms"
-                                    className="border-white bg-white"
-                                    checked={agreed}
-                                    onCheckedChange={(checked) =>
-                                        setAgreed(checked as boolean)
-                                    }
-                                />
-                                <label
-                                    htmlFor="terms"
-                                    className="text-sm text-white leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                >
-                                    I agree to the terms of service
-                                </label>
-                            </div>
-                        </motion.form>
-                    </>
-                ) : (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="text-center space-y-4 p-8"
-                    >
-                        <CheckCircle className="w-16 h-16 text-white mx-auto" />
-                        <h3 className="text-2xl font-semibold text-white">
-                            Thank You for Subscribing!
-                        </h3>
-                        <p className="text-white">
-                            We&apos;ll keep you updated with the latest news and
-                            updates.
+        <section id="newsletter" className="section scroll-mt-24 pt-0">
+            <div className="container-page">
+                <div className="surface-muted grid gap-8 rounded-2xl border px-6 py-8 sm:px-10 sm:py-10 lg:grid-cols-[1fr_0.9fr] lg:items-center lg:gap-14">
+                    <div>
+                        <p className="eyebrow">Stay in the loop</p>
+                        <h2 className="section-heading mt-2">
+                            Deals worth opening an email for.
+                        </h2>
+                        <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
+                            New arrivals, genuine price drops and offers from
+                            verified shops — once a week, nothing more.
                         </p>
-                    </motion.div>
-                )}
+
+                        <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
+                            {perks.map(({ icon: Icon, label }) => (
+                                <li
+                                    key={label}
+                                    className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
+                                >
+                                    <Icon
+                                        className="h-3.5 w-3.5 text-primary"
+                                        aria-hidden
+                                    />
+                                    {label}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+
+                    <NewsletterFields />
+                </div>
             </div>
-        </motion.div>
+        </section>
     );
 }

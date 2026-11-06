@@ -1,6 +1,7 @@
 "use client";
 
 
+import { formatPrice } from "@/lib/format";
 import { useGetAllOrdersQuery } from "@/redux/features/order/orderApi";
 import { useGetMeQuery } from "@/redux/features/user/userApi";
 import { Order, TMeta } from "@/types";
@@ -63,7 +64,7 @@ const ManageOrderHistoryTable: FC = () => {
                 return (
                     <span
                     >
-                        $ {row.original.totalAmount}
+                        {formatPrice(Number(row.original.totalAmount))}
                     </span>
                 );
             },

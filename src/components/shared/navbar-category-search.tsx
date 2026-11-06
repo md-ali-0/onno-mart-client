@@ -7,72 +7,66 @@ import { FormEvent, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export default function NavbarCategorySearch() {
-    const { data, isError, isLoading, isSuccess, error } =
-        useGetAllCategoriesQuery([
-            {
-                name: "limit",
-                value: 999,
-            },
-        ]);
-
+    const { data, isError } = useGetAllCategoriesQuery([
+        { name: "limit", value: 999 },
+    ]);
     const router = useRouter();
     const [searchTerm, setSearchTerm] = useState("");
     const [categoryId, setCategoryId] = useState("");
 
     useEffect(() => {
-        if (isError) {
-            toast.error("Something Went Wrong");
-        }
-    }, [isError, isSuccess, error]);
+        if (isError) toast.error("Could not load categories");
+    }, [isError]);
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
         const query = new URLSearchParams({
             ...(categoryId && { categoryId }),
             ...(searchTerm && { searchTerm }),
         }).toString();
-
-        router.push(`/products?${query}`);
+        router.push(`/products${query ? `?${query}` : ""}`);
     };
 
     return (
-        <form className="hidden w-full lg:flex" onSubmit={handleSubmit}>
-            <div className="relative flex items-center w-full border rounded-md border-stroke dark:border-dark-3 bg-gray-2 dark:bg-dark-2">
-                <div className="relative border-r border-stroke dark:border-dark-3">
-                    <select
-                        name="categoryId"
-                        className="appearance-none bg-transparent pr-10 pl-[22px] py-2 text-base font-medium text-dark dark:text-white outline-none"
-                        disabled={isLoading}
-                        onChange={(e) => setCategoryId(e.target.value)}
-                    >
-                        <option value="" className="dark:bg-dark-2">
-                            All categories
+        <form onSubmit={handleSubmit} role="search" className="w-full">
+            <div className="flex h-11 w-full items-stretch overflow-hidden rounded-lg border bg-surface">
+                <label htmlFor="nav-category" className="sr-only">
+                    Category
+                </label>
+                <select
+                    id="nav-category"
+                    name="categoryId"
+                    disabled={!data?.data?.length}
+                    onChange={(event) => setCategoryId(event.target.value)}
+                    className="hidden max-w-[9.5rem] shrink-0 border-r bg-transparent px-3 text-sm font-medium outline-none sm:block"
+                >
+                    <option value="">All categories</option>
+                    {(data?.data ?? []).map((category) => (
+                        <option key={category.id} value={category.slug}>
+                            {category.name}
                         </option>
-                        {data?.data?.map((category) => (
-                            <option
-                                key={category?.id}
-                                value={category?.slug}
-                                className="dark:bg-dark-2"
-                            >
-                                {category?.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                    ))}
+                </select>
+
+                <label htmlFor="nav-search" className="sr-only">
+                    Search products
+                </label>
                 <input
+                    id="nav-search"
                     type="search"
                     name="searchTerm"
-                    placeholder="I'm shopping for..."
-                    className="w-full bg-transparent py-2 pl-6 pr-[58px] text-base outline-none"
+                    placeholder="What are you looking for?"
                     value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onChange={(event) => setSearchTerm(event.target.value)}
+                    className="min-w-0 flex-1 bg-transparent px-3 text-sm outline-none placeholder:text-muted-foreground"
                 />
+
                 <button
                     type="submit"
-                    className="absolute top-0 right-0 flex h-full w-[52px] items-center justify-center rounded-tr-md rounded-br-md border border-primary bg-primary text-white"
+                    aria-label="Search"
+                    className="flex w-12 shrink-0 items-center justify-center bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
                 >
-                    <Search />
+                    <Search className="h-4 w-4" aria-hidden />
                 </button>
             </div>
         </form>

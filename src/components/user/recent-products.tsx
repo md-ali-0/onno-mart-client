@@ -1,5 +1,6 @@
 "use client";
 
+import { formatPrice } from "@/lib/format";
 import { DataTable } from "@/components/data-table/data-table";
 import { Badge } from "@/components/ui/badge";
 import { useSession } from "@/provider/session-provider";
@@ -71,7 +72,7 @@ export default function RecentProducts() {
             accessorKey: "totalAmount",
             header: "Total Price",
             cell: ({ row }) => {
-                return <span>$ {row.original.totalAmount}</span>;
+                return <span>{formatPrice(Number(row.original.totalAmount))}</span>;
             },
         },
 

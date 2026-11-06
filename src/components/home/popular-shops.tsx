@@ -1,5 +1,6 @@
 "use client";
 
+import { discountedPrice, formatPrice } from "@/lib/format";
 import { useGetAllFavoriteShopsQuery } from "@/redux/features/user/userApi";
 import { Shop } from "@/types";
 import Image from "next/image";
@@ -76,17 +77,13 @@ export default function PopularShops() {
                                                     </span>
                                                 </div>
                                                 <div className="text-right">
-                                                    {product.price && (
+                                                    {product.discount > 0 && (
                                                         <span className="text-sm text-gray-400 line-through">
-                                                            ${product.price}
+                                                            {formatPrice(product.price)}
                                                         </span>
                                                     )}
                                                     <span className="text-sm font-semibold ml-1">
-                                                        $
-                                                        {product?.price -
-                                                            (product?.price *
-                                                                product?.discount) /
-                                                                100}
+                                                        {formatPrice(discountedPrice(product))}
                                                     </span>
                                                 </div>
                                             </div>
