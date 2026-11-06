@@ -20,13 +20,13 @@ const VARIANTS = {
     primary: "h-10 px-5 text-sm bg-primary text-primary-foreground hover:bg-primary/90",
     subtle: "h-10 px-4 text-sm bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground",
     outline: "h-10 px-4 text-sm border border-input bg-transparent hover:bg-secondary",
-    quiet: "h-9 px-4 text-[11px] uppercase tracking-[0.12em] border border-foreground/20 bg-transparent hover:border-foreground hover:bg-foreground hover:text-background",
+    quiet: "h-9 px-4 text-[12px] uppercase tracking-[0.12em] border border-foreground/20 bg-transparent hover:border-foreground hover:bg-foreground hover:text-background",
     /** Square icon-only button used inside product tiles. */
     icon: "h-9 w-9 bg-primary text-primary-foreground hover:bg-primary/90",
     /** Full-width bar revealed on tile hover. */
-    bar: "h-10 w-full bg-foreground text-[10px] uppercase tracking-[0.14em] text-background hover:bg-primary",
+    bar: "h-10 w-full bg-foreground text-[11px] uppercase tracking-[0.14em] text-background hover:bg-primary",
     /** Outlined pill used on product cards. */
-    "outline-primary": "h-9 w-full rounded-full border border-primary/40 bg-transparent px-4 text-[13px] font-medium text-primary hover:border-primary hover:bg-primary hover:text-primary-foreground",
+    "outline-primary": "h-9 w-full rounded-full border border-primary/40 bg-transparent px-4 text-[14px] font-medium text-primary hover:border-primary hover:bg-primary hover:text-primary-foreground",
 } as const;
 
 type AddToCartButtonProps = {

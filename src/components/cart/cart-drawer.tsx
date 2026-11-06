@@ -78,7 +78,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                 )}
             >
                 <header className="flex items-center justify-between border-b px-5 py-4">
-                    <h2 className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em]">
+                    <h2 className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.16em]">
                         <ShoppingBag className="h-4 w-4 text-primary" aria-hidden />
                         Your cart
                         <span className="text-muted-foreground">
@@ -100,16 +100,16 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                         <span className="flex h-14 w-14 items-center justify-center rounded-full bg-accent text-primary">
                             <ShoppingBag className="h-6 w-6" aria-hidden />
                         </span>
-                        <p className="text-[15px] font-semibold">
+                        <p className="text-[16px] font-semibold">
                             Your cart is empty
                         </p>
-                        <p className="text-[13px] text-muted-foreground">
+                        <p className="text-[14px] text-muted-foreground">
                             Browse the shops and add something you like.
                         </p>
                         <Link
                             href="/products"
                             onClick={onClose}
-                            className="mt-3 inline-flex h-11 items-center justify-center bg-foreground px-6 text-[10px] font-medium uppercase tracking-[0.16em] text-background transition-colors hover:bg-primary"
+                            className="mt-3 inline-flex h-11 items-center justify-center bg-foreground px-6 text-[11px] font-medium uppercase tracking-[0.16em] text-background transition-colors hover:bg-primary"
                         >
                             Start shopping
                         </Link>
@@ -137,11 +137,11 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                         <Link
                                             href={`/product/${item.slug}`}
                                             onClick={onClose}
-                                            className="line-clamp-2 text-[13px] font-semibold leading-snug hover:text-primary"
+                                            className="line-clamp-2 text-[14px] font-semibold leading-snug hover:text-primary"
                                         >
                                             {item.name}
                                         </Link>
-                                        <p className="mt-0.5 truncate text-[11px] text-muted-foreground">
+                                        <p className="mt-0.5 truncate text-[12px] text-muted-foreground">
                                             {item.shop?.name}
                                         </p>
 
@@ -161,7 +161,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                                 >
                                                     <Minus className="h-3 w-3" />
                                                 </button>
-                                                <span className="w-6 text-center text-[12px] font-semibold tabular-nums">
+                                                <span className="w-6 text-center text-[13px] font-semibold tabular-nums">
                                                     {item.quantity}
                                                 </span>
                                                 <button
@@ -181,7 +181,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                             </div>
 
                                             <div className="flex items-center gap-2">
-                                                <span className="text-[13px] font-bold tabular-nums">
+                                                <span className="text-[14px] font-bold tabular-nums">
                                                     {formatPrice(
                                                         discountedPrice(item) *
                                                             item.quantity
@@ -210,28 +210,28 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
 
                         <footer className="border-t px-5 py-4">
                             <div className="flex items-baseline justify-between">
-                                <span className="text-[13px] text-muted-foreground">
+                                <span className="text-[14px] text-muted-foreground">
                                     Subtotal
                                 </span>
                                 <span className="text-[18px] font-bold tabular-nums">
                                     {formatPrice(subtotal)}
                                 </span>
                             </div>
-                            <p className="mt-1 text-[11px] text-muted-foreground">
+                            <p className="mt-1 text-[12px] text-muted-foreground">
                                 Delivery calculated at checkout.
                             </p>
 
                             <Link
                                 href="/checkout"
                                 onClick={onClose}
-                                className="mt-5 flex h-12 items-center justify-center bg-foreground text-[10px] font-medium uppercase tracking-[0.18em] text-background transition-colors hover:bg-primary"
+                                className="mt-5 flex h-12 items-center justify-center bg-foreground text-[11px] font-medium uppercase tracking-[0.18em] text-background transition-colors hover:bg-primary"
                             >
                                 Checkout
                             </Link>
                             <Link
                                 href="/cart"
                                 onClick={onClose}
-                                className="mt-2 flex h-11 items-center justify-center border text-[10px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-secondary"
+                                className="mt-2 flex h-11 items-center justify-center border text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-secondary"
                             >
                                 View full cart
                             </Link>

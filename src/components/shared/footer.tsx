@@ -48,11 +48,11 @@ export default function Footer() {
                 <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:gap-12">
                     <div>
                         <Link href="/" aria-label="OnnoMart home" className="inline-block">
-                            <span className="font-display text-[24px] leading-none tracking-[-0.02em] text-navy-foreground">
+                            <span className="font-display text-[26px] leading-none tracking-[-0.02em] text-navy-foreground">
                                 OnnoMart
                             </span>
                         </Link>
-                        <p className="mt-5 max-w-xs text-[13px] leading-[1.8] text-navy-foreground/60">
+                        <p className="mt-5 max-w-xs text-[14px] leading-[1.8] text-navy-foreground/60">
                             A multi-vendor marketplace in Dhaka. Verified shops,
                             honest prices, and a return policy that does not
                             require an argument.
@@ -77,7 +77,7 @@ export default function Footer() {
 
                     {columns.map((column) => (
                         <div key={column.title}>
-                            <h2 className="text-[13px] font-semibold text-navy-foreground">
+                            <h2 className="text-[14px] font-semibold text-navy-foreground">
                                 {column.title}
                             </h2>
                             <ul className="mt-4 space-y-2.5">
@@ -85,7 +85,7 @@ export default function Footer() {
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
-                                            className="text-[13px] text-navy-foreground/60 transition-colors hover:text-primary-foreground"
+                                            className="text-[14px] text-navy-foreground/60 transition-colors hover:text-primary-foreground"
                                         >
                                             {link.label}
                                         </Link>
@@ -99,7 +99,7 @@ export default function Footer() {
 
             <div className="border-t border-white/10">
                 <div className="container-page flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-[10px] uppercase tracking-[0.14em] text-navy-foreground/45">
+                    <p className="text-[11px] uppercase tracking-[0.14em] text-navy-foreground/45">
                         © {new Date().getFullYear()} {site.legalName} · Dhaka
                     </p>
 
@@ -107,7 +107,7 @@ export default function Footer() {
                         {payments.map((payment) => (
                             <li
                                 key={payment}
-                                className="text-[9px] uppercase tracking-[0.14em] text-navy-foreground/40"
+                                className="text-[10px] uppercase tracking-[0.14em] text-navy-foreground/40"
                             >
                                 {payment}
                             </li>

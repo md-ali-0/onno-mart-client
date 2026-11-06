@@ -46,8 +46,8 @@ export default function NewsletterFields() {
                     aria-hidden
                 />
                 <div>
-                    <p className="text-[15px] font-semibold">You are subscribed</p>
-                    <p className="mt-1 text-[12px] leading-relaxed text-muted-foreground">
+                    <p className="text-[16px] font-semibold">You are subscribed</p>
+                    <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
                         The next round-up goes to {email}. Unsubscribe anytime
                         from the footer of any email.
                     </p>
@@ -71,12 +71,12 @@ export default function NewsletterFields() {
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    className="h-11 w-full flex-1 border-0 border-b border-foreground/25 bg-transparent px-0 text-[13px] outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground"
+                    className="h-11 w-full flex-1 border-0 border-b border-foreground/25 bg-transparent px-0 text-[14px] outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground"
                 />
                 <button
                     type="submit"
                     disabled={isLoading || !email || !agreed}
-                    className="inline-flex h-11 shrink-0 items-center justify-center gap-2 bg-foreground px-7 text-[10px] font-medium uppercase tracking-[0.16em] text-background transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex h-11 shrink-0 items-center justify-center gap-2 bg-foreground px-7 text-[11px] font-medium uppercase tracking-[0.16em] text-background transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     <Send className="h-3.5 w-3.5" aria-hidden />
                     {isLoading ? "Subscribing" : "Subscribe"}
@@ -93,7 +93,7 @@ export default function NewsletterFields() {
                 />
                 <label
                     htmlFor="newsletter-terms"
-                    className="text-[11px] leading-relaxed text-muted-foreground"
+                    className="text-[12px] leading-relaxed text-muted-foreground"
                 >
                     I agree to receive occasional product updates and accept the
                     privacy policy.

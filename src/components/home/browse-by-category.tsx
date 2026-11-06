@@ -30,10 +30,10 @@ export default async function BrowseByCategory() {
                                 className="group flex h-full items-center gap-3 rounded-lg border bg-card p-4 transition-shadow hover:shadow-card"
                             >
                                 <span className="min-w-0 flex-1">
-                                    <span className="block truncate text-[15px] font-semibold transition-colors group-hover:text-primary">
+                                    <span className="block truncate text-[16px] font-semibold transition-colors group-hover:text-primary">
                                         {category.name}
                                     </span>
-                                    <span className="mt-1.5 block text-[12px] leading-relaxed text-muted-foreground">
+                                    <span className="mt-1.5 block text-[13px] leading-relaxed text-muted-foreground">
                                         New arrivals
                                         <br />
                                         Best sellers

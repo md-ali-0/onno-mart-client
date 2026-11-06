@@ -42,10 +42,10 @@ export default function Countdown() {
             {cells.map(([label, value], index) => (
                 <div key={label} className="flex items-start gap-4">
                     <div className="text-center">
-                        <span className="block font-display text-[26px] leading-none tabular-nums text-primary-foreground">
+                        <span className="block font-display text-[28px] leading-none tabular-nums text-primary-foreground">
                             {value}
                         </span>
-                        <span className="mt-1.5 block text-[8px] font-medium uppercase tracking-[0.2em] text-primary-foreground/45">
+                        <span className="mt-1.5 block text-[9px] font-medium uppercase tracking-[0.2em] text-primary-foreground/45">
                             {label}
                         </span>
                     </div>

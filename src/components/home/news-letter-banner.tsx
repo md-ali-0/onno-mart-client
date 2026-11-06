@@ -10,7 +10,7 @@ export default function NewsletterSection() {
                     <h2 className="mt-4 font-display text-[32px] leading-[1.05] tracking-[-0.02em] sm:text-[42px]">
                         Occasional notes, worth reading.
                     </h2>
-                    <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+                    <p className="mt-3 text-[14px] leading-relaxed text-muted-foreground">
                         New arrivals and quiet price drops, once a week. No
                         spam, unsubscribe anytime.
                     </p>

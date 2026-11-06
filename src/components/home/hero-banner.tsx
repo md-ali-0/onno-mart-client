@@ -28,17 +28,17 @@ export default async function HeroBanner() {
                             >
                                 <div className="flex items-center justify-between gap-4 p-6 sm:p-8">
                                     <div className="min-w-0 max-w-[58%]">
-                                        <p className="text-[13px] text-muted-foreground">
+                                        <p className="text-[14px] text-muted-foreground">
                                             {index === 0
                                                 ? "Exclusive offer going"
                                                 : "Limited weekend deal"}
                                         </p>
                                         {index === 0 ? (
-                                            <h1 className="mt-1.5 line-clamp-2 text-[22px] font-bold leading-[1.15] sm:text-[26px]">
+                                            <h1 className="mt-1.5 line-clamp-2 text-[24px] font-bold leading-[1.15] sm:text-[28px]">
                                                 {product.name}
                                             </h1>
                                         ) : (
-                                            <h2 className="mt-1.5 line-clamp-2 text-[22px] font-bold leading-[1.15] sm:text-[26px]">
+                                            <h2 className="mt-1.5 line-clamp-2 text-[24px] font-bold leading-[1.15] sm:text-[28px]">
                                                 {product.name}
                                             </h2>
                                         )}
@@ -47,11 +47,11 @@ export default async function HeroBanner() {
                                             <span className="price-strike">
                                                 {formatPrice(product.price)}
                                             </span>
-                                            <span className="text-[20px] font-bold text-primary">
+                                            <span className="text-[22px] font-bold text-primary">
                                                 {formatPrice(price)}
                                             </span>
                                             {saved > 0 && (
-                                                <span className="rounded-full bg-sale px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-sale-foreground">
+                                                <span className="rounded-full bg-sale px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-sale-foreground">
                                                     Save {saved}%
                                                 </span>
                                             )}
@@ -59,7 +59,7 @@ export default async function HeroBanner() {
 
                                         <Link
                                             href={`/product/${product.slug}`}
-                                            className="mt-6 inline-flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-primary text-[8px] font-semibold uppercase leading-none tracking-wide text-primary-foreground transition-transform hover:scale-105"
+                                            className="mt-6 inline-flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-primary text-[9px] font-semibold uppercase leading-none tracking-wide text-primary-foreground transition-transform hover:scale-105"
                                         >
                                             <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
                                             Shop now

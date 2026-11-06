@@ -89,7 +89,7 @@ export default function Navbar() {
             <header className="sticky top-0 z-50 bg-card shadow-sm">
                 {/* Utility strip */}
                 <div className="border-b">
-                    <div className="container-page flex h-9 items-center justify-between text-[12px] text-muted-foreground">
+                    <div className="container-page flex h-9 items-center justify-between text-[13px] text-muted-foreground">
                         <p className="truncate">
                             Trending now:{" "}
                             <span className="text-foreground">
@@ -149,7 +149,7 @@ export default function Navbar() {
                                 <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-primary">
                                     <Phone className="h-4 w-4" aria-hidden />
                                 </span>
-                                <span className="text-[11px] leading-tight">
+                                <span className="text-[12px] leading-tight">
                                     <span className="block text-muted-foreground">Hotline</span>
                                     <span className="block font-semibold">+880 1700 000000</span>
                                 </span>
@@ -166,7 +166,7 @@ export default function Navbar() {
                                     <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-primary">
                                         <User className="h-4 w-4" aria-hidden />
                                     </span>
-                                    <span className="hidden text-[11px] leading-tight lg:block">
+                                    <span className="hidden text-[12px] leading-tight lg:block">
                                         <span className="block text-muted-foreground">
                                             {session?.isAuth ? "Signed in" : "Log in / Sign up"}
                                         </span>
@@ -185,7 +185,7 @@ export default function Navbar() {
                                                 <Link
                                                     href={session.role === "ADMIN" || session.role === "VENDOR" ? "/dashboard" : "/user/dashboard"}
                                                     onClick={() => setIsDropDownOpen(false)}
-                                                    className="flex items-center gap-2 px-4 py-2 text-[13px] hover:bg-secondary"
+                                                    className="flex items-center gap-2 px-4 py-2 text-[14px] hover:bg-secondary"
                                                 >
                                                     <LayoutGrid className="h-4 w-4 text-muted-foreground" aria-hidden />
                                                     {session.role === "ADMIN" || session.role === "VENDOR"
@@ -195,7 +195,7 @@ export default function Navbar() {
                                                 <Link
                                                     href="/user/purchased-items"
                                                     onClick={() => setIsDropDownOpen(false)}
-                                                    className="flex items-center gap-2 px-4 py-2 text-[13px] hover:bg-secondary"
+                                                    className="flex items-center gap-2 px-4 py-2 text-[14px] hover:bg-secondary"
                                                 >
                                                     <ShoppingBag className="h-4 w-4 text-muted-foreground" aria-hidden />
                                                     Orders
@@ -203,7 +203,7 @@ export default function Navbar() {
                                                 <button
                                                     type="button"
                                                     onClick={handleLogout}
-                                                    className="flex w-full items-center gap-2 border-t px-4 py-2 text-[13px] text-sale hover:bg-secondary"
+                                                    className="flex w-full items-center gap-2 border-t px-4 py-2 text-[14px] text-sale hover:bg-secondary"
                                                 >
                                                     <LogOut className="h-4 w-4" aria-hidden />
                                                     Sign out
@@ -214,7 +214,7 @@ export default function Navbar() {
                                                 <Link
                                                     href="/auth/signin"
                                                     onClick={() => setIsDropDownOpen(false)}
-                                                    className="flex items-center gap-2 px-4 py-2 text-[13px] hover:bg-secondary"
+                                                    className="flex items-center gap-2 px-4 py-2 text-[14px] hover:bg-secondary"
                                                 >
                                                     <LogIn className="h-4 w-4 text-muted-foreground" aria-hidden />
                                                     Sign in
@@ -222,7 +222,7 @@ export default function Navbar() {
                                                 <Link
                                                     href="/auth/signup"
                                                     onClick={() => setIsDropDownOpen(false)}
-                                                    className="flex items-center gap-2 px-4 py-2 text-[13px] hover:bg-secondary"
+                                                    className="flex items-center gap-2 px-4 py-2 text-[14px] hover:bg-secondary"
                                                 >
                                                     <User className="h-4 w-4 text-muted-foreground" aria-hidden />
                                                     Create an account
@@ -240,7 +240,7 @@ export default function Navbar() {
                             >
                                 <ArrowLeftRight className="h-4 w-4" aria-hidden />
                                 {compareCount > 0 && (
-                                    <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-sale px-1 text-[10px] font-bold text-sale-foreground">
+                                    <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-sale px-1 text-[11px] font-bold text-sale-foreground">
                                         {compareCount}
                                     </span>
                                 )}
@@ -254,11 +254,11 @@ export default function Navbar() {
                             >
                                 <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-primary">
                                     <ShoppingCart className="h-4 w-4" aria-hidden />
-                                    <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-sale px-1 text-[10px] font-bold text-sale-foreground">
+                                    <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-sale px-1 text-[11px] font-bold text-sale-foreground">
                                         {cartCount}
                                     </span>
                                 </span>
-                                <span className="hidden text-[11px] leading-tight lg:block">
+                                <span className="hidden text-[12px] leading-tight lg:block">
                                     <span className="block text-muted-foreground">Total cart</span>
                                     <span className="block font-semibold">
                                         {cartCount} item{cartCount === 1 ? "" : "s"}
@@ -280,7 +280,7 @@ export default function Navbar() {
                                             href={link.href}
                                             aria-current={isActive(path, link.href) ? "page" : undefined}
                                             className={cn(
-                                                "flex items-center gap-1 text-[14px] font-medium transition-opacity hover:opacity-80",
+                                                "flex items-center gap-1 text-[15px] font-medium transition-opacity hover:opacity-80",
                                                 isActive(path, link.href) && "font-semibold"
                                             )}
                                         >
@@ -294,7 +294,7 @@ export default function Navbar() {
                             </ul>
                         </nav>
 
-                        <div className="flex items-center gap-5 text-[13px]">
+                        <div className="flex items-center gap-5 text-[14px]">
                             <Link href="/flash-sale" className="flex items-center gap-1.5 hover:opacity-80">
                                 <Heart className="h-3.5 w-3.5" aria-hidden />
                                 Special offers
@@ -320,7 +320,7 @@ export default function Navbar() {
                                                 href={link.href}
                                                 onClick={() => setShowMenu(false)}
                                                 className={cn(
-                                                    "block rounded-lg px-3 py-2.5 text-[13px] font-medium",
+                                                    "block rounded-lg px-3 py-2.5 text-[14px] font-medium",
                                                     isActive(path, link.href)
                                                         ? "bg-accent text-primary"
                                                         : "text-foreground hover:bg-secondary"

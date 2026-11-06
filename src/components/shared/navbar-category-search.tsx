@@ -31,7 +31,7 @@ export default function NavbarCategorySearch() {
                     id="nav-category"
                     name="categoryId"
                     onChange={(event) => setCategoryId(event.target.value)}
-                    className="hidden h-full max-w-[9.5rem] shrink-0 cursor-pointer border-r bg-transparent px-3 text-[13px] outline-none sm:block"
+                    className="hidden h-full max-w-[9.5rem] shrink-0 cursor-pointer border-r bg-transparent px-3 text-[14px] outline-none sm:block"
                 >
                     <option value="">All categories</option>
                     {(data?.data ?? []).map((category) => (
@@ -51,7 +51,7 @@ export default function NavbarCategorySearch() {
                     placeholder="Explore what you need..."
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
-                    className="h-full min-w-0 flex-1 bg-transparent px-3 text-[13px] outline-none placeholder:text-muted-foreground"
+                    className="h-full min-w-0 flex-1 bg-transparent px-3 text-[14px] outline-none placeholder:text-muted-foreground"
                 />
 
                 <button

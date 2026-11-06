@@ -24,7 +24,7 @@ const Breadcumb: FC = () => {
                 </h1>
 
                 <nav aria-label="Breadcrumb">
-                    <ol className="flex flex-wrap items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                    <ol className="flex flex-wrap items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                         <li>
                             <Link href="/" className="transition-colors hover:text-foreground">
                                 Home

@@ -31,7 +31,7 @@ export function SectionHeader({
             <div>
                 <h2 className="section-heading">{title}</h2>
                 {description && (
-                    <p className="mt-2 max-w-md text-[13px] leading-relaxed text-muted-foreground">
+                    <p className="mt-2 max-w-md text-[14px] leading-relaxed text-muted-foreground">
                         {description}
                     </p>
                 )}

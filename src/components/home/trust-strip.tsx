@@ -21,10 +21,10 @@ export default function TrustStrip() {
                                 (index > 0 ? "lg:border-l" : "")
                             }
                         >
-                            <p className="text-[10px] font-medium uppercase tracking-[0.18em]">
+                            <p className="text-[11px] font-medium uppercase tracking-[0.18em]">
                                 {item.title}
                             </p>
-                            <p className="mt-1.5 text-[12px] text-muted-foreground">
+                            <p className="mt-1.5 text-[13px] text-muted-foreground">
                                 {item.body}
                             </p>
                         </li>

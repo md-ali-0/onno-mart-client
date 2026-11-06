@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
 
 const FIELD =
-    "mt-1.5 h-10 w-full rounded-lg border border-input bg-card px-3 text-[13px] outline-none transition-colors placeholder:text-muted-foreground focus:border-primary";
+    "mt-1.5 h-10 w-full rounded-lg border border-input bg-card px-3 text-[14px] outline-none transition-colors placeholder:text-muted-foreground focus:border-primary";
 
 function ShopSidebar({
     selectedCategory,
@@ -95,7 +95,7 @@ function ShopSidebar({
                         <input
                             type="number"
                             aria-label="Minimum price"
-                            className="h-10 w-full rounded-lg border border-input bg-card px-3 text-[13px] outline-none transition-colors focus:border-primary"
+                            className="h-10 w-full rounded-lg border border-input bg-card px-3 text-[14px] outline-none transition-colors focus:border-primary"
                             placeholder="Min"
                             value={localMinPrice || ""}
                             onChange={(event) =>
@@ -108,7 +108,7 @@ function ShopSidebar({
                         <input
                             type="number"
                             aria-label="Maximum price"
-                            className="h-10 w-full rounded-lg border border-input bg-card px-3 text-[13px] outline-none transition-colors focus:border-primary"
+                            className="h-10 w-full rounded-lg border border-input bg-card px-3 text-[14px] outline-none transition-colors focus:border-primary"
                             placeholder="Max"
                             value={localMaxPrice || ""}
                             onChange={(event) =>
@@ -125,7 +125,7 @@ function ShopSidebar({
                         value={selectedBrand}
                         disabled={isBrandLoading}
                     >
-                        <SelectTrigger className="mt-1.5 h-10 rounded-lg border-input px-3 text-[13px] focus:ring-0">
+                        <SelectTrigger className="mt-1.5 h-10 rounded-lg border-input px-3 text-[14px] focus:ring-0">
                             <SelectValue
                                 placeholder={isBrandLoading ? "Loading…" : "All brands"}
                             />
@@ -148,7 +148,7 @@ function ShopSidebar({
                         value={selectedCategory}
                         disabled={isCategoryLoading}
                     >
-                        <SelectTrigger className="mt-1.5 h-10 rounded-lg border-input px-3 text-[13px] focus:ring-0">
+                        <SelectTrigger className="mt-1.5 h-10 rounded-lg border-input px-3 text-[14px] focus:ring-0">
                             <SelectValue
                                 placeholder={
                                     isCategoryLoading ? "Loading…" : "All categories"
@@ -179,14 +179,14 @@ function ShopSidebar({
                             setCategory("all");
                             setBrand("all");
                         }}
-                        className="text-[12px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                        className="text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
                     >
                         Clear
                     </button>
                     <button
                         type="button"
                         onClick={handleApplyFilters}
-                        className="rounded-lg bg-primary px-5 py-2.5 text-[12px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                        className="rounded-lg bg-primary px-5 py-2.5 text-[13px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                     >
                         Apply
                     </button>

@@ -32,7 +32,7 @@ export default function NavCategory() {
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-[0.14em] text-foreground transition-colors hover:text-primary"
+                className="inline-flex items-center gap-1 text-[12px] font-medium uppercase tracking-[0.14em] text-foreground transition-colors hover:text-primary"
             >
                 Categories
                 <ChevronDown
@@ -46,7 +46,7 @@ export default function NavCategory() {
                     <Link
                         href="/products"
                         onClick={() => setDropdownOpen(false)}
-                        className="block px-4 py-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-foreground"
+                        className="block px-4 py-2 text-[11px] font-medium uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-foreground"
                     >
                         All products
                     </Link>
@@ -56,7 +56,7 @@ export default function NavCategory() {
                                 <button
                                     type="button"
                                     onClick={() => handleCategoryClick(category.slug)}
-                                    className="flex w-full items-center gap-3 px-4 py-2 text-left text-[12px] transition-colors hover:text-primary"
+                                    className="flex w-full items-center gap-3 px-4 py-2 text-left text-[13px] transition-colors hover:text-primary"
                                 >
                                     {category.image ? (
                                         <Image

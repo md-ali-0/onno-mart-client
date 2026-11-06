@@ -16,7 +16,7 @@ export default function PromoBanner() {
                         <h2 className="mt-4 max-w-[14ch] font-display text-[32px] leading-[1.02] tracking-[-0.02em] sm:text-[42px]">
                             Tools for quieter work.
                         </h2>
-                        <p className="mt-4 max-w-sm text-[13px] leading-relaxed text-muted-foreground">
+                        <p className="mt-4 max-w-sm text-[14px] leading-relaxed text-muted-foreground">
                             Laptops, screens and accessories chosen for how they
                             hold up, not for how they read on a spec sheet.
                         </p>

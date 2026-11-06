@@ -98,7 +98,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                 <div className="pointer-events-none absolute left-2 top-2 flex flex-col items-start gap-1">
                     {saved > 0 && <span className="badge-sale">Sale</span>}
                     {!inStock && (
-                        <span className="rounded bg-foreground/70 px-2 py-0.5 text-[10px] font-bold uppercase text-background">
+                        <span className="rounded bg-foreground/70 px-2 py-0.5 text-[11px] font-bold uppercase text-background">
                             Sold out
                         </span>
                     )}
@@ -127,13 +127,13 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                 {categoryName && (
                     <Link
                         href={`/products?categoryId=${product.category.slug}`}
-                        className="truncate text-[12px] font-medium text-primary hover:underline"
+                        className="truncate text-[13px] font-medium text-primary hover:underline"
                     >
                         {categoryName}
                     </Link>
                 )}
 
-                <h3 className="mt-1 line-clamp-2 min-h-[2.6rem] text-[14px] font-medium leading-snug">
+                <h3 className="mt-1 line-clamp-2 min-h-[2.6rem] text-[15px] font-medium leading-snug">
                     <Link
                         href={href}
                         onClick={() => addToRecentProducts(product)}
@@ -143,7 +143,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     </Link>
                 </h3>
 
-                <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                <div className="mt-1.5 flex items-center gap-1.5 text-[12px] text-muted-foreground">
                     {rating > 0 ? (
                         <>
                             <StarRating rating={rating} size={12} />
@@ -153,7 +153,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                         <span className="truncate">{product.shop?.name}</span>
                     )}
                     {inStock ? (
-                        <span className="ml-auto flex items-center gap-1 rounded bg-[#E5FAE5] px-1.5 py-0.5 text-[10px] font-semibold text-[#1F7A20]">
+                        <span className="ml-auto flex items-center gap-1 rounded bg-[#E5FAE5] px-1.5 py-0.5 text-[11px] font-semibold text-[#1F7A20]">
                             <span className="h-1.5 w-1.5 rounded-full bg-[#24BD25]" />
                             In stock
                         </span>
@@ -164,7 +164,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     <span className="price-strike">{formatPrice(product.price)}</span>
                     <span className="price">{formatPrice(price)}</span>
                     {saved > 0 && (
-                        <span className="rounded bg-sale px-1.5 py-0.5 text-[10px] font-bold text-sale-foreground">
+                        <span className="rounded bg-sale px-1.5 py-0.5 text-[11px] font-bold text-sale-foreground">
                             -{saved}%
                         </span>
                     )}
@@ -182,7 +182,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     <button
                         type="button"
                         onClick={toggleCompare}
-                        className="flex w-full items-center justify-center gap-1.5 rounded-full py-1.5 text-[12px] font-medium text-muted-foreground transition-colors hover:text-primary"
+                        className="flex w-full items-center justify-center gap-1.5 rounded-full py-1.5 text-[13px] font-medium text-muted-foreground transition-colors hover:text-primary"
                     >
                         <ShoppingCart className="hidden h-3.5 w-3.5" aria-hidden />
                         {isCompared ? "Remove from compare" : "Add to compare"}

@@ -70,7 +70,7 @@ export default function ProductsPage() {
                             />
                         </div>
                         <div className="md:col-span-8 lg:col-span-9">
-                            <p className="mb-5 border-b pb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                            <p className="mb-5 border-b pb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                                 {data?.meta?.total ?? 0} products
                             </p>
                             {isLoading || isFetching ? (
@@ -79,10 +79,10 @@ export default function ProductsPage() {
                                 <ProductGrid products={data?.data || []} />
                             ) : (
                                 <div className="border border-dashed py-20 text-center">
-                                    <p className="font-display text-[20px]">
+                                    <p className="font-display text-[22px]">
                                         Nothing here yet
                                     </p>
-                                    <p className="mt-1 text-[13px] text-muted-foreground">
+                                    <p className="mt-1 text-[14px] text-muted-foreground">
                                         Try a wider price range or another
                                         category.
                                     </p>

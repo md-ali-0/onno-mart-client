@@ -266,7 +266,7 @@ export default function CheckoutPage() {
                                     Your Cart
                                 </h5>
                                 <Link
-                                    className="bg-orange-500 flex justify-center items-center text-white text-[10px] font-bold px-2.5 py-0.5 rounded-full h-5"
+                                    className="bg-orange-500 flex justify-center items-center text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full h-5"
                                     href="/cart"
                                 >
                                     {cart.length}

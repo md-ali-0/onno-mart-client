@@ -122,8 +122,8 @@
 
     body {
         @apply bg-background text-foreground font-sans;
-        font-size: 16px;
-        line-height: 1.5;
+        font-size: 15px;
+        line-height: 1.55;
         text-rendering: optimizeLegibility;
     }
 
@@ -169,15 +169,15 @@
     }
 
     .sideLink {
-        @apply flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
+        @apply flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[16px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
     }
 
     .sideLinkActive {
-        @apply flex items-center gap-x-3.5 rounded-lg bg-white/10 px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
+        @apply flex items-center gap-x-3.5 rounded-lg bg-white/10 px-2.5 py-2 text-[16px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
     }
 
     .dropdownSideBar {
-        @apply relative flex w-full items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
+        @apply relative flex w-full items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[16px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
     }
 }
 
@@ -192,15 +192,15 @@
 
     /* Section title, e.g. "Deals of The Day" */
     .section-heading {
-        @apply font-sans text-[24px] font-bold leading-tight tracking-[-0.01em] text-foreground sm:text-[28px];
+        @apply font-sans text-[26px] font-bold leading-tight tracking-[-0.01em] text-foreground sm:text-[30px];
     }
 
     .eyebrow {
-        @apply text-[12px] font-medium uppercase tracking-[0.12em] text-primary;
+        @apply text-[13px] font-medium uppercase tracking-[0.12em] text-primary;
     }
 
     .label-caps {
-        @apply text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground;
+        @apply text-[12px] font-medium uppercase tracking-[0.12em] text-muted-foreground;
     }
 
     .rule {
@@ -220,27 +220,27 @@
     }
 
     .price {
-        @apply text-[15px] font-bold tabular-nums tracking-tight text-foreground;
+        @apply text-[16px] font-bold tabular-nums tracking-tight text-foreground;
     }
 
     .price-strike {
-        @apply text-[13px] font-normal text-muted-foreground line-through tabular-nums;
+        @apply text-[14px] font-normal text-muted-foreground line-through tabular-nums;
     }
 
     .badge-discount {
-        @apply inline-flex items-center rounded bg-sale px-1.5 py-0.5 text-[11px] font-semibold text-sale-foreground;
+        @apply inline-flex items-center rounded bg-sale px-1.5 py-0.5 text-[12px] font-semibold text-sale-foreground;
     }
 
     .badge-sale {
-        @apply inline-flex items-center rounded bg-sale px-2 py-0.5 text-[10px] font-bold uppercase leading-none tracking-wide text-sale-foreground;
+        @apply inline-flex items-center rounded bg-sale px-2 py-0.5 text-[11px] font-bold uppercase leading-none tracking-wide text-sale-foreground;
     }
 
     .badge-stock {
-        @apply inline-flex items-center rounded bg-card px-1.5 py-1 text-[10px] font-semibold uppercase leading-none tracking-wide text-foreground;
+        @apply inline-flex items-center rounded bg-card px-1.5 py-1 text-[11px] font-semibold uppercase leading-none tracking-wide text-foreground;
     }
 
     .badge-muted {
-        @apply inline-flex items-center rounded bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground;
+        @apply inline-flex items-center rounded bg-muted px-1.5 py-0.5 text-[12px] font-medium text-muted-foreground;
     }
 
     .skeleton {
@@ -273,7 +273,7 @@
     }
 
     .link-arrow {
-        @apply inline-flex items-center gap-1 text-[14px] font-medium text-primary transition-colors hover:text-primary/80;
+        @apply inline-flex items-center gap-1 text-[15px] font-medium text-primary transition-colors hover:text-primary/80;
     }
 
     .link-arrow svg {
@@ -286,12 +286,12 @@
 
     /* Blue pill button, as used in the template's hero and cart. */
     .btn-primary {
-        @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 text-[14px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90;
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 text-[15px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90;
     }
 
     /* Outlined "Add To Cart" used on product cards. */
     .btn-outline-primary {
-        @apply inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/40 px-4 py-2 text-[13px] font-medium text-primary transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground;
+        @apply inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/40 px-4 py-2 text-[14px] font-medium text-primary transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground;
     }
 }
 
@@ -305,7 +305,7 @@
     }
 
     .nav-link {
-        @apply relative block pb-1 text-[14px] font-medium;
+        @apply relative block pb-1 text-[15px] font-medium;
     }
 
     .nav-link::after {

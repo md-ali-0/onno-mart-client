@@ -49,7 +49,7 @@ export default function ProductTabs({ all, onSale, topRated }: Props) {
                         aria-controls={`panel-${tab.id}`}
                         onClick={() => setActive(tab.id)}
                         className={cn(
-                            "h-9 shrink-0 rounded-full px-4 text-[13px] font-medium transition-colors",
+                            "h-9 shrink-0 rounded-full px-4 text-[14px] font-medium transition-colors",
                             active === tab.id
                                 ? "bg-card text-foreground shadow-sm"
                                 : "bg-secondary text-muted-foreground hover:text-foreground"
