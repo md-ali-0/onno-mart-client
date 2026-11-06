@@ -3,20 +3,21 @@ import NewsletterFields from "./newsletter-fields";
 /** Server wrapper: the copy is static HTML, only the form hydrates. */
 export default function NewsletterSection() {
     return (
-        <section id="newsletter" className="scroll-mt-24 pb-10 sm:pb-14">
+        <section id="newsletter" className="scroll-mt-24 border-t">
             <div className="container-page">
-                <div className="band-tint grid items-center gap-5 rounded-2xl border px-6 py-7 sm:px-9 lg:grid-cols-2 lg:gap-10">
-                    <div>
-                        <h2 className="text-[22px] font-extrabold tracking-[-0.02em] sm:text-[26px]">
-                            Subscribe to our newsletter
-                        </h2>
-                        <p className="mt-1.5 max-w-md text-[13px] leading-relaxed text-muted-foreground">
-                            Latest updates and offers, once a week. No spam,
-                            unsubscribe anytime.
-                        </p>
-                    </div>
+                <div className="mx-auto max-w-xl py-16 text-center sm:py-20">
+                    <p className="eyebrow">The list</p>
+                    <h2 className="mt-4 font-display text-[32px] leading-[1.05] tracking-[-0.02em] sm:text-[42px]">
+                        Occasional notes, worth reading.
+                    </h2>
+                    <p className="mt-3 text-[13px] leading-relaxed text-muted-foreground">
+                        New arrivals and quiet price drops, once a week. No
+                        spam, unsubscribe anytime.
+                    </p>
 
-                    <NewsletterFields />
+                    <div className="mt-8 text-left">
+                        <NewsletterFields />
+                    </div>
                 </div>
             </div>
         </section>

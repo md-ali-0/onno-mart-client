@@ -8,12 +8,11 @@ type SectionHeaderProps = {
     description?: string;
     href?: string;
     linkLabel?: string;
-    /** Extra controls (e.g. filter pills) rendered on the right. */
     action?: ReactNode;
     className?: string;
 };
 
-/** Title on the left, "View all →" on the right. Used by every home section. */
+/** Serif title on the left, quiet link on the right, hairline above. */
 export function SectionHeader({
     title,
     description,
@@ -25,14 +24,14 @@ export function SectionHeader({
     return (
         <div
             className={cn(
-                "mb-5 flex flex-wrap items-end justify-between gap-x-4 gap-y-3",
+                "mb-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-t pt-7",
                 className
             )}
         >
             <div>
                 <h2 className="section-heading">{title}</h2>
                 {description && (
-                    <p className="mt-1 text-[13px] text-muted-foreground">
+                    <p className="mt-2 max-w-md text-[13px] leading-relaxed text-muted-foreground">
                         {description}
                     </p>
                 )}
@@ -40,9 +39,9 @@ export function SectionHeader({
 
             {action ??
                 (href && (
-                    <Link href={href} className="link-arrow shrink-0 pb-0.5">
+                    <Link href={href} className="link-arrow shrink-0 pb-1">
                         {linkLabel}
-                        <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+                        <ArrowRight className="h-3 w-3" aria-hidden />
                     </Link>
                 ))}
         </div>

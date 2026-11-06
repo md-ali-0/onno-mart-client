@@ -32,7 +32,7 @@ export default function NavCategory() {
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="inline-flex items-center gap-1 text-[13px] font-semibold text-foreground transition-colors hover:text-primary"
+                className="inline-flex items-center gap-1 text-[11px] font-medium uppercase tracking-[0.14em] text-foreground transition-colors hover:text-primary"
             >
                 Categories
                 <ChevronDown
@@ -42,11 +42,11 @@ export default function NavCategory() {
             </button>
 
             {dropdownOpen && (
-                <div className="absolute left-0 top-full z-50 mt-3 w-64 overflow-hidden rounded-xl border bg-card py-2 shadow-lift">
+                <div className="absolute left-0 top-full z-50 mt-4 w-64 border bg-card py-2 shadow-lift">
                     <Link
                         href="/products"
                         onClick={() => setDropdownOpen(false)}
-                        className="block px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
+                        className="block px-4 py-2 text-[10px] font-medium uppercase tracking-[0.16em] text-muted-foreground transition-colors hover:text-foreground"
                     >
                         All products
                     </Link>
@@ -56,7 +56,7 @@ export default function NavCategory() {
                                 <button
                                     type="button"
                                     onClick={() => handleCategoryClick(category.slug)}
-                                    className="flex w-full items-center gap-3 px-4 py-2 text-left text-[13px] transition-colors hover:bg-secondary"
+                                    className="flex w-full items-center gap-3 px-4 py-2 text-left text-[12px] transition-colors hover:text-primary"
                                 >
                                     {category.image ? (
                                         <Image
@@ -64,10 +64,10 @@ export default function NavCategory() {
                                             alt=""
                                             width={24}
                                             height={24}
-                                            className="h-6 w-6 shrink-0 rounded object-cover"
+                                            className="h-6 w-6 shrink-0 object-cover"
                                         />
                                     ) : (
-                                        <span className="h-6 w-6 shrink-0 rounded bg-muted" />
+                                        <span className="h-6 w-6 shrink-0 bg-muted" />
                                     )}
                                     <span className="truncate">{category.name}</span>
                                 </button>

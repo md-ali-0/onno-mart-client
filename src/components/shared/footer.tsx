@@ -1,28 +1,33 @@
-import logoDark from "@/assets/images/logo-dark.png";
 import { site } from "@/lib/site";
-import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone, Twitter } from "lucide-react";
-import Image from "next/image";
+import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
 import Link from "next/link";
 
 const columns = [
     {
-        title: "Quick links",
+        title: "Shop",
         links: [
             { href: "/products", label: "All products" },
-            { href: "/flash-sale", label: "Deals" },
+            { href: "/flash-sale", label: "The private sale" },
             { href: "/shops", label: "Verified shops" },
             { href: "/compare", label: "Compare" },
-            { href: "/auth/vendor-signup", label: "Sell on OnnoMart" },
         ],
     },
     {
-        title: "Customer care",
+        title: "Account",
         links: [
             { href: "/auth/signin", label: "Sign in" },
             { href: "/auth/signup", label: "Create account" },
             { href: "/user/dashboard", label: "My account" },
             { href: "/user/purchased-items", label: "Order history" },
-            { href: "/contact", label: "Help & FAQ" },
+        ],
+    },
+    {
+        title: "Care",
+        links: [
+            { href: "/contact", label: "Contact us" },
+            { href: "/contact", label: "Delivery & returns" },
+            { href: "/auth/vendor-signup", label: "Sell with us" },
+            { href: "/#newsletter", label: "The list" },
         ],
     },
 ] as const;
@@ -34,24 +39,26 @@ const socials = [
     { href: "https://linkedin.com/company/onnomart", label: "LinkedIn", icon: Linkedin },
 ] as const;
 
-const payments = ["VISA", "Mastercard", "bKash", "Nagad", "COD"];
+const payments = ["Visa", "Mastercard", "bKash", "Nagad", "Cash on delivery"];
 
 export default function Footer() {
     return (
         <footer className="bg-navy text-navy-foreground">
             <div className="container-page">
-                <div className="grid gap-9 py-12 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
+                <div className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr] lg:gap-12">
                     <div>
                         <Link href="/" aria-label="OnnoMart home" className="inline-block">
-                            <Image src={logoDark} alt="OnnoMart" className="h-8 w-auto" />
+                            <span className="font-display text-[24px] leading-none tracking-[-0.02em] text-navy-foreground">
+                                OnnoMart
+                            </span>
                         </Link>
-                        <p className="mt-4 max-w-xs text-[13px] leading-relaxed text-navy-foreground/65">
-                            A multi-vendor marketplace in Bangladesh. Compare
-                            products from verified shops, pay on delivery, and
-                            send back what does not fit.
+                        <p className="mt-5 max-w-xs text-[12.5px] leading-[1.8] text-navy-foreground/60">
+                            A multi-vendor marketplace in Dhaka. Verified shops,
+                            honest prices, and a return policy that does not
+                            require an argument.
                         </p>
 
-                        <ul className="mt-5 flex items-center gap-2">
+                        <ul className="mt-6 flex items-center gap-3">
                             {socials.map(({ href, label, icon: Icon }) => (
                                 <li key={label}>
                                     <a
@@ -59,7 +66,7 @@ export default function Footer() {
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         aria-label={label}
-                                        className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-navy-foreground/80 transition-colors hover:bg-primary hover:text-primary-foreground"
+                                        className="flex h-8 w-8 items-center justify-center border border-white/15 text-navy-foreground/70 transition-colors hover:border-navy-foreground/50 hover:text-navy-foreground"
                                     >
                                         <Icon className="h-3.5 w-3.5" aria-hidden />
                                     </a>
@@ -70,15 +77,15 @@ export default function Footer() {
 
                     {columns.map((column) => (
                         <div key={column.title}>
-                            <h2 className="text-[13px] font-bold text-navy-foreground">
+                            <h2 className="text-[9px] font-medium uppercase tracking-[0.22em] text-navy-foreground/45">
                                 {column.title}
                             </h2>
-                            <ul className="mt-3.5 space-y-2">
+                            <ul className="mt-4 space-y-2.5">
                                 {column.links.map((link) => (
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
-                                            className="text-[12.5px] text-navy-foreground/65 transition-colors hover:text-navy-foreground"
+                                            className="text-[12.5px] text-navy-foreground/70 transition-colors hover:text-navy-foreground"
                                         >
                                             {link.label}
                                         </Link>
@@ -87,46 +94,20 @@ export default function Footer() {
                             </ul>
                         </div>
                     ))}
-
-                    <div>
-                        <h2 className="text-[13px] font-bold text-navy-foreground">
-                            Contact us
-                        </h2>
-                        <ul className="mt-3.5 space-y-2.5 text-[12.5px] text-navy-foreground/65">
-                            <li className="flex items-start gap-2">
-                                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />
-                                Dhaka, Bangladesh
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <Phone className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />
-                                +880 1700 000000
-                            </li>
-                            <li className="flex items-start gap-2">
-                                <Mail className="mt-0.5 h-3.5 w-3.5 shrink-0 text-primary" aria-hidden />
-                                <a
-                                    href={`mailto:${site.email}`}
-                                    className="transition-colors hover:text-navy-foreground"
-                                >
-                                    {site.email}
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
             </div>
 
             <div className="border-t border-white/10">
-                <div className="container-page flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between">
-                    <p className="text-[11px] text-navy-foreground/55">
-                        © {new Date().getFullYear()} {site.legalName}. All rights
-                        reserved.
+                <div className="container-page flex flex-col gap-4 py-5 sm:flex-row sm:items-center sm:justify-between">
+                    <p className="text-[10px] uppercase tracking-[0.14em] text-navy-foreground/45">
+                        © {new Date().getFullYear()} {site.legalName} · Dhaka
                     </p>
 
-                    <ul className="flex flex-wrap items-center gap-1.5">
+                    <ul className="flex flex-wrap items-center gap-x-5 gap-y-2">
                         {payments.map((payment) => (
                             <li
                                 key={payment}
-                                className="rounded border border-white/15 px-2 py-1 text-[9px] font-bold uppercase tracking-[0.08em] text-navy-foreground/70"
+                                className="text-[9px] uppercase tracking-[0.14em] text-navy-foreground/40"
                             >
                                 {payment}
                             </li>

@@ -9,8 +9,7 @@ function remaining(): Parts {
     const end = new Date(now);
     end.setHours(23, 59, 59, 999);
 
-    const diff = Math.max(0, end.getTime() - now.getTime());
-    const total = Math.floor(diff / 1000);
+    const total = Math.max(0, Math.floor((end.getTime() - now.getTime()) / 1000));
 
     return {
         hours: String(Math.floor(total / 3600)).padStart(2, "0"),
@@ -20,8 +19,8 @@ function remaining(): Parts {
 }
 
 /**
- * Counts down to midnight. Renders placeholders until mounted so the server
- * markup and the first client render agree.
+ * Counts down to midnight. Placeholders until mounted so the server markup and
+ * the first client render agree.
  */
 export default function Countdown() {
     const [time, setTime] = useState<Parts | null>(null);
@@ -39,18 +38,22 @@ export default function Countdown() {
     ];
 
     return (
-        <div className="flex items-center gap-2" aria-label="Time left today">
-            {cells.map(([label, value]) => (
-                <div
-                    key={label}
-                    className="flex w-11 flex-col items-center rounded-lg bg-card/15 px-1 py-1.5 backdrop-blur"
-                >
-                    <span className="text-[15px] font-bold leading-none tabular-nums">
-                        {value}
-                    </span>
-                    <span className="mt-1 text-[9px] uppercase tracking-[0.1em] text-primary-foreground/70">
-                        {label}
-                    </span>
+        <div className="flex items-start gap-4" aria-label="Time left today">
+            {cells.map(([label, value], index) => (
+                <div key={label} className="flex items-start gap-4">
+                    <div className="text-center">
+                        <span className="block font-display text-[26px] leading-none tabular-nums text-navy-foreground">
+                            {value}
+                        </span>
+                        <span className="mt-1.5 block text-[8px] font-medium uppercase tracking-[0.2em] text-navy-foreground/45">
+                            {label}
+                        </span>
+                    </div>
+                    {index < cells.length - 1 && (
+                        <span aria-hidden className="pt-1 text-[18px] leading-none text-navy-foreground/25">
+                            :
+                        </span>
+                    )}
                 </div>
             ))}
         </div>

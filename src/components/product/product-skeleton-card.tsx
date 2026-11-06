@@ -1,10 +1,10 @@
 /** Matches the anatomy of ProductCard so loading grids do not jump. */
 export default function ProductSkeletonCard() {
     return (
-        <div className="flex h-full flex-col rounded-xl border bg-card p-2.5">
-            <div className="skeleton aspect-square w-full rounded-lg" />
+        <div className="flex h-full flex-col">
+            <div className="skeleton aspect-[4/5] w-full" />
 
-            <div className="flex flex-1 flex-col px-0.5 pt-3">
+            <div className="flex flex-1 flex-col pt-3">
                 <div className="skeleton h-2 w-1/3" />
                 <div className="mt-2 space-y-1.5">
                     <div className="skeleton h-3.5 w-full" />

@@ -40,7 +40,7 @@ export default function NewsletterFields() {
 
     if (isSuccess) {
         return (
-            <div className="flex items-start gap-3 rounded-xl border bg-card px-5 py-4">
+            <div className="flex items-start gap-3 border bg-card px-5 py-4">
                 <CheckCircle2
                     className="mt-0.5 h-5 w-5 shrink-0 text-success"
                     aria-hidden
@@ -71,12 +71,12 @@ export default function NewsletterFields() {
                     placeholder="Enter your email address"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    className="h-11 w-full flex-1 rounded-lg border border-input bg-card px-4 text-[13px] outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
+                    className="h-11 w-full flex-1 border-0 border-b border-foreground/25 bg-transparent px-0 text-[13px] outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground"
                 />
                 <button
                     type="submit"
                     disabled={isLoading || !email || !agreed}
-                    className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-6 text-[13px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex h-11 shrink-0 items-center justify-center gap-2 bg-foreground px-7 text-[10px] font-medium uppercase tracking-[0.16em] text-background transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     <Send className="h-3.5 w-3.5" aria-hidden />
                     {isLoading ? "Subscribing" : "Subscribe"}

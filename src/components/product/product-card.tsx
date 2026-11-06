@@ -8,13 +8,12 @@ import {
 } from "@/redux/features/compare/compareSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Product } from "@/types";
-import { ArrowLeftRight, Check } from "lucide-react";
+import { ArrowLeftRight, Check, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
 import { AddToCartButton } from "../shared/add-to-cart";
-import StarRating from "./star-rating";
 
 const MAX_RECENT_PRODUCTS = 10;
 
@@ -37,7 +36,10 @@ type ProductCardProps = {
     className?: string;
 };
 
-/** The single product tile used by every grid on the storefront. */
+/**
+ * Image-first tile: no frame, no shadow. The photograph is the card; the only
+ * chrome is a small sale flag and an add-to-bag bar that rises on hover.
+ */
 export default function ProductCard({ product, className }: ProductCardProps) {
     const dispatch = useAppDispatch();
     const compare = useAppSelector((state) => state.compare.compare);
@@ -46,7 +48,6 @@ export default function ProductCard({ product, className }: ProductCardProps) {
     const price = discountedPrice(product);
     const saved = savingsPercent(product);
     const rating = Number(product.rating ?? 0);
-    const reviewCount = product.reviews?.length ?? 0;
     const inventory = product.inventory ?? 0;
     const inStock = inventory > 0;
     const isCompared = compare.some((item) => item.id === product.id);
@@ -67,13 +68,8 @@ export default function ProductCard({ product, className }: ProductCardProps) {
     };
 
     return (
-        <article
-            className={cn(
-                "group relative flex h-full flex-col rounded-xl border bg-card p-2.5 transition-shadow duration-200 hover:shadow-card",
-                className
-            )}
-        >
-            <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
+        <article className={cn("group relative flex h-full flex-col", className)}>
+            <div className="relative aspect-[4/5] overflow-hidden bg-surface">
                 <Link
                     href={href}
                     onClick={() => addToRecentProducts(product)}
@@ -81,7 +77,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     className="block h-full w-full"
                 >
                     {imageFailed ? (
-                        <span className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-muted-foreground/40">
+                        <span className="absolute inset-0 flex items-center justify-center font-display text-5xl text-muted-foreground/30">
                             {(product.name[0] ?? "?").toUpperCase()}
                         </span>
                     ) : (
@@ -91,19 +87,19 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                             fill
                             sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 24vw, (min-width: 640px) 30vw, 45vw"
                             onError={() => setImageFailed(true)}
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                         />
                     )}
                 </Link>
 
                 {saved > 0 && (
-                    <span className="badge-sale absolute left-2 top-2">
+                    <span className="absolute left-0 top-0 bg-primary px-2 py-1.5 text-[9px] font-semibold uppercase tracking-[0.14em] text-primary-foreground">
                         −{saved}%
                     </span>
                 )}
 
                 {!inStock && (
-                    <span className="absolute inset-x-0 bottom-0 bg-foreground/70 py-1 text-center text-[10px] font-semibold uppercase tracking-wide text-background">
+                    <span className="absolute inset-0 flex items-center justify-center bg-background/75 text-[10px] uppercase tracking-[0.2em] text-foreground">
                         Sold out
                     </span>
                 )}
@@ -115,10 +111,10 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     aria-pressed={isCompared}
                     title={isCompared ? "Remove from compare" : "Add to compare"}
                     className={cn(
-                        "absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border bg-card/90 shadow-sm transition-colors",
+                        "absolute right-2 top-2 flex h-8 w-8 items-center justify-center transition-opacity",
                         isCompared
-                            ? "border-primary bg-primary text-primary-foreground"
-                            : "border-border text-muted-foreground hover:border-primary hover:text-primary"
+                            ? "bg-primary text-primary-foreground opacity-100"
+                            : "bg-card text-foreground opacity-0 hover:text-primary focus-visible:opacity-100 group-hover:opacity-100"
                     )}
                 >
                     {isCompared ? (
@@ -127,16 +123,26 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                         <ArrowLeftRight className="h-3.5 w-3.5" aria-hidden />
                     )}
                 </button>
+
+                <div className="absolute inset-x-0 bottom-0 translate-y-0 transition-transform duration-300 sm:translate-y-full sm:group-hover:translate-y-0 sm:group-focus-within:translate-y-0">
+                    <AddToCartButton
+                        product={product}
+                        quantity={1}
+                        variant="bar"
+                        label="Add to bag"
+                        disabled={!inStock}
+                    />
+                </div>
             </div>
 
-            <div className="flex flex-1 flex-col px-0.5 pt-3">
+            <div className="flex flex-1 flex-col pt-3">
                 {brandName && (
-                    <p className="truncate text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+                    <p className="truncate text-[9px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
                         {brandName}
                     </p>
                 )}
 
-                <h3 className="mt-1 line-clamp-2 min-h-[2.4rem] text-[13px] font-semibold leading-snug">
+                <h3 className="mt-1.5 line-clamp-2 min-h-[2.4rem] text-[13px] font-medium leading-snug">
                     <Link
                         href={href}
                         onClick={() => addToRecentProducts(product)}
@@ -146,38 +152,26 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     </Link>
                 </h3>
 
-                <div className="mt-1.5 flex h-[16px] items-center gap-1 text-[11px] text-muted-foreground">
-                    {rating > 0 ? (
-                        <>
-                            <StarRating rating={rating} size={11} />
-                            <span className="font-semibold text-foreground">
-                                {rating.toFixed(1)}
-                            </span>
-                            {reviewCount > 0 && <span>({reviewCount})</span>}
-                        </>
-                    ) : shopName ? (
-                        <span className="truncate">{shopName}</span>
-                    ) : null}
-                </div>
-
-                <div className="mt-auto flex items-end justify-between gap-2 pt-3">
-                    <div className="flex min-w-0 flex-wrap items-baseline gap-x-1.5">
-                        <p className="price whitespace-nowrap">
-                            {formatPrice(price)}
-                        </p>
+                <div className="mt-auto flex items-baseline justify-between gap-2 pt-2">
+                    <div className="flex items-baseline gap-2">
+                        <span className="price">{formatPrice(price)}</span>
                         {saved > 0 && (
-                            <p className="price-strike whitespace-nowrap">
+                            <span className="price-strike">
                                 {formatPrice(product.price)}
-                            </p>
+                            </span>
                         )}
                     </div>
 
-                    <AddToCartButton
-                        product={product}
-                        quantity={1}
-                        variant="icon"
-                        disabled={!inStock}
-                    />
+                    {rating > 0 ? (
+                        <span className="flex shrink-0 items-center gap-1 text-[10px] text-muted-foreground">
+                            {rating.toFixed(1)}
+                            <Star className="h-2.5 w-2.5 fill-current" aria-hidden />
+                        </span>
+                    ) : (
+                        <span className="truncate text-[10px] text-muted-foreground">
+                            {shopName}
+                        </span>
+                    )}
                 </div>
             </div>
         </article>

@@ -31,12 +31,10 @@ const config: Config = {
                     "sans-serif",
                 ],
                 display: [
-                    "var(--font-sans)",
-                    "system-ui",
-                    "Segoe UI",
-                    "Helvetica",
-                    "Arial",
-                    "sans-serif",
+                    "var(--font-display)",
+                    "Georgia",
+                    "Times New Roman",
+                    "serif",
                 ],
             },
             colors: {
@@ -96,15 +94,16 @@ const config: Config = {
             },
             borderRadius: {
                 lg: "var(--radius)",
-                md: "calc(var(--radius) - 2px)",
-                sm: "calc(var(--radius) - 4px)",
-                xl: "calc(var(--radius) + 4px)",
-                "2xl": "calc(var(--radius) + 8px)",
-                "3xl": "calc(var(--radius) + 12px)",
+                md: "calc(var(--radius) - 1px)",
+                sm: "calc(var(--radius) - 1px)",
+                /* Keep the large steps near-square too. */
+                xl: "calc(var(--radius) + 2px)",
+                "2xl": "calc(var(--radius) + 4px)",
+                "3xl": "calc(var(--radius) + 6px)",
             },
             boxShadow: {
-                card: "0 1px 2px 0 hsl(var(--shadow-color) / 0.04), 0 10px 28px -18px hsl(var(--shadow-color) / 0.16)",
-                lift: "0 2px 6px -2px hsl(var(--shadow-color) / 0.08), 0 20px 40px -20px hsl(var(--shadow-color) / 0.24)",
+                card: "0 1px 2px 0 hsl(var(--shadow-color) / 0.04)",
+                lift: "0 24px 60px -36px hsl(var(--shadow-color) / 0.4)",
             },
             letterSpacing: {
                 tightest: "-0.03em",

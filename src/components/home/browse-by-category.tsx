@@ -30,21 +30,21 @@ export default async function BrowseByCategory() {
                         >
                             <Link
                                 href={`/products?categoryId=${category.slug}`}
-                                className="group flex flex-col items-center gap-2.5"
+                                className="group flex flex-col gap-3"
                             >
-                                <span className="relative aspect-square w-full overflow-hidden rounded-xl bg-accent">
+                                <span className="relative aspect-[3/4] w-full overflow-hidden bg-surface">
                                     {category.image ? (
                                         <Image
                                             src={category.image}
                                             alt=""
                                             fill
                                             sizes="(min-width: 1024px) 15vw, (min-width: 640px) 22vw, 32vw"
-                                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                                         />
                                     ) : null}
                                 </span>
-                                <span className="w-full truncate text-center text-[12px] font-semibold transition-colors group-hover:text-primary">
-                                    {category.name}
+                                <span className="block border-t pt-2.5 text-[10px] font-medium uppercase tracking-[0.16em] transition-colors group-hover:text-primary">
+                                    <span className="block truncate">{category.name}</span>
                                 </span>
                             </Link>
                         </li>

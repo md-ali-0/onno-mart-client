@@ -2,7 +2,7 @@ import { getBrands } from "@/lib/get-brands";
 import Link from "next/link";
 import SectionHeader from "../shared/section-header";
 
-/** Brand strip: names set as wordmarks inside one bordered card. */
+/** Brand strip: serif wordmarks in a hairline grid. */
 export default async function PopularBrands() {
     const brands = await getBrands();
 
@@ -12,17 +12,17 @@ export default async function PopularBrands() {
         <section className="section pt-0">
             <div className="container-page">
                 <SectionHeader
-                    title="Top brands"
+                    title="The houses we keep"
                     href="/products"
-                    linkLabel="View all"
+                    linkLabel="All brands"
                 />
 
-                <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-xl border bg-border sm:grid-cols-3 lg:grid-cols-5">
+                <ul className="grid grid-cols-2 border-l border-t sm:grid-cols-3 lg:grid-cols-5">
                     {brands.map((brand) => (
-                        <li key={brand.id} className="bg-card">
+                        <li key={brand.id} className="border-b border-r">
                             <Link
                                 href={`/products?brandId=${brand.slug}`}
-                                className="flex h-16 items-center justify-center px-3 text-[14px] font-bold uppercase tracking-[0.06em] text-muted-foreground transition-colors hover:text-primary"
+                                className="flex h-20 items-center justify-center px-3 font-display text-[17px] text-muted-foreground transition-colors hover:text-foreground"
                             >
                                 <span className="truncate">{brand.name}</span>
                             </Link>

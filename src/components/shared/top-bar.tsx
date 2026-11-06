@@ -1,17 +1,15 @@
-import { Truck } from "lucide-react";
 import Link from "next/link";
 
-/** Slim announcement strip above the header. Hidden on small screens. */
+/** Slim announcement strip. Centred note, service links on the right. */
 export default function TopBar() {
     return (
-        <div className="hidden border-b bg-secondary sm:block">
-            <div className="container-page flex h-9 items-center justify-between text-[11px] text-muted-foreground">
-                <p className="flex items-center gap-2">
-                    <Truck className="h-3.5 w-3.5 text-primary" aria-hidden />
-                    Free delivery on orders over ৳2,000
+        <div className="hidden border-b sm:block">
+            <div className="container-page relative flex h-10 items-center justify-center">
+                <p className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+                    Complimentary delivery on orders over ৳2,000
                 </p>
 
-                <ul className="flex items-center gap-5">
+                <ul className="absolute right-5 flex items-center gap-6 text-[10px] uppercase tracking-[0.14em] text-muted-foreground sm:right-8 lg:right-10">
                     <li>
                         <Link
                             href="/user/purchased-items"
@@ -25,15 +23,7 @@ export default function TopBar() {
                             href="/contact"
                             className="transition-colors hover:text-foreground"
                         >
-                            Support
-                        </Link>
-                    </li>
-                    <li>
-                        <Link
-                            href="/contact"
-                            className="transition-colors hover:text-foreground"
-                        >
-                            FAQ
+                            Client care
                         </Link>
                     </li>
                 </ul>

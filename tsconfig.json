@@ -39,7 +39,10 @@
     ".next-blue2/types/**/*.ts",
     ".next-blue3/types/**/*.ts",
     ".next-blue4/types/**/*.ts",
-    ".next-blue5/types/**/*.ts"
+    ".next-blue5/types/**/*.ts",
+    ".next-lux/types/**/*.ts",
+    ".next-lux2/types/**/*.ts",
+    ".next-lux3/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

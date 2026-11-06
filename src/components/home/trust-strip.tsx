@@ -1,49 +1,36 @@
-import { Headphones, RotateCcw, ShieldCheck, Truck } from "lucide-react";
-
 const items = [
-    {
-        icon: Truck,
-        title: "Free shipping",
-        body: "On orders over ৳2,000",
-    },
-    {
-        icon: ShieldCheck,
-        title: "Secure payment",
-        body: "SSLCommerz protected",
-    },
-    {
-        icon: RotateCcw,
-        title: "Easy returns",
-        body: "7 days, no questions",
-    },
-    {
-        icon: Headphones,
-        title: "24/7 support",
-        body: "Real people, every day",
-    },
+    { title: "Complimentary delivery", body: "On orders over ৳2,000" },
+    { title: "Secure payment", body: "SSLCommerz protected" },
+    { title: "Seven-day returns", body: "Unused items, no questions" },
+    { title: "Client care", body: "9am to 9pm, every day" },
 ];
 
-/** Four promises in one card, sitting just under the hero. */
+/** A hairline service row, not a row of cards. */
 export default function TrustStrip() {
     return (
-        <section className="container-page py-5">
-            <ul className="grid grid-cols-2 divide-border rounded-xl border bg-card shadow-card md:grid-cols-4 md:divide-x">
-                {items.map(({ icon: Icon, title, body }) => (
-                    <li key={title} className="flex items-start gap-2.5 p-3 sm:items-center sm:gap-3 sm:p-4">
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-accent text-primary sm:h-9 sm:w-9">
-                            <Icon className="h-4 w-4" aria-hidden />
-                        </span>
-                        <span className="min-w-0">
-                            <span className="block text-[12px] font-semibold leading-tight sm:text-[13px]">
-                                {title}
-                            </span>
-                            <span className="mt-0.5 block text-[10.5px] leading-snug text-muted-foreground sm:text-[11px]">
-                                {body}
-                            </span>
-                        </span>
-                    </li>
-                ))}
-            </ul>
+        <section className="border-b">
+            <div className="container-page">
+                <ul className="grid grid-cols-2 lg:grid-cols-4">
+                    {items.map((item, index) => (
+                        <li
+                            key={item.title}
+                            className={
+                                "border-border py-6 pr-4 lg:px-8 lg:first:pl-0 lg:last:pr-0 " +
+                                (index % 2 === 1 ? "border-l pl-4 lg:pl-8 " : "") +
+                                (index < 2 ? "border-b lg:border-b-0 " : "") +
+                                (index > 0 ? "lg:border-l" : "")
+                            }
+                        >
+                            <p className="text-[10px] font-medium uppercase tracking-[0.18em]">
+                                {item.title}
+                            </p>
+                            <p className="mt-1.5 text-[12px] text-muted-foreground">
+                                {item.body}
+                            </p>
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </section>
     );
 }

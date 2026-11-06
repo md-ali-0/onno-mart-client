@@ -8,12 +8,24 @@ import { Toaster } from "sonner";
 import "../styles/globals.css";
 
 /**
- * Work Sans, self-hosted as a variable font (50 kB). It carries both body copy
- * and the heavy 700/800 headings, so the page keeps one type system.
+ * Instrument Serif for display type and Instrument Sans for everything else.
+ * Both are self-hosted (15 kB + 30 kB) so the build has no network dependency.
+ * The serif only ever appears at large sizes — that is what makes it read as
+ * expensive rather than decorative.
  */
+const display = localFont({
+    src: "../assets/fonts/instrument-serif.woff2",
+    weight: "400",
+    style: "normal",
+    variable: "--font-display",
+    display: "swap",
+    fallback: ["Georgia", "Times New Roman", "serif"],
+    adjustFontFallback: false,
+});
+
 const sans = localFont({
-    src: "../assets/fonts/work-sans-variable.woff2",
-    weight: "100 900",
+    src: "../assets/fonts/instrument-sans-variable.woff2",
+    weight: "400 700",
     style: "normal",
     variable: "--font-sans",
     display: "swap",
@@ -84,8 +96,8 @@ export const viewport: Viewport = {
     width: "device-width",
     initialScale: 1,
     themeColor: [
-        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-        { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+        { media: "(prefers-color-scheme: light)", color: "#f8f6f2" },
+        { media: "(prefers-color-scheme: dark)", color: "#0e1116" },
     ],
     colorScheme: "light dark",
 };
@@ -129,7 +141,7 @@ export default function RootLayout({
     return (
         <html
             lang={site.language}
-            className={sans.variable}
+            className={`${sans.variable} ${display.variable}`}
             suppressHydrationWarning
         >
             <body className="min-h-dvh bg-background font-sans text-foreground antialiased">

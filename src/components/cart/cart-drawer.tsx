@@ -73,12 +73,12 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                 aria-modal="true"
                 aria-label="Shopping cart"
                 className={cn(
-                    "absolute right-0 top-0 flex h-full w-full max-w-[420px] flex-col bg-card shadow-lift transition-transform duration-300 ease-out",
+                    "absolute right-0 top-0 flex h-full w-full max-w-[420px] flex-col border-l bg-card transition-transform duration-300 ease-out",
                     open ? "translate-x-0" : "translate-x-full"
                 )}
             >
                 <header className="flex items-center justify-between border-b px-5 py-4">
-                    <h2 className="flex items-center gap-2 text-[15px] font-bold">
+                    <h2 className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.16em]">
                         <ShoppingBag className="h-4 w-4 text-primary" aria-hidden />
                         Your cart
                         <span className="text-muted-foreground">
@@ -89,7 +89,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                         type="button"
                         onClick={onClose}
                         aria-label="Close cart"
-                        className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                        className="flex h-9 w-9 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
                     >
                         <X className="h-4 w-4" />
                     </button>
@@ -109,7 +109,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                         <Link
                             href="/products"
                             onClick={onClose}
-                            className="mt-2 inline-flex h-10 items-center justify-center rounded-lg bg-primary px-5 text-[13px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                            className="mt-3 inline-flex h-11 items-center justify-center bg-foreground px-6 text-[10px] font-medium uppercase tracking-[0.16em] text-background transition-colors hover:bg-primary"
                         >
                             Start shopping
                         </Link>
@@ -122,7 +122,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                     <Link
                                         href={`/product/${item.slug}`}
                                         onClick={onClose}
-                                        className="relative h-20 w-16 shrink-0 overflow-hidden rounded-lg bg-muted"
+                                        className="relative h-24 w-20 shrink-0 overflow-hidden bg-surface"
                                     >
                                         <Image
                                             src={item.thumbnail}
@@ -146,7 +146,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                         </p>
 
                                         <div className="mt-auto flex items-center justify-between gap-2 pt-2">
-                                            <div className="flex items-center rounded-lg border">
+                                            <div className="flex items-center border">
                                                 <button
                                                     type="button"
                                                     aria-label={`Decrease quantity of ${item.name}`}
@@ -224,14 +224,14 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                             <Link
                                 href="/checkout"
                                 onClick={onClose}
-                                className="mt-4 flex h-11 items-center justify-center rounded-lg bg-primary text-[13px] font-semibold uppercase tracking-[0.06em] text-primary-foreground transition-colors hover:bg-primary/90"
+                                className="mt-5 flex h-12 items-center justify-center bg-foreground text-[10px] font-medium uppercase tracking-[0.18em] text-background transition-colors hover:bg-primary"
                             >
                                 Checkout
                             </Link>
                             <Link
                                 href="/cart"
                                 onClick={onClose}
-                                className="mt-2 flex h-10 items-center justify-center rounded-lg border text-[13px] font-semibold transition-colors hover:bg-secondary"
+                                className="mt-2 flex h-11 items-center justify-center border text-[10px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-secondary"
                             >
                                 View full cart
                             </Link>

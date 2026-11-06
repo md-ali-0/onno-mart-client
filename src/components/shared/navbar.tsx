@@ -1,7 +1,6 @@
 "use client";
 
 import { signout } from "@/actions/auth";
-import logo from "@/assets/images/logo.png";
 import { cn } from "@/lib/utils";
 import { useSession } from "@/provider/session-provider";
 import { useGetMeQuery } from "@/redux/features/user/userApi";
@@ -21,7 +20,6 @@ import {
     User,
     X,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
@@ -81,7 +79,7 @@ function IconButton({
             href={href}
             aria-label={label}
             className={cn(
-                "relative flex h-10 w-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary",
+                "relative flex h-9 w-9 items-center justify-center text-foreground transition-colors hover:text-primary",
                 className
             )}
         >
@@ -150,20 +148,17 @@ export default function Navbar() {
 
             <TopBar />
 
-            <header className="sticky top-0 z-50 w-full border-b bg-card">
+            <header className="sticky top-0 z-50 w-full border-b bg-background">
                 <div className="container-page">
-                    <div className="flex h-[68px] items-center gap-3 lg:gap-6">
+                    <div className="flex h-[76px] items-center gap-3 lg:gap-6">
                         <Link
                             href="/"
                             className="flex shrink-0 items-center"
                             aria-label="OnnoMart home"
                         >
-                            <Image
-                                src={logo}
-                                alt="OnnoMart"
-                                className="h-8 w-auto sm:h-9"
-                                priority
-                            />
+                            <span className="font-display text-[25px] leading-none tracking-[-0.02em] text-foreground">
+                                OnnoMart
+                            </span>
                         </Link>
 
                         <nav aria-label="Main navigation" className="hidden lg:block">
@@ -176,7 +171,7 @@ export default function Navbar() {
                                                 isActive(path, link.href) ? "page" : undefined
                                             }
                                             className={cn(
-                                                "text-[13px] font-semibold transition-colors hover:text-primary",
+                                                "text-[11px] font-medium uppercase tracking-[0.14em] transition-colors hover:text-primary",
                                                 isActive(path, link.href)
                                                     ? "text-primary"
                                                     : "text-foreground"
@@ -197,7 +192,7 @@ export default function Navbar() {
                                                 isActive(path, link.href) ? "page" : undefined
                                             }
                                             className={cn(
-                                                "text-[13px] font-semibold transition-colors hover:text-primary",
+                                                "text-[11px] font-medium uppercase tracking-[0.14em] transition-colors hover:text-primary",
                                                 isActive(path, link.href)
                                                     ? "text-primary"
                                                     : "text-foreground"
@@ -210,7 +205,7 @@ export default function Navbar() {
                             </ul>
                         </nav>
 
-                        <div className="ml-auto hidden min-w-0 max-w-[380px] flex-1 lg:block">
+                        <div className="ml-auto hidden min-w-0 max-w-[300px] flex-1 lg:block">
                             <NavbarCategorySearch />
                         </div>
 
@@ -220,7 +215,7 @@ export default function Navbar() {
                                 label="Search products"
                                 className="lg:hidden"
                             >
-                                <Search className="h-[18px] w-[18px]" />
+                                <Search className="h-[17px] w-[17px]" />
                             </IconButton>
 
                             <IconButton
@@ -229,7 +224,7 @@ export default function Navbar() {
                                 count={compareCount}
                                 className="hidden sm:flex"
                             >
-                                <ArrowLeftRight className="h-[18px] w-[18px]" />
+                                <ArrowLeftRight className="h-[17px] w-[17px]" />
                             </IconButton>
 
                             <div className="relative">
@@ -238,7 +233,7 @@ export default function Navbar() {
                                     aria-label="Account menu"
                                     aria-expanded={isDropdownOpen}
                                     onClick={() => setIsDropDownOpen(!isDropdownOpen)}
-                                    className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary"
+                                    className="flex h-9 w-9 items-center justify-center text-foreground transition-colors hover:text-primary"
                                 >
                                     {session?.isAuth ? (
                                         isLoading ? (
@@ -255,12 +250,12 @@ export default function Navbar() {
                                             </Avatar>
                                         )
                                     ) : (
-                                        <User className="h-[18px] w-[18px]" />
+                                        <User className="h-[17px] w-[17px]" />
                                     )}
                                 </button>
 
                                 {isDropdownOpen && (
-                                    <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border bg-card py-2 shadow-lift">
+                                    <div className="absolute right-0 top-full z-50 mt-3 w-64 border bg-card py-2 shadow-lift">
                                         {session?.isAuth ? (
                                             <>
                                                 <div className="border-b px-4 pb-2.5 pt-1">
@@ -350,9 +345,9 @@ export default function Navbar() {
                                 type="button"
                                 onClick={() => setCartOpen(true)}
                                 aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}`}
-                                className="relative flex h-10 w-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary"
+                                className="relative flex h-9 w-9 items-center justify-center text-foreground transition-colors hover:text-primary"
                             >
-                                <ShoppingCart className="h-[18px] w-[18px]" />
+                                <ShoppingCart className="h-[17px] w-[17px]" />
                                 <CountBadge count={cartCount} />
                             </button>
 
@@ -361,12 +356,12 @@ export default function Navbar() {
                                 aria-label={showMenu ? "Close menu" : "Open menu"}
                                 aria-expanded={showMenu}
                                 onClick={() => setShowMenu(!showMenu)}
-                                className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary lg:hidden"
+                                className="flex h-9 w-9 items-center justify-center text-foreground transition-colors hover:text-primary lg:hidden"
                             >
                                 {showMenu ? (
-                                    <X className="h-[18px] w-[18px]" />
+                                    <X className="h-[17px] w-[17px]" />
                                 ) : (
-                                    <Menu className="h-[18px] w-[18px]" />
+                                    <Menu className="h-[17px] w-[17px]" />
                                 )}
                             </button>
                         </div>
@@ -387,7 +382,7 @@ export default function Navbar() {
                                                 href={link.href}
                                                 onClick={() => setShowMenu(false)}
                                                 className={cn(
-                                                    "block rounded-lg px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-secondary",
+                                                    "block px-3 py-2.5 text-[11px] font-medium uppercase tracking-[0.12em] transition-colors hover:text-primary",
                                                     isActive(path, link.href)
                                                         ? "bg-secondary text-primary"
                                                         : "text-foreground"
