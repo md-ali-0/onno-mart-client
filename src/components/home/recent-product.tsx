@@ -4,23 +4,19 @@ import SectionHeader from "../shared/section-header";
 
 /** Server-rendered so newly listed products are in the HTML for crawlers. */
 export default async function RecentProducts() {
-    const products = await getRecentProducts(8);
+    const products = await getRecentProducts(4);
 
     if (products.length === 0) return null;
 
     return (
-        <section className="section">
+        <section className="section pt-0">
             <div className="container-page">
                 <SectionHeader
-                    index="05"
-                    eyebrow="Just landed"
-                    title="New in the shops"
-                    description="Freshly added by our verified shops."
+                    title="New arrivals"
                     href="/products"
-                    linkLabel="Show more"
+                    linkLabel="View all"
                 />
-
-                <div className="grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                     {products.map((product) => (
                         <ProductCard key={product.id} product={product} />
                     ))}

@@ -29,7 +29,9 @@ export default function NavbarCategorySearch() {
 
     return (
         <form onSubmit={handleSubmit} role="search" className="w-full">
-            <div className="flex h-9 w-full items-center border-b border-foreground/20 transition-colors focus-within:border-primary">
+            <div className="flex h-10 items-center rounded-full border bg-secondary/60 pl-3 pr-1 transition-colors focus-within:border-primary focus-within:bg-card">
+                <Search className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+
                 <label htmlFor="nav-category" className="sr-only">
                     Category
                 </label>
@@ -38,9 +40,9 @@ export default function NavbarCategorySearch() {
                     name="categoryId"
                     disabled={!data?.data?.length}
                     onChange={(event) => setCategoryId(event.target.value)}
-                    className="hidden max-w-[8.5rem] shrink-0 cursor-pointer border-r border-foreground/15 bg-transparent pr-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground outline-none sm:block"
+                    className="ml-1 hidden max-w-[7.5rem] shrink-0 cursor-pointer border-r bg-transparent pr-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground outline-none sm:block"
                 >
-                    <option value="">Everything</option>
+                    <option value="">All</option>
                     {(data?.data ?? []).map((category) => (
                         <option key={category.id} value={category.slug}>
                             {category.name}
@@ -55,18 +57,18 @@ export default function NavbarCategorySearch() {
                     id="nav-search"
                     type="search"
                     name="searchTerm"
-                    placeholder="Search products, brands, shops"
+                    placeholder="Search products"
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
-                    className="min-w-0 flex-1 bg-transparent px-3 text-[13px] outline-none placeholder:text-muted-foreground"
+                    className="min-w-0 flex-1 bg-transparent px-2.5 text-[13px] outline-none placeholder:text-muted-foreground"
                 />
 
                 <button
                     type="submit"
                     aria-label="Search"
-                    className="flex h-full w-8 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-primary"
+                    className="flex h-8 shrink-0 items-center justify-center rounded-full bg-primary px-3.5 text-primary-foreground transition-colors hover:bg-primary/90"
                 >
-                    <Search className="h-4 w-4" aria-hidden />
+                    <Search className="h-3.5 w-3.5" aria-hidden />
                 </button>
             </div>
         </form>

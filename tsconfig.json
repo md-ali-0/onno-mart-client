@@ -34,7 +34,10 @@
     ".next/types/**/*.ts",
     ".next-preview/types/**/*.ts",
     ".next-preview2/types/**/*.ts",
-    ".next-preview3/types/**/*.ts"
+    ".next-preview3/types/**/*.ts",
+    ".next-blue/types/**/*.ts",
+    ".next-blue2/types/**/*.ts",
+    ".next-blue3/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

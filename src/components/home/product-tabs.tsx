@@ -6,27 +6,29 @@ import { useState } from "react";
 import ProductCard from "../product/product-card";
 
 type Props = {
-    bestSelling: Product[];
+    all: Product[];
+    onSale: Product[];
     topRated: Product[];
 };
 
 const TABS = [
-    { id: "best", label: "Best selling" },
+    { id: "all", label: "All" },
+    { id: "sale", label: "On sale" },
     { id: "rated", label: "Top rated" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
 
 /**
- * Only the tab switch is interactive. Both product grids come from the server
- * and stay in the HTML (one hidden), so the catalogue is crawlable and the
- * switch is instant — no refetch, no loading skeleton, no framer-motion.
+ * Only the tab switch is interactive. Every panel comes from the server and
+ * stays in the HTML (hidden when inactive), so the catalogue stays crawlable.
  */
-export default function ProductTabs({ bestSelling, topRated }: Props) {
-    const [active, setActive] = useState<TabId>("best");
+export default function ProductTabs({ all, onSale, topRated }: Props) {
+    const [active, setActive] = useState<TabId>("all");
 
     const panels: Record<TabId, Product[]> = {
-        best: bestSelling,
+        all,
+        sale: onSale,
         rated: topRated,
     };
 
@@ -35,7 +37,7 @@ export default function ProductTabs({ bestSelling, topRated }: Props) {
             <div
                 role="tablist"
                 aria-label="Product collections"
-                className="mb-6 flex gap-7 border-b"
+                className="no-scrollbar -mx-1 mb-4 flex gap-2 overflow-x-auto px-1"
             >
                 {TABS.map((tab) => (
                     <button
@@ -47,10 +49,10 @@ export default function ProductTabs({ bestSelling, topRated }: Props) {
                         aria-controls={`panel-${tab.id}`}
                         onClick={() => setActive(tab.id)}
                         className={cn(
-                            "-mb-px border-b pb-2.5 text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors",
+                            "h-8 shrink-0 rounded-full px-4 text-[12px] font-semibold transition-colors",
                             active === tab.id
-                                ? "border-primary text-foreground"
-                                : "border-transparent text-muted-foreground hover:text-foreground"
+                                ? "bg-navy text-navy-foreground"
+                                : "bg-secondary text-muted-foreground hover:text-foreground"
                         )}
                     >
                         {tab.label}
@@ -65,7 +67,7 @@ export default function ProductTabs({ bestSelling, topRated }: Props) {
                     role="tabpanel"
                     aria-labelledby={`tab-${id}`}
                     className={cn(
-                        "grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 lg:grid-cols-4",
+                        "grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4",
                         active !== id && "hidden"
                     )}
                 >

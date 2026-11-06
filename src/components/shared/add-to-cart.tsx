@@ -17,10 +17,12 @@ import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 
 const VARIANTS = {
-    primary: "h-10 px-5 text-sm bg-primary text-primary-foreground hover:bg-foreground",
+    primary: "h-10 px-5 text-sm bg-primary text-primary-foreground hover:bg-primary/90",
     subtle: "h-10 px-4 text-sm bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground",
     outline: "h-10 px-4 text-sm border border-input bg-transparent hover:bg-secondary",
     quiet: "h-9 px-4 text-[11px] uppercase tracking-[0.12em] border border-foreground/20 bg-transparent hover:border-foreground hover:bg-foreground hover:text-background",
+    /** Square icon-only button used inside product tiles. */
+    icon: "h-9 w-9 bg-primary text-primary-foreground hover:bg-primary/90",
 } as const;
 
 type AddToCartButtonProps = {
@@ -84,7 +86,11 @@ export function AddToCartButton({
                 )}
             >
                 <ShoppingCart className="h-4 w-4 shrink-0" aria-hidden />
-                <span className="truncate">{outOfStock ? "Out of stock" : label}</span>
+                {variant !== "icon" && (
+                    <span className="truncate">
+                        {outOfStock ? "Out of stock" : label}
+                    </span>
+                )}
             </button>
 
             <Dialog open={showDialog} onOpenChange={setShowDialog}>

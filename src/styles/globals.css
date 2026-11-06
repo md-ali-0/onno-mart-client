@@ -3,99 +3,99 @@
 @tailwind utilities;
 
 /*
- * Design tokens — "paper shop".
- * Warm cream paper, ink text, clay accent, forest for dark blocks. Deliberately
- * not the zinc/white/violet default: the point is that this looks printed, not
- * generated. Everything below pulls from these values.
+ * Design tokens — blue retail.
+ * White surfaces, a single confident blue, soft rounded cards. Section bands
+ * use a pale blue tint so the page has rhythm without adding a second colour.
  */
 @layer base {
     :root {
-        --background: 40 43% 95%;
-        --foreground: 43 16% 8%;
+        --background: 0 0% 100%;
+        --foreground: 222 47% 11%;
 
-        --card: 40 45% 98%;
-        --card-foreground: 43 16% 8%;
+        --card: 0 0% 100%;
+        --card-foreground: 222 47% 11%;
 
-        --popover: 40 45% 98%;
-        --popover-foreground: 43 16% 8%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 222 47% 11%;
 
-        --primary: 11 61% 43%;
-        --primary-foreground: 40 45% 98%;
+        --primary: 221 83% 53%;
+        --primary-foreground: 0 0% 100%;
 
-        --secondary: 40 36% 90%;
-        --secondary-foreground: 43 16% 12%;
+        --secondary: 210 40% 96%;
+        --secondary-foreground: 222 47% 11%;
 
-        --muted: 40 30% 92%;
-        --muted-foreground: 35 11% 39%;
+        --muted: 210 40% 96%;
+        --muted-foreground: 215 16% 47%;
 
-        --accent: 20 50% 91%;
-        --accent-foreground: 11 55% 28%;
+        --accent: 214 95% 93%;
+        --accent-foreground: 221 83% 40%;
 
-        --destructive: 0 65% 42%;
-        --destructive-foreground: 40 45% 98%;
+        --destructive: 0 72% 51%;
+        --destructive-foreground: 0 0% 100%;
 
-        --success: 150 45% 30%;
-        --success-foreground: 40 45% 98%;
+        --success: 152 60% 36%;
+        --success-foreground: 0 0% 100%;
 
-        --forest: 148 27% 12%;
-        --forest-foreground: 40 40% 94%;
+        /* Dark block for the footer and the hero CTA. */
+        --navy: 222 47% 11%;
+        --navy-foreground: 210 40% 96%;
 
-        --border: 38 30% 84%;
-        --input: 38 28% 82%;
-        --ring: 11 61% 43%;
+        --border: 214 32% 91%;
+        --input: 214 32% 88%;
+        --ring: 221 83% 53%;
 
-        /* Sharp corners. A 12px radius on every box is the loudest tell of a
-           template; 3px reads like a printed card. */
-        --radius: 0.1875rem;
+        --radius: 0.75rem;
 
-        --surface: 40 34% 93%;
-        --shadow-color: 43 16% 8%;
+        --surface: 210 40% 98%;
+        --tint: 221 100% 97%;
+        --shadow-color: 222 47% 11%;
 
-        --chart-1: 11 61% 43%;
-        --chart-2: 148 27% 30%;
-        --chart-3: 38 40% 55%;
-        --chart-4: 200 30% 40%;
-        --chart-5: 20 50% 65%;
+        --chart-1: 221 83% 53%;
+        --chart-2: 152 60% 36%;
+        --chart-3: 38 92% 50%;
+        --chart-4: 262 60% 55%;
+        --chart-5: 340 65% 55%;
     }
 
     .dark {
-        --background: 40 8% 8%;
-        --foreground: 40 30% 94%;
+        --background: 222 47% 8%;
+        --foreground: 210 40% 96%;
 
-        --card: 40 7% 11%;
-        --card-foreground: 40 30% 94%;
+        --card: 222 40% 11%;
+        --card-foreground: 210 40% 96%;
 
-        --popover: 40 7% 11%;
-        --popover-foreground: 40 30% 94%;
+        --popover: 222 40% 11%;
+        --popover-foreground: 210 40% 96%;
 
-        --primary: 11 65% 52%;
-        --primary-foreground: 40 45% 98%;
+        --primary: 217 91% 60%;
+        --primary-foreground: 222 47% 8%;
 
-        --secondary: 40 6% 16%;
-        --secondary-foreground: 40 30% 94%;
+        --secondary: 217 25% 17%;
+        --secondary-foreground: 210 40% 96%;
 
-        --muted: 40 6% 16%;
-        --muted-foreground: 40 8% 62%;
+        --muted: 217 25% 17%;
+        --muted-foreground: 215 20% 65%;
 
-        --accent: 11 30% 18%;
-        --accent-foreground: 20 60% 84%;
+        --accent: 221 40% 20%;
+        --accent-foreground: 214 95% 88%;
 
-        --destructive: 0 60% 45%;
-        --destructive-foreground: 40 45% 98%;
+        --destructive: 0 62% 45%;
+        --destructive-foreground: 210 40% 96%;
 
-        --success: 150 40% 45%;
-        --success-foreground: 40 8% 8%;
+        --success: 152 50% 42%;
+        --success-foreground: 222 47% 8%;
 
-        --forest: 148 20% 10%;
-        --forest-foreground: 40 30% 94%;
+        --navy: 222 45% 10%;
+        --navy-foreground: 210 40% 96%;
 
-        --border: 40 6% 20%;
-        --input: 40 6% 22%;
-        --ring: 11 65% 52%;
+        --border: 217 25% 20%;
+        --input: 217 25% 22%;
+        --ring: 217 91% 60%;
 
-        --surface: 40 7% 10%;
+        --surface: 222 40% 10%;
+        --tint: 221 35% 14%;
 
-        --chart-1: 220 60% 55%;
+        --chart-1: 217 91% 60%;
         --chart-2: 160 50% 45%;
         --chart-3: 30 70% 55%;
         --chart-4: 280 55% 60%;
@@ -117,35 +117,15 @@
 
     body {
         @apply bg-background text-foreground;
-        font-feature-settings: "ss01", "cv05";
         text-rendering: optimizeLegibility;
-    }
-
-    /* Paper grain. Very low opacity, fixed, and it never intercepts clicks. */
-    body::after {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        pointer-events: none;
-        opacity: 0.035;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
-    }
-
-    .dark body::after {
-        opacity: 0.05;
     }
 
     h1,
     h2,
-    h3 {
-        @apply font-display font-medium text-foreground;
-        letter-spacing: -0.015em;
-        text-wrap: balance;
-    }
-
+    h3,
     h4 {
-        @apply font-semibold text-foreground;
+        @apply font-display font-bold text-foreground;
+        letter-spacing: -0.02em;
         text-wrap: balance;
     }
 
@@ -154,12 +134,12 @@
     }
 
     ::selection {
-        background-color: hsl(var(--primary) / 0.22);
+        background-color: hsl(var(--primary) / 0.2);
         color: hsl(var(--foreground));
     }
 
     :focus-visible {
-        @apply outline-none ring-2 ring-ring/50 ring-offset-2 ring-offset-background;
+        @apply outline-none ring-2 ring-ring/40 ring-offset-2 ring-offset-background;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -186,47 +166,56 @@
     }
 
     .sideLink {
-        @apply flex items-center gap-x-3.5 rounded-sm px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none dark:text-white;
+        @apply flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none dark:text-white;
     }
 
     .sideLinkActive {
-        @apply flex items-center gap-x-3.5 rounded-sm bg-white/10 px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none dark:text-white;
+        @apply flex items-center gap-x-3.5 rounded-lg bg-white/10 px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none dark:text-white;
     }
 
     .dropdownSideBar {
-        @apply relative flex w-full items-center gap-x-3.5 rounded-sm px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
+        @apply relative flex w-full items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
     }
 }
 
 @layer components {
-    /* Page shell: one max width, one gutter, everywhere. */
     .container-page {
-        @apply mx-auto w-full max-w-[1220px] px-5 sm:px-8;
+        @apply mx-auto w-full max-w-[1240px] px-4 sm:px-6 lg:px-8;
     }
 
     .section {
-        @apply py-10 sm:py-14 lg:py-16;
+        @apply py-10 sm:py-12 lg:py-14;
     }
 
     .section-heading {
-        @apply font-display text-[26px] font-medium leading-[1.1] tracking-[-0.02em] sm:text-[32px];
+        @apply font-display text-[22px] font-bold leading-tight tracking-[-0.02em] sm:text-[26px];
     }
 
-    /* Small caps label. Used for eyebrows, meta lines and column headings. */
     .eyebrow {
-        @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-primary;
+        @apply text-[11px] font-semibold uppercase tracking-[0.16em] text-primary;
     }
 
     .label-caps {
-        @apply text-[10px] font-semibold uppercase tracking-[0.2em] text-muted-foreground;
+        @apply text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground;
     }
 
     .rule {
         @apply h-px w-full bg-border;
     }
 
+    /* Pale blue band used behind the hero and the newsletter. */
+    .band-tint {
+        background:
+            radial-gradient(
+                120% 120% at 85% 10%,
+                hsl(var(--primary) / 0.12),
+                transparent 60%
+            ),
+            linear-gradient(180deg, hsl(var(--tint)), hsl(0 0% 100%));
+    }
+
     .surface-card {
-        @apply rounded-sm border bg-card text-card-foreground;
+        @apply rounded-xl border bg-card text-card-foreground;
     }
 
     .surface-muted {
@@ -234,7 +223,7 @@
     }
 
     .price {
-        @apply font-display text-[17px] font-medium tabular-nums tracking-tight text-foreground;
+        @apply text-[17px] font-bold tabular-nums tracking-tight text-foreground;
     }
 
     .price-strike {
@@ -242,24 +231,23 @@
     }
 
     .badge-discount {
-        @apply inline-flex items-center bg-primary px-1.5 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-primary-foreground;
+        @apply inline-flex items-center rounded-md bg-primary px-1.5 py-0.5 text-[11px] font-semibold text-primary-foreground;
     }
 
-    /* Product tile badges. Sale is the loud one; stock notes stay quiet. */
     .badge-sale {
-        @apply inline-flex items-center bg-primary px-1.5 py-1 text-[10px] font-bold uppercase leading-none tracking-[0.08em] text-primary-foreground;
+        @apply inline-flex items-center rounded-md bg-destructive px-1.5 py-1 text-[10px] font-bold uppercase leading-none tracking-wide text-destructive-foreground;
     }
 
     .badge-stock {
-        @apply inline-flex items-center bg-card px-1.5 py-1 text-[10px] font-semibold uppercase leading-none tracking-[0.08em] text-foreground;
+        @apply inline-flex items-center rounded-md bg-card px-1.5 py-1 text-[10px] font-semibold uppercase leading-none tracking-wide text-foreground shadow-sm;
     }
 
     .badge-muted {
-        @apply inline-flex items-center bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground;
+        @apply inline-flex items-center rounded-md bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground;
     }
 
     .skeleton {
-        @apply relative overflow-hidden bg-muted;
+        @apply relative overflow-hidden rounded-md bg-muted;
     }
 
     .skeleton::after {
@@ -268,7 +256,7 @@
         background-image: linear-gradient(
             90deg,
             transparent,
-            hsl(0 0% 100% / 0.55),
+            hsl(0 0% 100% / 0.6),
             transparent
         );
         animation: shimmer 1.6s infinite;
@@ -287,9 +275,9 @@
         @apply underline decoration-border decoration-1 underline-offset-4 transition-colors hover:decoration-primary;
     }
 
-    /* Editorial text link: arrow slides on hover, no pill. */
+    /* "View all →" link used on every section head. */
     .link-arrow {
-        @apply inline-flex items-center gap-1.5 text-[13px] font-semibold text-foreground;
+        @apply inline-flex items-center gap-1 text-[13px] font-semibold text-primary transition-colors hover:text-primary/80;
     }
 
     .link-arrow svg {
@@ -299,14 +287,6 @@
     .link-arrow:hover svg {
         transform: translateX(2px);
     }
-
-    .link-arrow span {
-        @apply border-b border-foreground/30 pb-0.5 transition-colors;
-    }
-
-    .link-arrow:hover span {
-        @apply border-primary;
-    }
 }
 
 @layer utilities {
@@ -315,7 +295,7 @@
     }
 
     .link-button {
-        @apply inline-block bg-secondary px-2 py-1 text-center font-medium text-secondary-foreground transition-colors hover:bg-primary hover:text-primary-foreground;
+        @apply inline-block rounded-md bg-secondary px-2 py-1 text-center font-medium text-secondary-foreground transition-colors hover:bg-primary hover:text-primary-foreground;
     }
 
     .nav-link {
@@ -324,7 +304,7 @@
 
     .nav-link::after {
         content: "";
-        @apply absolute bottom-0 left-0 h-[1.5px] w-0 bg-foreground duration-300 ease-in-out;
+        @apply absolute bottom-0 left-0 h-[1.5px] w-0 bg-primary duration-300 ease-in-out;
     }
 
     .nav-link:hover::after,
@@ -349,7 +329,7 @@
     }
 
     .custom-scroll::-webkit-scrollbar-thumb {
-        @apply bg-slate-600 shadow-inner transition-all duration-150 ease-in-out dark:bg-slate-800;
+        @apply rounded-full bg-slate-300 dark:bg-slate-700;
     }
 
     .category-scroll {
@@ -361,7 +341,7 @@
     }
 
     .category-scroll::-webkit-scrollbar-thumb {
-        @apply bg-primary/20 shadow-inner transition-all duration-150 ease-in-out;
+        @apply rounded-full bg-primary/20;
     }
 
     .no-scrollbar {

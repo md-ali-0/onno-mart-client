@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetAllCategoriesQuery } from "@/redux/features/category/categoryApi";
-import { ChevronDown, LayoutGrid } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -26,16 +26,15 @@ export default function NavCategory() {
     };
 
     return (
-        <div className="relative shrink-0">
+        <div className="relative">
             <button
                 type="button"
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="inline-flex items-center gap-2 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:text-primary"
+                className="inline-flex items-center gap-1 text-[13px] font-semibold text-foreground transition-colors hover:text-primary"
             >
-                <LayoutGrid className="h-3.5 w-3.5" aria-hidden />
-                All categories
+                Categories
                 <ChevronDown
                     className={`h-3.5 w-3.5 transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
                     aria-hidden
@@ -43,11 +42,11 @@ export default function NavCategory() {
             </button>
 
             {dropdownOpen && (
-                <div className="absolute left-0 top-full z-50 mt-2 max-h-[24rem] w-64 overflow-y-auto border bg-card py-2 shadow-lift category-scroll">
+                <div className="absolute left-0 top-full z-50 mt-3 w-64 overflow-hidden rounded-xl border bg-card py-2 shadow-lift">
                     <Link
                         href="/products"
                         onClick={() => setDropdownOpen(false)}
-                        className="block px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
+                        className="block px-4 py-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-muted-foreground transition-colors hover:text-foreground"
                     >
                         All products
                     </Link>
@@ -63,12 +62,12 @@ export default function NavCategory() {
                                         <Image
                                             src={category.image}
                                             alt=""
-                                            width={22}
-                                            height={22}
-                                            className="h-[22px] w-[22px] shrink-0 object-cover"
+                                            width={24}
+                                            height={24}
+                                            className="h-6 w-6 shrink-0 rounded object-cover"
                                         />
                                     ) : (
-                                        <span className="h-[22px] w-[22px] shrink-0 bg-muted" />
+                                        <span className="h-6 w-6 shrink-0 rounded bg-muted" />
                                     )}
                                     <span className="truncate">{category.name}</span>
                                 </button>

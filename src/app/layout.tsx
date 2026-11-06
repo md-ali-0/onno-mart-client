@@ -8,24 +8,9 @@ import { Toaster } from "sonner";
 import "../styles/globals.css";
 
 /**
- * A serif display face plus a humanist sans. Inter on its own is the fastest
- * way to look like every other generated dashboard; Fraunces gives headings a
- * printed, slightly bookish character and Work Sans keeps body copy plain.
- *
- * Both are self-hosted variable fonts (36 kB and 50 kB). Fetching them through
- * next/font/google failed on Google's `l/font?kit=` URLs, and self-hosting also
- * removes a build-time network dependency.
+ * Work Sans, self-hosted as a variable font (50 kB). It carries both body copy
+ * and the heavy 700/800 headings, so the page keeps one type system.
  */
-const display = localFont({
-    src: "../assets/fonts/fraunces-variable.woff2",
-    weight: "100 900",
-    style: "normal",
-    variable: "--font-display",
-    display: "swap",
-    fallback: ["Georgia", "Times New Roman", "serif"],
-    adjustFontFallback: false,
-});
-
 const sans = localFont({
     src: "../assets/fonts/work-sans-variable.woff2",
     weight: "100 900",
@@ -99,8 +84,8 @@ export const viewport: Viewport = {
     width: "device-width",
     initialScale: 1,
     themeColor: [
-        { media: "(prefers-color-scheme: light)", color: "#f7f3eb" },
-        { media: "(prefers-color-scheme: dark)", color: "#171410" },
+        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+        { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
     ],
     colorScheme: "light dark",
 };
@@ -144,7 +129,7 @@ export default function RootLayout({
     return (
         <html
             lang={site.language}
-            className={`${sans.variable} ${display.variable}`}
+            className={sans.variable}
             suppressHydrationWarning
         >
             <body className="min-h-dvh bg-background font-sans text-foreground antialiased">

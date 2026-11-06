@@ -26,15 +26,17 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
+import CartDrawer from "../cart/cart-drawer";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Skeleton } from "../ui/skeleton";
 import NavCategory from "./nav-category";
 import NavbarCategorySearch from "./navbar-category-search";
+import TopBar from "./top-bar";
 
 const NAV_LINKS = [
     { href: "/", label: "Home" },
     { href: "/products", label: "Shop" },
-    { href: "/flash-sale", label: "Sale" },
+    { href: "/flash-sale", label: "Deals" },
     { href: "/shops", label: "Shops" },
     { href: "/compare", label: "Compare" },
     { href: "/contact", label: "Contact" },
@@ -55,13 +57,13 @@ function isActive(path: string, href: string) {
 function CountBadge({ count }: { count: number }) {
     if (count <= 0) return null;
     return (
-        <span className="absolute -right-1.5 -top-1.5 flex h-[15px] min-w-[15px] items-center justify-center bg-primary px-1 text-[9px] font-semibold leading-none text-primary-foreground">
+        <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-primary-foreground">
             {count > 9 ? "9+" : count}
         </span>
     );
 }
 
-function IconLink({
+function IconButton({
     href,
     label,
     count,
@@ -79,7 +81,7 @@ function IconLink({
             href={href}
             aria-label={label}
             className={cn(
-                "relative flex h-9 w-9 items-center justify-center text-muted-foreground transition-colors hover:text-foreground",
+                "relative flex h-10 w-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary",
                 className
             )}
         >
@@ -92,6 +94,7 @@ function IconLink({
 export default function Navbar() {
     const [showMenu, setShowMenu] = useState(false);
     const [isDropdownOpen, setIsDropDownOpen] = useState(false);
+    const [cartOpen, setCartOpen] = useState(false);
     const path = usePathname();
     const router = useRouter();
     const cartCount = useAppSelector((state) => state.cart.cart.length);
@@ -144,9 +147,12 @@ export default function Navbar() {
                     className="fixed inset-0 z-40 cursor-default"
                 />
             )}
-            <header className="sticky top-0 z-50 w-full border-b bg-background">
+
+            <TopBar />
+
+            <header className="sticky top-0 z-50 w-full border-b bg-card">
                 <div className="container-page">
-                    <div className="flex h-[66px] items-center gap-4 sm:gap-7">
+                    <div className="flex h-[68px] items-center gap-3 lg:gap-6">
                         <Link
                             href="/"
                             className="flex shrink-0 items-center"
@@ -155,33 +161,76 @@ export default function Navbar() {
                             <Image
                                 src={logo}
                                 alt="OnnoMart"
-                                className="h-7 w-auto sm:h-8"
+                                className="h-8 w-auto sm:h-9"
                                 priority
                             />
                         </Link>
 
-                        <div className="hidden min-w-0 flex-1 md:block">
+                        <nav aria-label="Main navigation" className="hidden lg:block">
+                            <ul className="flex items-center gap-6">
+                                {NAV_LINKS.slice(0, 2).map((link) => (
+                                    <li key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            aria-current={
+                                                isActive(path, link.href) ? "page" : undefined
+                                            }
+                                            className={cn(
+                                                "text-[13px] font-semibold transition-colors hover:text-primary",
+                                                isActive(path, link.href)
+                                                    ? "text-primary"
+                                                    : "text-foreground"
+                                            )}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                                <li>
+                                    <NavCategory />
+                                </li>
+                                {NAV_LINKS.slice(2).map((link) => (
+                                    <li key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            aria-current={
+                                                isActive(path, link.href) ? "page" : undefined
+                                            }
+                                            className={cn(
+                                                "text-[13px] font-semibold transition-colors hover:text-primary",
+                                                isActive(path, link.href)
+                                                    ? "text-primary"
+                                                    : "text-foreground"
+                                            )}
+                                        >
+                                            {link.label}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+
+                        <div className="ml-auto hidden min-w-0 max-w-[330px] flex-1 lg:block">
                             <NavbarCategorySearch />
                         </div>
 
-                        <div className="ml-auto flex items-center gap-0.5">
-                            <IconLink
+                        <div className="ml-auto flex items-center gap-0.5 lg:ml-0">
+                            <IconButton
                                 href="/products"
                                 label="Search products"
-                                className="md:hidden"
+                                className="lg:hidden"
                             >
                                 <Search className="h-[18px] w-[18px]" />
-                            </IconLink>
-                            <IconLink
+                            </IconButton>
+
+                            <IconButton
                                 href="/compare"
                                 label="Compare products"
                                 count={compareCount}
+                                className="hidden sm:flex"
                             >
                                 <ArrowLeftRight className="h-[18px] w-[18px]" />
-                            </IconLink>
-                            <IconLink href="/cart" label="Cart" count={cartCount}>
-                                <ShoppingCart className="h-[18px] w-[18px]" />
-                            </IconLink>
+                            </IconButton>
 
                             <div className="relative">
                                 <button
@@ -189,7 +238,7 @@ export default function Navbar() {
                                     aria-label="Account menu"
                                     aria-expanded={isDropdownOpen}
                                     onClick={() => setIsDropDownOpen(!isDropdownOpen)}
-                                    className="flex h-9 w-9 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                                    className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary"
                                 >
                                     {session?.isAuth ? (
                                         isLoading ? (
@@ -211,14 +260,14 @@ export default function Navbar() {
                                 </button>
 
                                 {isDropdownOpen && (
-                                    <div className="absolute right-0 top-full z-50 mt-3 w-64 border bg-card py-2 shadow-lift">
+                                    <div className="absolute right-0 top-full z-50 mt-2 w-64 overflow-hidden rounded-xl border bg-card py-2 shadow-lift">
                                         {session?.isAuth ? (
                                             <>
                                                 <div className="border-b px-4 pb-2.5 pt-1">
-                                                    <p className="truncate font-display text-[15px]">
+                                                    <p className="truncate text-[14px] font-semibold">
                                                         {data?.name ?? "Your account"}
                                                     </p>
-                                                    <p className="truncate text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+                                                    <p className="truncate text-[11px] text-muted-foreground">
                                                         {data?.email ?? session.role}
                                                     </p>
                                                 </div>
@@ -231,7 +280,7 @@ export default function Navbar() {
                                                                 className="flex items-center gap-2.5 px-4 py-2 text-[13px] transition-colors hover:bg-secondary"
                                                             >
                                                                 <Icon
-                                                                    className="h-3.5 w-3.5 text-muted-foreground"
+                                                                    className="h-4 w-4 text-muted-foreground"
                                                                     aria-hidden
                                                                 />
                                                                 {label}
@@ -245,7 +294,7 @@ export default function Navbar() {
                                                         onClick={handleLogout}
                                                         className="flex w-full items-center gap-2.5 px-4 py-2 text-[13px] text-destructive transition-colors hover:bg-secondary"
                                                     >
-                                                        <LogOut className="h-3.5 w-3.5" aria-hidden />
+                                                        <LogOut className="h-4 w-4" aria-hidden />
                                                         Sign out
                                                     </button>
                                                 </div>
@@ -259,7 +308,7 @@ export default function Navbar() {
                                                         className="flex items-center gap-2.5 px-4 py-2 text-[13px] transition-colors hover:bg-secondary"
                                                     >
                                                         <LogIn
-                                                            className="h-3.5 w-3.5 text-muted-foreground"
+                                                            className="h-4 w-4 text-muted-foreground"
                                                             aria-hidden
                                                         />
                                                         Sign in
@@ -272,20 +321,20 @@ export default function Navbar() {
                                                         className="flex items-center gap-2.5 px-4 py-2 text-[13px] transition-colors hover:bg-secondary"
                                                     >
                                                         <User
-                                                            className="h-3.5 w-3.5 text-muted-foreground"
+                                                            className="h-4 w-4 text-muted-foreground"
                                                             aria-hidden
                                                         />
                                                         Create an account
                                                     </Link>
                                                 </li>
-                                                <li className="border-t pt-1 sm:hidden">
+                                                <li className="border-t pt-1">
                                                     <Link
                                                         href="/auth/vendor-signup"
                                                         onClick={() => setIsDropDownOpen(false)}
                                                         className="flex items-center gap-2.5 px-4 py-2 text-[13px] transition-colors hover:bg-secondary"
                                                     >
                                                         <LayoutGrid
-                                                            className="h-3.5 w-3.5 text-muted-foreground"
+                                                            className="h-4 w-4 text-muted-foreground"
                                                             aria-hidden
                                                         />
                                                         Join as a vendor
@@ -299,10 +348,20 @@ export default function Navbar() {
 
                             <button
                                 type="button"
+                                onClick={() => setCartOpen(true)}
+                                aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}`}
+                                className="relative flex h-10 w-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary"
+                            >
+                                <ShoppingCart className="h-[18px] w-[18px]" />
+                                <CountBadge count={cartCount} />
+                            </button>
+
+                            <button
+                                type="button"
                                 aria-label={showMenu ? "Close menu" : "Open menu"}
                                 aria-expanded={showMenu}
                                 onClick={() => setShowMenu(!showMenu)}
-                                className="flex h-9 w-9 items-center justify-center text-muted-foreground transition-colors hover:text-foreground lg:hidden"
+                                className="flex h-10 w-10 items-center justify-center rounded-lg text-foreground transition-colors hover:bg-secondary lg:hidden"
                             >
                                 {showMenu ? (
                                     <X className="h-[18px] w-[18px]" />
@@ -314,65 +373,23 @@ export default function Navbar() {
                     </div>
                 </div>
 
-                {/* Desktop navigation */}
-                <div className="hidden border-t lg:block">
-                    <div className="container-page flex h-11 items-center justify-between gap-6">
-                        <NavCategory />
-
-                        <nav aria-label="Main navigation">
-                            <ul className="flex items-center gap-6">
-                                {NAV_LINKS.map((link) => (
-                                    <li key={link.href}>
-                                        <Link
-                                            href={link.href}
-                                            aria-current={
-                                                isActive(path, link.href)
-                                                    ? "page"
-                                                    : undefined
-                                            }
-                                            className={cn(
-                                                "text-[11px] font-semibold uppercase tracking-[0.14em] transition-colors",
-                                                isActive(path, link.href)
-                                                    ? "text-primary"
-                                                    : "text-muted-foreground hover:text-foreground"
-                                            )}
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </nav>
-
-                        {!session?.isAuth && (
-                            <Link
-                                href="/auth/vendor-signup"
-                                className="shrink-0 border-b border-foreground/40 pb-0.5 text-[11px] font-semibold uppercase tracking-[0.12em] transition-colors hover:border-primary hover:text-primary"
-                            >
-                                Sell on OnnoMart
-                            </Link>
-                        )}
-                    </div>
-                </div>
-
-                {/* Mobile navigation */}
                 {showMenu && (
                     <div className="border-t lg:hidden">
-                        <div className="container-page py-5">
-                            <div className="mb-5 md:hidden">
+                        <div className="container-page py-4">
+                            <div className="mb-4">
                                 <NavbarCategorySearch />
                             </div>
                             <nav aria-label="Mobile navigation">
-                                <ul className="grid grid-cols-2 gap-x-4">
+                                <ul className="grid grid-cols-2 gap-1">
                                     {NAV_LINKS.map((link) => (
-                                        <li key={link.href} className="border-b">
+                                        <li key={link.href}>
                                             <Link
                                                 href={link.href}
                                                 onClick={() => setShowMenu(false)}
                                                 className={cn(
-                                                    "block py-3 text-[12px] font-semibold uppercase tracking-[0.12em]",
+                                                    "block rounded-lg px-3 py-2.5 text-[13px] font-semibold transition-colors hover:bg-secondary",
                                                     isActive(path, link.href)
-                                                        ? "text-primary"
+                                                        ? "bg-secondary text-primary"
                                                         : "text-foreground"
                                                 )}
                                             >
@@ -382,14 +399,14 @@ export default function Navbar() {
                                     ))}
                                 </ul>
                             </nav>
-                            <div className="mt-4">
+                            <div className="mt-3 border-t pt-3">
                                 <NavCategory />
                             </div>
                             {!session?.isAuth && (
                                 <Link
                                     href="/auth/vendor-signup"
                                     onClick={() => setShowMenu(false)}
-                                    className="mt-5 flex items-center justify-center bg-foreground px-4 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-background"
+                                    className="mt-4 flex items-center justify-center rounded-lg bg-foreground px-4 py-2.5 text-[13px] font-semibold text-background"
                                 >
                                     Sell on OnnoMart
                                 </Link>
@@ -398,6 +415,8 @@ export default function Navbar() {
                     </div>
                 )}
             </header>
+
+            <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
         </>
     );
 }

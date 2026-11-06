@@ -130,7 +130,6 @@ export default async function ShopPage({ params, searchParams }: Props) {
 
             <section className="section">
                 <SectionHeader
-                    eyebrow="From this shop"
                     title="Products"
                     description={`Everything listed by ${shop.name}.`}
                     href="/products"
@@ -138,7 +137,7 @@ export default async function ShopPage({ params, searchParams }: Props) {
                 />
 
                 {products.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 lg:grid-cols-4">
+                    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
                         {products.map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}

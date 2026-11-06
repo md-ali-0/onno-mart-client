@@ -8,7 +8,7 @@ import {
 } from "@/redux/features/compare/compareSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { Product } from "@/types";
-import { ArrowLeftRight, Check, Store } from "lucide-react";
+import { ArrowLeftRight, Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -37,11 +37,7 @@ type ProductCardProps = {
     className?: string;
 };
 
-/**
- * Borderless tile, like a printed catalogue entry: plate, small caps brand,
- * serif name, price. No card frame, no shadow, no rounded box — those are what
- * made the grid read as a dashboard.
- */
+/** The single product tile used by every grid on the storefront. */
 export default function ProductCard({ product, className }: ProductCardProps) {
     const dispatch = useAppDispatch();
     const compare = useAppSelector((state) => state.compare.compare);
@@ -49,12 +45,10 @@ export default function ProductCard({ product, className }: ProductCardProps) {
 
     const price = discountedPrice(product);
     const saved = savingsPercent(product);
-    const savedAmount = Math.max(0, product.price - price);
     const rating = Number(product.rating ?? 0);
     const reviewCount = product.reviews?.length ?? 0;
     const inventory = product.inventory ?? 0;
     const inStock = inventory > 0;
-    const lowStock = inStock && inventory <= 10;
     const isCompared = compare.some((item) => item.id === product.id);
     const href = `/product/${product.slug}`;
     const brandName = product.brand?.name ?? product.category?.name;
@@ -75,12 +69,11 @@ export default function ProductCard({ product, className }: ProductCardProps) {
     return (
         <article
             className={cn(
-                "group relative flex h-full flex-col",
-                !inStock && "opacity-85",
+                "group relative flex h-full flex-col rounded-xl border bg-card p-2.5 transition-shadow duration-200 hover:shadow-card",
                 className
             )}
         >
-            <div className="relative aspect-[4/5] overflow-hidden bg-muted">
+            <div className="relative aspect-square overflow-hidden rounded-lg bg-muted">
                 <Link
                     href={href}
                     onClick={() => addToRecentProducts(product)}
@@ -88,7 +81,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     className="block h-full w-full"
                 >
                     {imageFailed ? (
-                        <span className="absolute inset-0 flex items-center justify-center font-display text-5xl text-muted-foreground/40">
+                        <span className="absolute inset-0 flex items-center justify-center text-4xl font-bold text-muted-foreground/40">
                             {(product.name[0] ?? "?").toUpperCase()}
                         </span>
                     ) : (
@@ -98,21 +91,22 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                             fill
                             sizes="(min-width: 1280px) 22vw, (min-width: 1024px) 24vw, (min-width: 640px) 30vw, 45vw"
                             onError={() => setImageFailed(true)}
-                            className={cn(
-                                "object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]",
-                                !inStock && "grayscale-[0.4]"
-                            )}
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                     )}
                 </Link>
 
-                <div className="pointer-events-none absolute left-2.5 top-2.5 z-10 flex flex-col items-start gap-1">
-                    {saved > 0 && <span className="badge-sale">−{saved}%</span>}
-                    {!inStock && <span className="badge-stock">Sold out</span>}
-                    {lowStock && (
-                        <span className="badge-stock">{inventory} left</span>
-                    )}
-                </div>
+                {saved > 0 && (
+                    <span className="badge-sale absolute left-2 top-2">
+                        −{saved}%
+                    </span>
+                )}
+
+                {!inStock && (
+                    <span className="absolute inset-x-0 bottom-0 bg-foreground/70 py-1 text-center text-[10px] font-semibold uppercase tracking-wide text-background">
+                        Sold out
+                    </span>
+                )}
 
                 <button
                     type="button"
@@ -121,11 +115,10 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     aria-pressed={isCompared}
                     title={isCompared ? "Remove from compare" : "Add to compare"}
                     className={cn(
-                        "absolute right-2.5 top-2.5 z-20 flex h-8 w-8 items-center justify-center border transition-colors",
-                        "opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100",
+                        "absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full border bg-card/90 shadow-sm transition-colors",
                         isCompared
-                            ? "border-primary bg-primary text-primary-foreground opacity-100"
-                            : "border-border bg-card text-muted-foreground hover:border-foreground hover:text-foreground"
+                            ? "border-primary bg-primary text-primary-foreground"
+                            : "border-border text-muted-foreground hover:border-primary hover:text-primary"
                     )}
                 >
                     {isCompared ? (
@@ -136,12 +129,14 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                 </button>
             </div>
 
-            <div className="flex flex-1 flex-col pt-3">
+            <div className="flex flex-1 flex-col px-0.5 pt-3">
                 {brandName && (
-                    <p className="label-caps truncate">{brandName}</p>
+                    <p className="truncate text-[10px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+                        {brandName}
+                    </p>
                 )}
 
-                <h3 className="mt-1.5 line-clamp-2 min-h-[2.7em] font-display text-[15px] font-normal leading-[1.35]">
+                <h3 className="mt-1 line-clamp-2 min-h-[2.4rem] text-[13px] font-semibold leading-snug">
                     <Link
                         href={href}
                         onClick={() => addToRecentProducts(product)}
@@ -151,52 +146,37 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                     </Link>
                 </h3>
 
-                <div className="mt-1.5 flex h-[16px] items-center gap-1.5 text-[11px]">
+                <div className="mt-1.5 flex h-[16px] items-center gap-1 text-[11px] text-muted-foreground">
                     {rating > 0 ? (
                         <>
-                            <StarRating rating={rating} size={12} />
-                            <span className="font-medium tabular-nums text-foreground">
+                            <StarRating rating={rating} size={11} />
+                            <span className="font-semibold text-foreground">
                                 {rating.toFixed(1)}
                             </span>
-                            {reviewCount > 0 && (
-                                <span className="text-muted-foreground">
-                                    ({reviewCount})
-                                </span>
-                            )}
+                            {reviewCount > 0 && <span>({reviewCount})</span>}
                         </>
                     ) : shopName ? (
-                        <span className="flex min-w-0 items-center gap-1 text-muted-foreground">
-                            <Store className="h-3 w-3 shrink-0" aria-hidden />
-                            <span className="truncate">{shopName}</span>
-                        </span>
+                        <span className="truncate">{shopName}</span>
                     ) : null}
                 </div>
 
-                <div className="mt-auto pt-3">
-                    <div className="flex items-baseline gap-2">
-                        <span className="font-display text-[17px] font-medium tabular-nums tracking-tight">
+                <div className="mt-auto flex items-end justify-between gap-2 pt-3">
+                    <div className="flex min-w-0 flex-wrap items-baseline gap-x-1.5">
+                        <p className="price whitespace-nowrap">
                             {formatPrice(price)}
-                        </span>
+                        </p>
                         {saved > 0 && (
-                            <span className="price-strike">
+                            <p className="price-strike whitespace-nowrap">
                                 {formatPrice(product.price)}
-                            </span>
+                            </p>
                         )}
                     </div>
-                    {/* Fixed height so prices sit on one baseline across a row,
-                        whether or not a product is discounted. */}
-                    <p className="mt-0.5 h-[14px] text-[11px] font-medium text-primary">
-                        {saved > 0 ? `Save ${formatPrice(savedAmount)}` : null}
-                    </p>
-                </div>
 
-                <div className="mt-3">
                     <AddToCartButton
                         product={product}
                         quantity={1}
-                        variant="quiet"
+                        variant="icon"
                         disabled={!inStock}
-                        className="w-full"
                     />
                 </div>
             </div>
