@@ -210,7 +210,7 @@ export default function Navbar() {
                             </ul>
                         </nav>
 
-                        <div className="ml-auto hidden min-w-0 max-w-[330px] flex-1 lg:block">
+                        <div className="ml-auto hidden min-w-0 max-w-[380px] flex-1 lg:block">
                             <NavbarCategorySearch />
                         </div>
 

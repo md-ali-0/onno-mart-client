@@ -40,7 +40,7 @@ export default function NavbarCategorySearch() {
                     name="categoryId"
                     disabled={!data?.data?.length}
                     onChange={(event) => setCategoryId(event.target.value)}
-                    className="ml-1 hidden max-w-[7.5rem] shrink-0 cursor-pointer border-r bg-transparent pr-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground outline-none sm:block"
+                    className="ml-1 hidden max-w-[7.5rem] shrink-0 cursor-pointer border-r bg-transparent pr-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground outline-none xl:block"
                 >
                     <option value="">All</option>
                     {(data?.data ?? []).map((category) => (
