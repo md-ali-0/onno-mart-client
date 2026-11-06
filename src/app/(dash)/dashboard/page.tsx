@@ -2,11 +2,7 @@
 
 import { formatPrice } from "@/lib/format";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart";
+import dynamic from "next/dynamic";
 import {
     Table,
     TableBody,
@@ -22,17 +18,20 @@ import {
 import { useGetDashboardStatisticsQuery } from "@/redux/features/statistics/statisticsApi";
 import { Product } from "@/types";
 import { useEffect } from "react";
-import {
-    Bar,
-    BarChart,
-    Cell,
-    Pie,
-    PieChart,
-    ResponsiveContainer,
-    XAxis,
-    YAxis,
-} from "recharts";
 import { toast } from "sonner";
+
+const DashboardCharts = dynamic(
+    () => import("@/components/dash-charts/dashboard-charts"),
+    {
+        ssr: false,
+        loading: () => (
+            <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
+                <div className="skeleton h-[340px] sm:col-span-4" />
+                <div className="skeleton h-[340px] sm:col-span-3" />
+            </div>
+        ),
+    }
+);
 
 export default function Dashboard() {
     const { data, isError, isLoading, isSuccess, error } =
@@ -166,125 +165,7 @@ export default function Dashboard() {
                             </CardContent>
                         </Card>
                     </div>
-                    <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-7">
-                        <Card className="sm:col-span-4">
-                            <CardHeader>
-                                <CardTitle>Total Sales</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ChartContainer
-                                    config={{
-                                        totalSales: {
-                                            label: "Total Sales",
-                                            color: "#4CAF50",
-                                        },
-                                    }}
-                                    className="sm:h-[300px]"
-                                >
-                                    <ResponsiveContainer
-                                        width="100%"
-                                        height="100%"
-                                    >
-                                        <BarChart
-                                            data={
-                                                data?.data?.charts?.barChartData
-                                            }
-                                        >
-                                            <XAxis dataKey="month" />
-                                            <YAxis />
-                                            <Bar
-                                                dataKey="totalSales"
-                                                fill="#4CAF50"
-                                            />
-                                            <ChartTooltip
-                                                content={
-                                                    <ChartTooltipContent />
-                                                }
-                                            />
-                                        </BarChart>
-                                    </ResponsiveContainer>
-                                </ChartContainer>
-                            </CardContent>
-                        </Card>
-                        <Card className="sm:col-span-3">
-                            <CardHeader>
-                                <CardTitle>Order Status Distribution</CardTitle>
-                            </CardHeader>
-                            <CardContent className="pl-2">
-                                <ChartContainer
-                                    config={{
-                                        CANCELED: {
-                                            label: "Canceled",
-                                            color: "#FF6B6B",
-                                        },
-                                        FAILED: {
-                                            label: "Failed",
-                                            color: "#FF9F43",
-                                        },
-                                        PENDING: {
-                                            label: "Pending",
-                                            color: "#54A0FF",
-                                        },
-                                        COMPLETED: {
-                                            label: "Completed",
-                                            color: "#5ED5A8",
-                                        },
-                                    }}
-                                    className="mx-auto aspect-square max-h-[250px]"
-                                >
-                                    <PieChart>
-                                        <ChartTooltip
-                                            cursor={false}
-                                            content={
-                                                <ChartTooltipContent
-                                                    hideLabel
-                                                />
-                                            }
-                                        />
-                                        <Pie
-                                            data={
-                                                data?.data?.charts?.pieChartData
-                                            }
-                                            cx="50%"
-                                            cy="50%"
-                                            labelLine={false}
-                                            outerRadius={80}
-                                            dataKey="value"
-                                            label={({ name, percent }) =>
-                                                `${name} ${(
-                                                    percent * 100
-                                                ).toFixed(0)}%`
-                                            }
-                                        >
-                                            {data?.data?.charts?.pieChartData.map(
-                                                (
-                                                    entry: {
-                                                        name: string | number;
-                                                    },
-                                                    index: number
-                                                ) => (
-                                                    <Cell
-                                                        key={`cell-${index}`}
-                                                        fill={
-                                                            {
-                                                                CANCELED:
-                                                                    "#FF6B6B",
-                                                                FAILED: "#FF9F43",
-                                                                PENDING:
-                                                                    "#54A0FF",
-                                                                COMPLETED:
-                                                                    "#5ED5A8",
-                                                            }[entry.name]
-                                                        }
-                                                    />
-                                                )
-                                            )}
-                                        </Pie>
-                                    </PieChart>
-                                </ChartContainer>
-                            </CardContent>
-                        </Card>
-                    </div>
+                    <DashboardCharts charts={data?.data?.charts} />
                     <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
                         <Card>
                             <CardHeader>
