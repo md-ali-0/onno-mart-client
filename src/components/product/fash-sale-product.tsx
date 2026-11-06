@@ -1,5 +1,6 @@
 "use client";
 
+import { discountedPrice, formatPrice } from "@/lib/format";
 import { Product } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
@@ -28,7 +29,7 @@ const FlashSaleProductCard = ({ product }: { product: Product }) => {
         addToRecentProducts(product);
     };
     return (
-        <div className="group bg-white border sm:p-2 rounded-2xl sm:shadow-card transition-all duration-300 sm:hover:shadow-hover group">
+        <div className="group rounded-2xl border bg-card p-2 transition-shadow duration-300 sm:hover:shadow-lift">
             <div className="relative overflow-hidden rounded-xl isolate">
                 <label className="capitalize text-xs font-semibold rounded-xl py-1 px-2 shadow absolute top-3 left-3 z-10 bg-red-600 text-white">
                     Flash Sale
@@ -60,15 +61,11 @@ const FlashSaleProductCard = ({ product }: { product: Product }) => {
                 </h3>
                 <div className="flex justify-between items-center">
                     <div className="flex flex-wrap-reverse items-center gap-x-3 gap-y-1">
-                        <h3 className="text-xl sm:text-[22px] font-bold">
-                            <span>
-                                $
-                                {product?.price -
-                                    (product?.price * product?.discount) / 100}
-                            </span>
+                        <h3 className="price text-xl sm:text-[22px]">
+                            <span>{formatPrice(discountedPrice(product))}</span>
                         </h3>
-                        <h4 className="text-sm sm:text-base font-semibold text-red-500">
-                            <del>${product?.price.toFixed(2)}</del>
+                        <h4 className="text-sm font-normal text-muted-foreground">
+                            <del>{formatPrice(product.price)}</del>
                         </h4>
                     </div>
                     <div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { formatPrice } from "@/lib/format";
 import { useAppSelector } from "@/redux/hooks";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -46,7 +47,7 @@ const OrderSummary = ({discount}: {discount: number}) => {
                             Total before VAT
                         </dt>
                         <dd className="text-base font-medium text-gray-900 dark:text-gray-200">
-                            ${total.toFixed(2)}
+                            {formatPrice(total)}
                         </dd>
                     </dl>
                     <dl className="flex items-center justify-between gap-4">
@@ -54,7 +55,7 @@ const OrderSummary = ({discount}: {discount: number}) => {
                             VAT (15%)
                         </dt>
                         <dd className="text-base font-medium text-gray-900 dark:text-gray-200">
-                            ${vatAmount.toFixed(2)}
+                            {formatPrice(vatAmount)}
                         </dd>
                     </dl>
                     <dl className="flex items-center justify-between gap-4">
@@ -62,7 +63,7 @@ const OrderSummary = ({discount}: {discount: number}) => {
                             Total including VAT
                         </dt>
                         <dd className="text-base font-bold text-gray-900 dark:text-gray-200">
-                            ${totalPriceWithVat.toFixed(2)}
+                            {formatPrice(totalPriceWithVat)}
                         </dd>
                     </dl>
                 </div>
@@ -71,7 +72,7 @@ const OrderSummary = ({discount}: {discount: number}) => {
                         Discount
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-gray-200">
-                        ${discountPrice.toFixed()}
+                        {formatPrice(discountPrice)}
                     </dd>
                 </dl>
                 <dl className="flex items-center justify-between gap-4 border-t pt-2">
@@ -79,7 +80,7 @@ const OrderSummary = ({discount}: {discount: number}) => {
                         Total
                     </dt>
                     <dd className="text-base font-bold text-gray-900 dark:text-gray-200">
-                        ${totalPriceAfterDiscount.toFixed(2)}
+                        {formatPrice(totalPriceAfterDiscount)}
                     </dd>
                 </dl>
             </div>

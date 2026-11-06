@@ -1,5 +1,6 @@
 import { decrementQuantity, incrementQuantity, removeProduct } from "@/redux/features/cart/cartSlice";
 import { useAppDispatch } from "@/redux/hooks";
+import { formatPrice } from "@/lib/format";
 import { CartItem } from "@/types";
 import { X } from "lucide-react";
 import Image from "next/image";
@@ -52,7 +53,7 @@ const CartProduct: FC<CartProductProps> = ({ product }) => {
                 />
             </td>
             <td className="py-2 px-4 border-b">{product.name}</td>
-            <td className="py-2 px-4 border-b">${Number(product.price).toFixed(2)}</td>
+            <td className="py-2 px-4 border-b">{formatPrice(product.price)}</td>
             <td className="py-2 px-4 border-b">
                 <div className="flex items-center">
                     <button
@@ -76,7 +77,7 @@ const CartProduct: FC<CartProductProps> = ({ product }) => {
                 </div>
             </td>
             <td className="py-2 px-4 border-b">
-                ${Number(product.quantity * product.price).toFixed(2)}
+                {formatPrice(product.quantity * product.price)}
             </td>
             <td className="text-center py-2 px-4 border-b">
                 <button onClick={deleteCartProduct}>

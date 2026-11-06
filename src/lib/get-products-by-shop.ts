@@ -1,26 +1,15 @@
-import config from "@/config";
 import { Product, TMeta } from "@/types";
+import { apiGet, buildQuery, cacheTags } from "./api";
 
 export async function getProductsByShop(
     page: number,
     shopId: string
 ): Promise<{ data: Product[]; meta: TMeta }> {
-    const limit: number = 8;
-    const query = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString(),
-        shopId: shopId.toString(),
-    });
-
-    const response = await fetch(
-        `${config.host}/api/product?${query.toString()}`,
+    return apiGet<{ data: Product[]; meta: TMeta }>(
+        `/product${buildQuery({ page, limit: 8, shopId })}`,
         {
-            cache: "no-store",
+            tags: [cacheTags.products, cacheTags.shop(shopId)],
+            revalidate: 60,
         }
     );
-    if (!response.ok) {
-        throw new Error("Failed to fetch shops.");
-    }
-    const result = await response.json();
-    return result;
 }

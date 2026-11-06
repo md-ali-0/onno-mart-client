@@ -1,149 +1,118 @@
-"use client";
-
-import { Card } from "@/components/ui/card";
-import { DollarSign, HeadphonesIcon, Truck } from "lucide-react";
+import { ArrowRight, BadgeCheck, Headphones, RotateCcw, Truck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { Autoplay, Pagination } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
 
-export default function HeroBannerSlider() {
-    const banners = [
-        {
-            bg: "/assets/banner/hero-bg.png",
-            title: "WINTER SALE",
-            discount: "25% OFF",
-            code: "WINTER25",
-            description: "For limited time only!",
-            link: "/products",
-            linkText: "Shop Now",
-            image: "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png",
-            bgColor: "bg-primary/20",
-            textColor: "text-primary",
-        },
-        {
-            bg: "/assets/banner/hero-bg.png",
-            title: "SUMMER COLLECTION",
-            discount: "40% OFF",
-            code: "SUMMER40",
-            description: "Explore our summer collection!",
-            link: "/summer-collection",
-            linkText: "Discover Now",
-            image: "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png",
-            bgColor: "bg-red-100",
-            textColor: "text-red-500",
-        },
-        {
-            bg: "/assets/banner/hero-bg.png",
-            title: "NEW ARRIVALS",
-            discount: "UP TO 30% OFF",
-            code: "NEW30",
-            description: "Check out the latest trends!",
-            link: "/new-arrivals",
-            linkText: "Shop Latest",
-            image: "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png",
-            bgColor: "bg-blue-100",
-            textColor: "text-blue-500",
-        },
-    ];
+const HERO_IMAGE =
+    "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png";
 
+const trustPoints = [
+    {
+        icon: Truck,
+        title: "Delivery in 24–48h",
+        body: "Inside Dhaka, 2–4 days nationwide.",
+    },
+    {
+        icon: BadgeCheck,
+        title: "Cash on delivery",
+        body: "Or pay online with SSLCommerz.",
+    },
+    {
+        icon: RotateCcw,
+        title: "7-day returns",
+        body: "Unused items, no arguing needed.",
+    },
+    {
+        icon: Headphones,
+        title: "Support that replies",
+        body: "Real people, 9am–9pm.",
+    },
+];
+
+export default function HeroBanner() {
     return (
-        <section className="container px-4 lg:px-0 sm:mb-20">
-            <div className="py-5">
-                <Swiper
-                    modules={[Autoplay, Pagination]}
-                    autoplay={{ delay: 5000 }}
-                    speed={1000}
-                    pagination={{ clickable: true }}
-                    loop
-                    className="rounded-lg"
-                >
-                    {banners.map((banner, index) => (
-                        <SwiperSlide key={index}>
-                            <div
-                                className={`flex items-center rounded-lg px-6 py-16 md:px-12 md:min-h-[485px] ${banner.bgColor}`}
-                                style={{ backgroundImage: `url(${banner.bg})` }}
-                            >
-                                <div className="grid lg:grid-cols-2 items-center justify-items-center gap-5">
-                                    <div className="order-2 lg:order-1 flex flex-col justify-center items-center">
-                                        <span
-                                            className={`px-2 py-0.5 rounded-xl ${banner.textColor}`}
-                                        >
-                                            {banner.code}
-                                        </span>
-                                        <p
-                                            className={`text-4xl font-bold md:text-7xl ${banner.textColor}`}
-                                        >
-                                            {banner.discount}
-                                        </p>
-                                        <p className="text-4xl text-center text-black font-bold md:text-7xl">
-                                            {banner.title}
-                                        </p>
-                                        <p className="mt-2 text-sm text-slate-800 md:text-lg">
-                                            {banner.description}
-                                        </p>
-                                        <Link
-                                            href={banner.link}
-                                            className="text-lg md:text-2xl bg-black text-white py-2 px-5 mt-10 hover:bg-zinc-800"
-                                        >
-                                            {banner.linkText}
-                                        </Link>
-                                    </div>
-                                    <div className="order-1 rounded-xl lg:order-2">
-                                        <Image
-                                            className="h-80 w-80 object-cover lg:w-[480px] lg:h-[380px]"
-                                            src={banner.image}
-                                            alt={banner.title}
-                                            width={450}
-                                            height={500}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-            </div>
+        <section className="pb-12 pt-6 sm:pb-16 sm:pt-10">
+            <div className="container-page">
+                <div className="relative overflow-hidden rounded-2xl border bg-gradient-to-br from-accent via-background to-background">
+                    <div className="grid items-center gap-8 p-6 sm:p-10 lg:grid-cols-2 lg:gap-6 lg:p-14">
+                        <div>
+                            <p className="eyebrow">Multi-vendor marketplace</p>
+                            <h1 className="mt-3 max-w-xl text-3xl font-semibold leading-[1.1] tracking-tightest sm:text-4xl lg:text-5xl">
+                                Online shopping in Bangladesh, without the guesswork.
+                            </h1>
+                            <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
+                                Electronics, fashion, home, beauty and grocery from
+                                verified shops. Compare before you buy, pay when it
+                                arrives, return it if it is not right.
+                            </p>
 
-            {/* Features Section */}
-            <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
-                {features.map((feature) => (
-                    <Card key={feature.title} className="p-4">
-                        <div className="flex items-center gap-4">
-                            <feature.icon className="h-8 w-8 text-primary" />
-                            <div>
-                                <div className="font-semibold">
-                                    {feature.title}
-                                </div>
-                                <div className="text-sm text-muted-foreground">
-                                    {feature.description}
-                                </div>
+                            <div className="mt-7 flex flex-wrap items-center gap-3">
+                                <Link
+                                    href="/products"
+                                    className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                                >
+                                    Start shopping
+                                    <ArrowRight className="h-4 w-4" aria-hidden />
+                                </Link>
+                                <Link
+                                    href="/flash-sale"
+                                    className="inline-flex items-center gap-2 rounded-lg border px-5 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
+                                >
+                                    Today&apos;s deals
+                                </Link>
                             </div>
+
+                            <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
+                                {[
+                                    ["5", "verified shops"],
+                                    ["24", "products listed"],
+                                    ["3", "payment methods"],
+                                ].map(([value, label]) => (
+                                    <div key={label}>
+                                        <dt className="sr-only">{label}</dt>
+                                        <dd>
+                                            <span className="price text-xl">{value}</span>
+                                            <span className="ml-1.5 text-xs text-muted-foreground">
+                                                {label}
+                                            </span>
+                                        </dd>
+                                    </div>
+                                ))}
+                            </dl>
                         </div>
-                    </Card>
-                ))}
+
+                        <div className="relative mx-auto aspect-[4/3] w-full max-w-md lg:max-w-none">
+                            <Image
+                                src={HERO_IMAGE}
+                                alt="Featured products on OnnoMart"
+                                fill
+                                priority
+                                sizes="(min-width: 1024px) 46vw, (min-width: 640px) 70vw, 90vw"
+                                className="object-contain drop-shadow-xl"
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    {trustPoints.map(({ icon: Icon, title, body }) => (
+                        <li
+                            key={title}
+                            className="flex items-start gap-3 rounded-xl border bg-card p-4"
+                        >
+                            <Icon
+                                className="mt-0.5 h-5 w-5 shrink-0 text-primary"
+                                aria-hidden
+                            />
+                            <div>
+                                <p className="text-sm font-semibold">{title}</p>
+                                <p className="mt-0.5 text-xs text-muted-foreground">
+                                    {body}
+                                </p>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
             </div>
         </section>
     );
 }
-
-const features = [
-    {
-        title: "FREE SHIPPING & RETURN",
-        description: "Free shipping on all orders over $99.",
-        icon: Truck,
-    },
-    {
-        title: "MONEY BACK GUARANTEE",
-        description: "100% money back guarantee.",
-        icon: DollarSign,
-    },
-    {
-        title: "ONLINE SUPPORT 24/7",
-        description: "Lorem ipsum dolor sit amet.",
-        icon: HeadphonesIcon,
-    },
-];

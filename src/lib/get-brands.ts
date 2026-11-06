@@ -1,13 +1,10 @@
-import config from "@/config";
 import { Brand } from "@/types";
+import { apiGet, cacheTags } from "./api";
 
 export async function getBrands(): Promise<Brand[]> {
-    const response = await fetch(`${config.host}/api/brand?limit=999`, {
-        cache: "no-store",
+    const result = await apiGet<{ data: Brand[] }>("/brand?limit=999", {
+        tags: [cacheTags.brands],
+        revalidate: 900,
     });
-    if (!response.ok) {
-        throw new Error("Failed to fetch brands.");
-    }
-    const result = await response.json();
-    return result?.data;
+    return result?.data ?? [];
 }

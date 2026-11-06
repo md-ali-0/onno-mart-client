@@ -1,5 +1,6 @@
 import { addProduct } from "@/redux/features/compare/compareSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { discountedPrice, formatPrice } from "@/lib/format";
 import { Product } from "@/types";
 import { motion } from "framer-motion";
 import { ArrowLeftRight, Eye, ShoppingCart } from "lucide-react";
@@ -91,8 +92,8 @@ export default function ProductCardBestTop({ product }: { product: Product }) {
                 <StarRating rating={product?.rating} />
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                        <span className="text-xl font-bold text-primary">
-                            ${product.price.toFixed(2)}
+                        <span className="price text-xl text-primary">
+                            {formatPrice(discountedPrice(product))}
                         </span>
                     </div>
                     <AddToCartTopSelling product={product} quantity={1} />

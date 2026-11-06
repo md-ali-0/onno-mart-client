@@ -2,165 +2,309 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+/*
+ * Design tokens.
+ * Neutrals follow zinc, the brand colour is a warm amber that reads well on
+ * white cards and stays legible as a badge. Every component pulls from these,
+ * so changing the brand is a two-line change here.
+ */
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        --foreground: 240 10% 4%;
+
+        --card: 0 0% 100%;
+        --card-foreground: 240 10% 4%;
+
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 10% 4%;
+
+        --primary: 24 95% 50%;
+        --primary-foreground: 0 0% 100%;
+
+        --secondary: 240 5% 96%;
+        --secondary-foreground: 240 10% 9%;
+
+        --muted: 240 5% 96%;
+        --muted-foreground: 240 4% 46%;
+
+        --accent: 24 100% 96%;
+        --accent-foreground: 24 80% 30%;
+
+        --destructive: 0 72% 51%;
+        --destructive-foreground: 0 0% 100%;
+
+        --success: 152 60% 36%;
+        --success-foreground: 0 0% 100%;
+
+        --border: 240 6% 90%;
+        --input: 240 6% 90%;
+        --ring: 24 95% 50%;
+
+        --radius: 0.75rem;
+
+        --surface: 240 20% 99%;
+        --shadow-color: 240 10% 4%;
+
+        --chart-1: 24 95% 50%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+    }
+
+    .dark {
+        --background: 240 10% 4%;
+        --foreground: 0 0% 98%;
+
+        --card: 240 8% 7%;
+        --card-foreground: 0 0% 98%;
+
+        --popover: 240 8% 7%;
+        --popover-foreground: 0 0% 98%;
+
+        --primary: 24 95% 55%;
+        --primary-foreground: 240 10% 4%;
+
+        --secondary: 240 5% 13%;
+        --secondary-foreground: 0 0% 98%;
+
+        --muted: 240 5% 13%;
+        --muted-foreground: 240 5% 65%;
+
+        --accent: 24 60% 14%;
+        --accent-foreground: 24 90% 80%;
+
+        --destructive: 0 62% 45%;
+        --destructive-foreground: 0 0% 100%;
+
+        --success: 152 50% 45%;
+        --success-foreground: 240 10% 4%;
+
+        --border: 240 5% 16%;
+        --input: 240 5% 16%;
+        --ring: 24 95% 55%;
+
+        --surface: 240 8% 6%;
+
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+        --chart-canceled: 357 100% 59%;
+        --chart-failed: 5 100% 53%;
+        --chart-pending: 31 100% 50%;
+        --chart-completed: 142 100% 56%;
+    }
+
+    * {
+        @apply border-border;
+    }
+
+    html {
+        -webkit-text-size-adjust: 100%;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings: "cv11", "ss01";
+        font-variation-settings: "opsz" 32;
+        text-rendering: optimizeLegibility;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4 {
+        @apply font-semibold tracking-tight text-foreground;
+        text-wrap: balance;
+    }
+
+    p {
+        text-wrap: pretty;
+    }
+
+    ::selection {
+        background-color: hsl(var(--primary) / 0.22);
+        color: hsl(var(--foreground));
+    }
+
+    :focus-visible {
+        @apply outline-none ring-2 ring-ring/60 ring-offset-2 ring-offset-background;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+            scroll-behavior: auto !important;
+        }
+    }
+
+    .navbar-active .hamburger div:first-child {
+        @apply translate-y-1.5 rotate-45;
+    }
+
+    .navbar-active .hamburger div:last-child {
+        @apply -translate-y-1 -rotate-45;
+    }
+
+    .navbar-active div:first-child div:first-child div:last-child {
+        @apply block lg:flex;
+    }
+
+    .sideLink {
+        @apply flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none dark:text-white;
+    }
+
+    .sideLinkActive {
+        @apply flex items-center gap-x-3.5 rounded-lg bg-white/10 px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none dark:text-white;
+    }
+
+    .dropdownSideBar {
+        @apply relative flex w-full items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
+    }
+}
+
+@layer components {
+    /* Page shell: one max width, one gutter, everywhere. */
+    .container-page {
+        @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+    }
+
+    .section {
+        @apply py-12 sm:py-16 lg:py-20;
+    }
+
+    .section-heading {
+        @apply text-xl font-semibold tracking-tight sm:text-2xl;
+    }
+
+    .eyebrow {
+        @apply text-xs font-semibold uppercase tracking-[0.14em] text-primary;
+    }
+
+    .surface-card {
+        @apply rounded-xl border bg-card text-card-foreground;
+    }
+
+    .surface-muted {
+        background-color: hsl(var(--surface));
+    }
+
+    .price {
+        @apply font-semibold tabular-nums tracking-tight text-foreground;
+    }
+
+    .price-strike {
+        @apply text-sm font-normal text-muted-foreground line-through tabular-nums;
+    }
+
+    .badge-discount {
+        @apply inline-flex items-center rounded-md bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive;
+    }
+
+    .badge-muted {
+        @apply inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground;
+    }
+
+    .skeleton {
+        @apply relative overflow-hidden rounded-md bg-muted;
+    }
+
+    .skeleton::after {
+        content: "";
+        @apply absolute inset-0 -translate-x-full;
+        background-image: linear-gradient(
+            90deg,
+            transparent,
+            hsl(0 0% 100% / 0.55),
+            transparent
+        );
+        animation: shimmer 1.6s infinite;
+    }
+
+    .dark .skeleton::after {
+        background-image: linear-gradient(
+            90deg,
+            transparent,
+            hsl(0 0% 100% / 0.06),
+            transparent
+        );
+    }
+
+    .link-underline {
+        @apply underline decoration-border decoration-1 underline-offset-4 transition-colors hover:decoration-primary;
+    }
 }
 
 @layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
+    .text-balance {
+        text-wrap: balance;
+    }
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 20 14.3% 4.1%;
-    --card: 0 0% 100%;
-    --card-foreground: 20 14.3% 4.1%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 20 14.3% 4.1%;
-    --primary: 24.6 95% 53.1%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 60 4.8% 95.9%;
-    --secondary-foreground: 24 9.8% 10%;
-    --muted: 60 4.8% 95.9%;
-    --muted-foreground: 25 5.3% 44.7%;
-    --accent: 60 4.8% 95.9%;
-    --accent-foreground: 24 9.8% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 20 5.9% 90%;
-    --input: 20 5.9% 90%;
-    --ring: 24.6 95% 53.1%;
-    --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-  }
+    .link-button {
+        @apply inline-block rounded-md bg-secondary px-2 py-1 text-center font-medium text-secondary-foreground transition-colors hover:bg-primary hover:text-primary-foreground;
+    }
 
-  .dark {
-    --background: 20 14.3% 4.1%;
-    --foreground: 60 9.1% 97.8%;
-    --card: 20 14.3% 4.1%;
-    --card-foreground: 60 9.1% 97.8%;
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 60 9.1% 97.8%;
-    --primary: 20.5 90.2% 48.2%;
-    --primary-foreground: 60 9.1% 97.8%;
-    --secondary: 12 6.5% 15.1%;
-    --secondary-foreground: 60 9.1% 97.8%;
-    --muted: 12 6.5% 15.1%;
-    --muted-foreground: 24 5.4% 63.9%;
-    --accent: 12 6.5% 15.1%;
-    --accent-foreground: 60 9.1% 97.8%;
-    --destructive: 0 72.2% 50.6%;
-    --destructive-foreground: 60 9.1% 97.8%;
-    --border: 12 6.5% 15.1%;
-    --input: 12 6.5% 15.1%;
-    --ring: 20.5 90.2% 48.2%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --chart-canceled: 357, 100%, 59%;
-    --chart-failed: 5, 100%, 53%;
-    --chart-pending: 31, 100%, 50%;
-    --chart-completed: 142, 100%, 56%;
-  }
-}
+    .nav-link {
+        @apply relative block pb-1 text-[15px] font-medium;
+    }
 
+    .nav-link::after {
+        content: "";
+        @apply absolute bottom-0 left-0 h-[2px] w-0 bg-foreground duration-300 ease-in-out;
+    }
 
-@layer base {
-  * {
-      @apply border-border;
-  }
-  body {
-      @apply bg-background text-foreground;
-  }
-  .navbar-active .hamburger div:first-child {
-      @apply rotate-45 translate-y-1.5;
-  }
+    .nav-link:hover::after,
+    .nav-link.active::after {
+        @apply w-[80%];
+    }
 
-  .navbar-active .hamburger div:last-child {
-      @apply -rotate-45 -translate-y-1;
-  }
+    .navigation-wrapper {
+        @apply relative;
+    }
 
-  .navbar-active div:first-child div:first-child div:last-child {
-      @apply block lg:flex;
-  }
+    .slider {
+        @apply flex items-center justify-between font-medium;
+    }
 
-  .sideLink {
-      @apply flex items-center gap-x-3.5 py-2 px-2.5 text-[15px] text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10 dark:text-white;
-  }
+    .custom-scroll {
+        @apply scroll-smooth overflow-x-hidden;
+    }
 
-  .sideLinkActive {
-      @apply flex items-center gap-x-3.5 py-2 px-2.5 bg-white/10 text-[15px] text-white hover:bg-white/10 focus:outline-none focus:bg-white/10 dark:text-white;
-  }
+    .custom-scroll::-webkit-scrollbar {
+        @apply w-1.5;
+    }
 
-  .dropdownSideBar {
-      @apply relative flex items-center gap-x-3.5 py-2 px-2.5 text-[15px] text-white rounded-lg hover:bg-white/10 focus:outline-none focus:bg-white/10 w-full;
-  }
+    .custom-scroll::-webkit-scrollbar-thumb {
+        @apply rounded-xl border border-slate-600 bg-slate-600 shadow-inner transition-all duration-150 ease-in-out dark:border-[#7b7b7b] dark:bg-slate-800;
+    }
 
-  *::selection {
-      background-color: black;
-      color: #fff;
-  }
-}
+    .category-scroll {
+        @apply scroll-smooth overflow-x-hidden;
+    }
 
-@layer utilities {
-  .link-button {
-      @apply inline-block text-gray-600 hover:text-gray-50 bg-gray-100 hover:bg-blue-500 text-center font-medium px-2 py-1 rounded-md;
-  }
-  .nav-link {
-      @apply relative pb-1 block font-medium text-[15px];
-  }
+    .category-scroll::-webkit-scrollbar {
+        @apply w-1;
+    }
 
-  .nav-link::after {
-      content: "";
-      @apply absolute w-0 h-[2px] bottom-0 left-0 bg-neutral-900 dark:bg-neutral-300 duration-300 ease-in-out;
-  }
+    .category-scroll::-webkit-scrollbar-thumb {
+        @apply rounded-xl border border-primary/20 bg-primary/20 shadow-inner transition-all duration-150 ease-in-out;
+    }
 
-  .nav-link:hover::after,
-  .nav-link.active::after {
-      @apply w-[80%];
-  }
+    .no-scrollbar {
+        scrollbar-width: none;
+    }
 
-  .navigation-wrapper {
-      @apply relative;
-  }
-
-  .slider {
-      @apply flex items-center justify-between font-medium;
-  }
-
-  .custom-scroll {
-      @apply overflow-x-hidden scroll-smooth;
-  }
-
-  .custom-scroll::-webkit-scrollbar {
-      @apply w-1.5;
-  }
-
-  .custom-scroll::-webkit-scrollbar-thumb {
-      @apply bg-slate-600 dark:bg-slate-800 rounded-xl border border-slate-600 dark:border-[#7b7b7b] shadow-inner transition-all duration-150 ease-in-out;
-  }
-
-  .category-scroll {
-      @apply overflow-x-hidden scroll-smooth;
-  }
-
-  .category-scroll::-webkit-scrollbar {
-      @apply w-1;
-  }
-
-  .category-scroll::-webkit-scrollbar-thumb {
-      @apply bg-primary/20 rounded-xl border border-primary/20 shadow-inner transition-all duration-150 ease-in-out;
-  }
-  
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
 }
 
 @keyframes draw {
@@ -178,7 +322,12 @@ body {
     }
 }
 
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
 .cart-animation {
     animation: draw 2s infinite;
 }
-

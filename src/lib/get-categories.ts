@@ -1,14 +1,11 @@
-import config from "@/config";
 import { Category } from "@/types";
+import { apiGet, cacheTags } from "./api";
 
+/** Categories barely change, so they hold a longer window than products. */
 export async function getCategories(): Promise<Category[]> {
-    const response = await fetch(`${config.host}/api/category?limit=999&sort=dec`, {
-        cache: "no-store"
-    });
-    if (!response.ok) {
-        throw new Error("Failed to fetch category.");
-    }
-    const result = await response.json();
-
-    return result?.data;
+    const result = await apiGet<{ data: Category[] }>(
+        "/category?limit=999&sort=dec",
+        { tags: [cacheTags.categories], revalidate: 900 }
+    );
+    return result?.data ?? [];
 }

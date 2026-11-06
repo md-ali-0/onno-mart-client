@@ -1,26 +1,20 @@
-import config from "@/config";
 import { Product, Shop, TMeta } from "@/types";
+import { apiGet, buildQuery, cacheTags } from "./api";
+
+const REVALIDATE = {
+    catalogue: 60,
+    product: 120,
+    shops: 180,
+    sale: 30,
+};
 
 export async function getShops(
     page: number
 ): Promise<{ data: Shop[]; meta: TMeta }> {
-    const limit: number = 8;
-    const query = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString(),
-    });
-
-    const response = await fetch(
-        `${config.host}/api/shop?${query.toString()}`,
-        {
-            cache: "no-store",
-        }
+    return apiGet<{ data: Shop[]; meta: TMeta }>(
+        `/shop${buildQuery({ page, limit: 8 })}`,
+        { tags: [cacheTags.shops], revalidate: REVALIDATE.shops }
     );
-    if (!response.ok) {
-        throw new Error("Failed to fetch shops.");
-    }
-    const result = await response.json();
-    return result;
 }
 
 export async function getProducts(
@@ -38,57 +32,51 @@ export async function getProducts(
     totalPages: number;
     totalProducts: number;
 }> {
-    const query = new URLSearchParams({
-        page: page.toString(),
-        limit: limit.toString(),
-        ...(categoryId ? { categoryId } : {}),
-        ...(brandId ? { brandId } : {}),
-        ...(searchTerm ? { searchTerm } : {}),
-        ...(sortBy ? { sortBy } : {}),
-        ...(sortOrder ? { sortOrder } : {}),
-        ...(minPrice ? { minPrice: minPrice.toString() } : {}),
-        ...(maxPrice ? { maxPrice: maxPrice.toString() } : {}),
-    });
-
-    const response = await fetch(
-        `${config.host}/api/product?${query.toString()}`,
-        {
-            cache: "no-store",
-        }
+    const result = await apiGet<{
+        data?: Product[];
+        meta?: { totalPage: number; total: number };
+    }>(
+        `/product${buildQuery({
+            page,
+            limit,
+            categoryId,
+            brandId,
+            searchTerm,
+            sortBy,
+            sortOrder,
+            minPrice,
+            maxPrice,
+        })}`,
+        { tags: [cacheTags.products], revalidate: REVALIDATE.catalogue }
     );
-    if (!response.ok) {
-        console.log(response);
-        
-        throw new Error(`Failed to fetch products: ${response.status}`);
-    }
-    const result = await response.json();
+
     return {
         products: result?.data || [],
-        totalPages: result?.meta?.totalPage,
-        totalProducts: result?.meta?.total,
+        totalPages: result?.meta?.totalPage ?? 1,
+        totalProducts: result?.meta?.total ?? 0,
     };
 }
 
 export async function getProductBySlug(
     slug: string
 ): Promise<Product | undefined> {
-    const response = await fetch(`${config.host}/api/product/${slug}`, {
-        cache: "no-store",
-    });
-    if (!response.ok) {
-        throw new Error("Failed to fetch product.");
-    }
-    const result = await response.json();
+    const result = await apiGet<{ data?: Product }>(
+        `/product/${encodeURIComponent(slug)}`,
+        {
+            tags: [cacheTags.products, cacheTags.product(slug)],
+            revalidate: REVALIDATE.product,
+        }
+    );
     return result?.data;
 }
 
 export async function getSaleProducts(): Promise<Product[] | []> {
-    const response = await fetch(`${config.host}/api/product/flash-sale?limit=4`, {
-        cache: "no-store",
-    });
-    if (!response.ok) {
-        throw new Error("Failed to fetch product.");
-    }
-    const result = await response.json();
-    return result?.data;
+    const result = await apiGet<{ data?: Product[] }>(
+        "/product/flash-sale?limit=8",
+        {
+            tags: [cacheTags.products, cacheTags.sale],
+            revalidate: REVALIDATE.sale,
+        }
+    );
+    return result?.data ?? [];
 }

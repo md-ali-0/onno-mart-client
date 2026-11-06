@@ -2,6 +2,8 @@
 
 import { addProduct } from "@/redux/features/compare/compareSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { discountedPrice, formatPrice, savingsPercent } from "@/lib/format";
+import { cn } from "@/lib/utils";
 import { Product } from "@/types";
 import { ArrowLeftRight } from "lucide-react";
 import Image from "next/image";
@@ -28,85 +30,94 @@ const addToRecentProducts = (product: Product) => {
     localStorage.setItem(recentProductsKey, JSON.stringify(recentProducts));
 };
 
-const ProductCard = ({ product }: { product: Product }) => {
+type ProductCardProps = {
+    product: Product;
+    className?: string;
+};
+
+const ProductCard = ({ product, className }: ProductCardProps) => {
     const dispatch = useAppDispatch();
     const compare = useAppSelector((state) => state.compare.compare);
-    const handleProductClick = () => {
-        addToRecentProducts(product);
-    };
+
+    const price = discountedPrice(product);
+    const saved = savingsPercent(product);
+    const href = `/product/${product.slug}`;
 
     const addToCompare = () => {
-        if (
-            compare.length > 0 &&
-            compare[0].categoryId !== product.categoryId
-        ) {
-            return toast.warning("You can compare Only Same Category Products");
-        } else {
-            dispatch(addProduct(product));
+        if (compare.length > 0 && compare[0].categoryId !== product.categoryId) {
+            return toast.warning("You can compare only same-category products");
         }
+        if (compare.some((item) => item.id === product.id)) {
+            return toast.info("Already in your compare list");
+        }
+        dispatch(addProduct(product));
     };
 
     return (
         <div
-            className={`relative border overflow-hidden rounded-lg shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-2 hover:shadow-xl`}
+            className={cn(
+                "group relative flex flex-col overflow-hidden rounded-xl border bg-card transition-shadow duration-200 hover:shadow-lift",
+                className
+            )}
         >
             <Link
-                href={`/product/${product?.slug}`}
-                onClick={handleProductClick}
-                className="block relative h-64 w-full"
+                href={href}
+                onClick={() => addToRecentProducts(product)}
+                className="relative block aspect-square w-full overflow-hidden bg-muted"
+                aria-label={product.name}
             >
                 <Image
-                    src={product?.thumbnail}
-                    alt={product?.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="transition-all duration-300 ease-in-out group-hover:scale-110"
+                    src={product.thumbnail}
+                    alt={product.name}
+                    fill
+                    sizes="(min-width: 1280px) 22vw, (min-width: 768px) 30vw, 45vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-[1.04]"
                 />
-                {product?.discount > 0 && (
-                    <div className="absolute top-10 -rotate-90 -left-[19px] bg-[#ed2939] text-white px-2 py-1 text-xs font-bold">
-                        OFF {product?.discount}%
-                    </div>
+                {saved > 0 && (
+                    <span className="absolute left-2 top-2 rounded-md bg-destructive px-2 py-0.5 text-[11px] font-semibold text-destructive-foreground">
+                        −{saved}%
+                    </span>
                 )}
             </Link>
-            <div className="p-4 bg-white">
-                <div className="md:h-14">
-                    <Link
-                        href={`/product/${product?.slug}`}
-                        onClick={handleProductClick}
-                        className="font-medium mb-2 line-clamp-2"
-                    >
-                        {product?.name}
-                    </Link>
+
+            <div className="flex flex-1 flex-col gap-1.5 p-3.5">
+                <Link
+                    href={href}
+                    onClick={() => addToRecentProducts(product)}
+                    className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-snug transition-colors hover:text-primary"
+                >
+                    {product.name}
+                </Link>
+
+                <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                    <StarRating rating={Number(product.rating ?? 0)} />
+                    <span className="tabular-nums">
+                        {Number(product.rating ?? 0).toFixed(1)}
+                    </span>
                 </div>
-                <div className="flex justify-between items-center mb-2">
-                    <div>
-                        <span className="text-xl font-bold text-primary">
-                            ${" "}
-                            {product?.price -
-                                (product?.price * product?.discount) / 100}
-                        </span>
-                        {product?.discount > 0 && (
-                            <span className="ml-2 text-sm text-gray-500 line-through">
-                                ${product?.price.toFixed(2)}
-                            </span>
-                        )}
-                    </div>
-                    <div>
-                        <StarRating rating={product?.rating} />
-                    </div>
+
+                <div className="mt-auto flex items-baseline gap-2 pt-1">
+                    <span className="price text-base">{formatPrice(price)}</span>
+                    {saved > 0 && (
+                        <span className="price-strike">{formatPrice(product.price)}</span>
+                    )}
                 </div>
-                <div className="flex gap-3.5">
+
+                <div className="mt-2 flex gap-2">
                     <AddToCartButton
                         product={product}
                         quantity={1}
-                        clx="w-full bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white mt-2"
+                        clx="h-9 w-full rounded-lg bg-secondary text-sm font-medium text-secondary-foreground transition-colors hover:bg-primary hover:text-primary-foreground"
                     />
                     <Button
+                        type="button"
                         onClick={addToCompare}
-                        size={"icon"}
-                        className="bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white mt-2 min-w-10"
+                        size="icon"
+                        variant="outline"
+                        aria-label="Add to compare"
+                        className="h-9 w-9 shrink-0"
                     >
-                        <ArrowLeftRight />
+                        <ArrowLeftRight className="h-4 w-4" />
                     </Button>
                 </div>
             </div>
