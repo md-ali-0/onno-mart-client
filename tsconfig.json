@@ -48,7 +48,8 @@
     ".next-uni3/types/**/*.ts",
     ".next-type/types/**/*.ts",
     ".next-auth/types/**/*.ts",
-    ".next-admin/types/**/*.ts"
+    ".next-admin/types/**/*.ts",
+    ".next-guest/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

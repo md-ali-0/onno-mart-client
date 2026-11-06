@@ -86,6 +86,20 @@ export default function CheckoutPage() {
                 <div className="grid lg:grid-cols-12 md:grid-cols-2 grid-cols-1 gap-6">
                     <div className="lg:col-span-8">
                         <div className="p-6 rounded-md border">
+                            {!session?.isAuth && (
+                                <div className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-lg bg-accent px-4 py-3 text-[13px]">
+                                    <span>
+                                        Checking out as a guest — no account
+                                        needed.
+                                    </span>
+                                    <Link
+                                        href="/auth/signin"
+                                        className="font-semibold text-primary hover:underline"
+                                    >
+                                        Sign in instead
+                                    </Link>
+                                </div>
+                            )}
                             <h3 className="text-xl leading-normal font-semibold">
                                 Billing address
                             </h3>
