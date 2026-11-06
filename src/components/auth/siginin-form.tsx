@@ -143,9 +143,9 @@ const SignInForm: React.FC = () => {
             {/* Quick login credentials */}
             <div className="mt-8 space-y-4">
                 <div className="flex items-center justify-between bg-blue-100 p-3 rounded-lg">
-                    <span className="text-blue-800">Admin: admin@gmail.com / 123456</span>
+                    <span className="text-blue-800">Admin: admin@onnomart.dev / OnnoMart@123</span>
                     <Button
-                        onClick={() => handleQuickSetCredentials("admin@gmail.com", "123456")}
+                        onClick={() => handleQuickSetCredentials("admin@onnomart.dev", "OnnoMart@123")}
                         className="bg-blue-600 text-white"
                         variant="default"
                     >
@@ -153,9 +153,9 @@ const SignInForm: React.FC = () => {
                     </Button>
                 </div>
                 <div className="flex items-center justify-between bg-green-100 p-3 rounded-lg">
-                    <span className="text-green-800">Vendor: vendor1@gmail.com / 123456</span>
+                    <span className="text-green-800">Vendor: gadget@onnomart.dev / OnnoMart@123</span>
                     <Button
-                        onClick={() => handleQuickSetCredentials("vendor1@gmail.com", "123456")}
+                        onClick={() => handleQuickSetCredentials("gadget@onnomart.dev", "OnnoMart@123")}
                         className="bg-green-600 text-white"
                         variant="default"
                     >
@@ -163,9 +163,9 @@ const SignInForm: React.FC = () => {
                     </Button>
                 </div>
                 <div className="flex items-center justify-between bg-purple-100 p-3 rounded-lg">
-                    <span className="text-purple-800">Customer: ali@gmail.com / 123456</span>
+                    <span className="text-purple-800">Customer: customer@onnomart.dev / OnnoMart@123</span>
                     <Button
-                        onClick={() => handleQuickSetCredentials("ali@gmail.com", "123456")}
+                        onClick={() => handleQuickSetCredentials("customer@onnomart.dev", "OnnoMart@123")}
                         className="bg-purple-600 text-white"
                         variant="default"
                     >
