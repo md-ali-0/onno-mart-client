@@ -1,5 +1,5 @@
 export interface TSession {
     isAuth: boolean;
-    user: number | null
+    user: string | number | null
     role: 'ADMIN' | 'USER' | 'guest' | 'VENDOR'
 }

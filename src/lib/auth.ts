@@ -23,14 +23,16 @@ export async function verifyCredentials(credentials: LoginFormData) {
         }
         const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
 
-        if (result?.success)
-            cookies().set("session", result?.data, {
+        if (result?.success && typeof result.data === "string") {
+            cookies().set("session", result.data, {
                 httpOnly: true,
-                secure: true,
+                // `secure` on http://localhost silently drops the cookie.
+                secure: process.env.NODE_ENV === "production",
                 path: "/",
-                sameSite: "strict",
+                sameSite: "lax",
                 expires: expiresAt,
             });
+        }
 
         return {
             success: true,

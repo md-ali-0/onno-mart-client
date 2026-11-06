@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useSession } from "@/provider/session-provider";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -27,7 +26,6 @@ const SignInForm: React.FC = () => {
         formState: { errors },
     } = useForm<FormValues>();
 
-    const router = useRouter();
     const { setIsLoading } = useSession();
 
     const [credentials, setCredentials] = useState({
@@ -47,9 +45,11 @@ const SignInForm: React.FC = () => {
         const response = await signin(data);
 
         if (response.success) {
-            toast.success(`Logged In Successfully`);
-            router.push("/");
             localStorage.setItem("accessToken", response.data);
+            toast.success("Logged in successfully");
+            // Full reload so the header and every server component pick up the
+            // new session cookie; a client-side push kept the old guest state.
+            setTimeout(() => window.location.assign("/"), 400);
         } else {
             toast.error(response?.message || "Login failed");
         }
