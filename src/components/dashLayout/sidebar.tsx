@@ -23,13 +23,13 @@ const Sidebar: FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                 }`}
             ></div>
             <div
-                className={`fixed inset-y-0 left-0 z-30 w-64 flex flex-col bg-gray-900 border-r border-gray-800 min-h-screen transition duration-300 transform lg:translate-x-0 lg:static lg:inset-0 ${
+                className={`fixed inset-y-0 left-0 z-30 w-64 flex flex-col bg-navy border-r border-white/10 min-h-screen transition duration-300 transform lg:translate-x-0 lg:static lg:inset-0 ${
                     sidebarOpen
                         ? "translate-x-0 ease-out"
                         : "-translate-x-full ease-in"
                 }`}
             >
-                <div className="flex items-center justify-center border-b border-gray-800 py-3 h-16">
+                <div className="flex items-center justify-center border-b border-white/10 py-3 h-16">
                     <Link href="/" className="text-white">
                         <Image
                             src={logo.src}

@@ -29,6 +29,7 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { revalidateCatalogue } from "@/actions/revalidate";
 
 type ProductFormValues = {
     name: string;
@@ -129,6 +130,7 @@ export default function CreateProductForm() {
 
         const loadingToast = toast.loading("Creating product...");
         await createProduct(formData);
+        await revalidateCatalogue(["products", "categories", "brands"]);
         toast.dismiss(loadingToast);
     };
 

@@ -17,8 +17,11 @@ import {
 } from "@/redux/features/product/productApi";
 import { useGetDashboardStatisticsQuery } from "@/redux/features/statistics/statisticsApi";
 import { Product } from "@/types";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { revalidateCatalogue } from "@/actions/revalidate";
+import { Boxes, Plus, RefreshCw, Ticket, Truck } from "lucide-react";
+import Link from "next/link";
 
 const DashboardCharts = dynamic(
     () => import("@/components/dash-charts/dashboard-charts"),
@@ -33,7 +36,32 @@ const DashboardCharts = dynamic(
     }
 );
 
+const QUICK_ACTIONS = [
+    { href: "/dashboard/create-product", label: "New product", icon: Plus },
+    { href: "/dashboard/create-category", label: "New category", icon: Boxes },
+    { href: "/dashboard/create-coupon", label: "New coupon", icon: Ticket },
+    { href: "/dashboard/order-history", label: "Orders", icon: Truck },
+] as const;
+
 export default function Dashboard() {
+    const [isRefreshing, setIsRefreshing] = useState(false);
+
+    const handleRefresh = async () => {
+        setIsRefreshing(true);
+        const result = await revalidateCatalogue([
+            "products",
+            "categories",
+            "brands",
+            "shops",
+        ]);
+        setIsRefreshing(false);
+        if (result.ok) {
+            toast.success("Storefront cache refreshed");
+        } else {
+            toast.error("You are not allowed to do that");
+        }
+    };
+
     const { data, isError, isLoading, isSuccess, error } =
         useGetDashboardStatisticsQuery(undefined);
 
@@ -52,10 +80,43 @@ export default function Dashboard() {
     return (
         <div className="flex-col md:flex">
             <div className="flex-1 space-y-4 sm:p-8 pt-6">
-                <div className="flex items-center justify-between space-y-2">
-                    <h2 className="text-3xl font-bold tracking-tight">
-                        Dashboard
-                    </h2>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <h2 className="text-[26px] font-bold tracking-tight">
+                            Dashboard
+                        </h2>
+                        <p className="mt-0.5 text-[13px] text-muted-foreground">
+                            Catalogue, orders and shops at a glance.
+                        </p>
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={handleRefresh}
+                        disabled={isRefreshing}
+                        className="inline-flex h-9 items-center gap-2 rounded-lg border border-primary/30 px-3.5 text-[13px] font-medium text-primary transition-colors hover:bg-primary hover:text-primary-foreground disabled:opacity-60"
+                    >
+                        <RefreshCw
+                            className={`h-3.5 w-3.5 ${isRefreshing ? "animate-spin" : ""}`}
+                            aria-hidden
+                        />
+                        {isRefreshing ? "Refreshing" : "Refresh storefront"}
+                    </button>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                    {QUICK_ACTIONS.map(({ href, label, icon: Icon }) => (
+                        <Link
+                            key={href}
+                            href={href}
+                            className="flex items-center gap-2.5 rounded-lg border bg-card px-4 py-3 text-[13px] font-medium transition-colors hover:border-primary/40 hover:text-primary"
+                        >
+                            <span className="flex h-8 w-8 items-center justify-center rounded-md bg-accent text-primary">
+                                <Icon className="h-4 w-4" aria-hidden />
+                            </span>
+                            {label}
+                        </Link>
+                    ))}
                 </div>
                 <div className="space-y-4">
                     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
