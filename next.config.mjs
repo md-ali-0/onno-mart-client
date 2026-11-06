@@ -13,10 +13,6 @@ const nextConfig = {
             },
         ],
     },
-    env: {
-        BASE_URL: process.env.NEXT_PUBLIC_BASE_URL,
-        AUTH_SECRET: process.env.AUTH_SECRET,
-    },
 };
 
 export default nextConfig;
