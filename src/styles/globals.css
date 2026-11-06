@@ -209,6 +209,15 @@
         @apply inline-flex items-center rounded-md bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive;
     }
 
+    /* Product tile badges. Sale is the loud one; stock notes stay quiet. */
+    .badge-sale {
+        @apply inline-flex items-center rounded-md bg-primary px-2 py-1 text-[11px] font-bold leading-none tracking-wide text-primary-foreground shadow-sm;
+    }
+
+    .badge-stock {
+        @apply inline-flex items-center rounded-md bg-card px-2 py-1 text-[11px] font-semibold leading-none text-foreground shadow-sm;
+    }
+
     .badge-muted {
         @apply inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground;
     }

@@ -73,7 +73,8 @@ export default function ProductActions({ product }: ProductActionsProps) {
                 <AddToCartButton
                     product={product}
                     quantity={quantity}
-                    clx="bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white mt-2"
+                    variant="primary"
+                    className="mt-2 h-11 px-8"
                 />
             </div>
         </>

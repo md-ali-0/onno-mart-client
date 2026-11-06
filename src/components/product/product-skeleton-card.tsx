@@ -1,29 +1,23 @@
-import { Skeleton } from "../ui/skeleton";
-
+/** Matches the anatomy of ProductCard so loading grids do not jump. */
 export default function ProductSkeletonCard() {
     return (
-        <div className="group">
-            <div className="relative overflow-hidden shadow dark:shadow-gray-800 group-hover:shadow-lg group-hover:dark:shadow-gray-800 rounded-md duration-500">
-                <Skeleton className="h-[400px] w-full rounded-md" />
-                <div className="absolute -bottom-20 group-hover:bottom-3 start-3 end-3 duration-500">
-                    <Skeleton className="h-10 w-full rounded-md" />
-                </div>
-                <ul className="list-none absolute top-[10px] end-4 opacity-0 group-hover:opacity-100 duration-500 space-y-2">
-                    <li>
-                        <Skeleton className="h-10 w-10 rounded-full" />
-                    </li>
-                    <li className="mt-1">
-                        <Skeleton className="h-10 w-10 rounded-full" />
-                    </li>
-                </ul>
-            </div>
+        <div className="flex h-full flex-col overflow-hidden rounded-2xl border bg-card">
+            <div className="skeleton aspect-square w-full rounded-none" />
 
-            <div className="mt-4 space-y-2">
-                <Skeleton className="h-6 w-3/4 rounded-md" />
-                <div className="flex justify-between items-center">
-                    <Skeleton className="h-6 w-1/3 rounded-md" />
-                    <Skeleton className="h-6 w-1/4 rounded-md" />
+            <div className="flex flex-1 flex-col p-4">
+                <div className="skeleton h-2.5 w-1/3" />
+                <div className="mt-2 space-y-1.5">
+                    <div className="skeleton h-4 w-full" />
+                    <div className="skeleton h-4 w-2/3" />
                 </div>
+                <div className="skeleton mt-2 h-3 w-1/2" />
+
+                <div className="mt-auto pt-3">
+                    <div className="skeleton h-5 w-1/2" />
+                    <div className="skeleton mt-1.5 h-3 w-1/3" />
+                </div>
+
+                <div className="skeleton mt-3 h-10 w-full rounded-lg" />
             </div>
         </div>
     );
