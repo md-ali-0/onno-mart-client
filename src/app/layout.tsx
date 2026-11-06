@@ -1,15 +1,11 @@
 import { SessionProvider } from "@/provider/session-provider";
+import ReduxProvider from "@/provider/redux-provider";
 import { ThemeProvider } from "@/provider/theme-provider";
 import { site } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
-import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
 import "../styles/globals.css";
-
-const ReduxProvider = dynamic(() => import("@/provider/redux-provider"), {
-    ssr: false,
-});
 
 const inter = Inter({
     subsets: ["latin"],
