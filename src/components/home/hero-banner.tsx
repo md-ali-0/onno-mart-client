@@ -33,9 +33,15 @@ export default async function HeroBanner() {
                                                 ? "Exclusive offer going"
                                                 : "Limited weekend deal"}
                                         </p>
-                                        <h2 className="mt-1.5 line-clamp-2 text-[22px] font-bold leading-[1.15] sm:text-[26px]">
-                                            {product.name}
-                                        </h2>
+                                        {index === 0 ? (
+                                            <h1 className="mt-1.5 line-clamp-2 text-[22px] font-bold leading-[1.15] sm:text-[26px]">
+                                                {product.name}
+                                            </h1>
+                                        ) : (
+                                            <h2 className="mt-1.5 line-clamp-2 text-[22px] font-bold leading-[1.15] sm:text-[26px]">
+                                                {product.name}
+                                            </h2>
+                                        )}
 
                                         <div className="mt-3 flex flex-wrap items-center gap-2">
                                             <span className="price-strike">

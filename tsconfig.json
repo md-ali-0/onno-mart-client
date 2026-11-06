@@ -44,7 +44,8 @@
     ".next-lux2/types/**/*.ts",
     ".next-lux3/types/**/*.ts",
     ".next-uni/types/**/*.ts",
-    ".next-uni2/types/**/*.ts"
+    ".next-uni2/types/**/*.ts",
+    ".next-uni3/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
