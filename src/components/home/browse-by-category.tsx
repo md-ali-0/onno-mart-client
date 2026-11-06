@@ -1,12 +1,12 @@
 import { getCategories } from "@/lib/get-categories";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import SectionHeader from "../shared/section-header";
 
 /**
- * Server component on purpose: the category strip is part of the first screen,
- * so it belongs in the HTML. A scroll-snap row replaces the swiper carousel and
- * drops ~40 kB of JavaScript from the home bundle.
+ * Category cards: name, a couple of entry links and a circular arrow, with the
+ * category image on the right. Mirrors the reference template's panel.
  */
 export default async function BrowseByCategory() {
     const categories = await getCategories();
@@ -14,7 +14,7 @@ export default async function BrowseByCategory() {
     if (categories.length === 0) return null;
 
     return (
-        <section className="section">
+        <section className="section pt-0">
             <div className="container-page">
                 <SectionHeader
                     title="Shop by category"
@@ -22,29 +22,40 @@ export default async function BrowseByCategory() {
                     linkLabel="View all categories"
                 />
 
-                <ul className="no-scrollbar -mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-1 sm:mx-0 sm:gap-4 sm:px-0">
+                <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {categories.map((category) => (
-                        <li
-                            key={category.id}
-                            className="w-[31%] shrink-0 snap-start sm:w-[22%] md:w-[16.5%] lg:w-[15.4%]"
-                        >
+                        <li key={category.id}>
                             <Link
                                 href={`/products?categoryId=${category.slug}`}
-                                className="group flex flex-col gap-3"
+                                className="group flex h-full items-center gap-3 rounded-lg border bg-card p-4 transition-shadow hover:shadow-card"
                             >
-                                <span className="relative aspect-[3/4] w-full overflow-hidden bg-surface">
+                                <span className="min-w-0 flex-1">
+                                    <span className="block truncate text-[15px] font-semibold transition-colors group-hover:text-primary">
+                                        {category.name}
+                                    </span>
+                                    <span className="mt-1.5 block text-[12px] leading-relaxed text-muted-foreground">
+                                        New arrivals
+                                        <br />
+                                        Best sellers
+                                        <br />
+                                        Under ৳1,000
+                                    </span>
+                                </span>
+
+                                <span className="relative h-16 w-16 shrink-0 overflow-hidden rounded-md bg-secondary">
                                     {category.image ? (
                                         <Image
                                             src={category.image}
                                             alt=""
                                             fill
-                                            sizes="(min-width: 1024px) 15vw, (min-width: 640px) 22vw, 32vw"
-                                            className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                                            sizes="64px"
+                                            className="object-cover transition-transform duration-500 group-hover:scale-105"
                                         />
                                     ) : null}
                                 </span>
-                                <span className="block border-t pt-2.5 text-[10px] font-medium uppercase tracking-[0.16em] transition-colors group-hover:text-primary">
-                                    <span className="block truncate">{category.name}</span>
+
+                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-primary/30 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                                    <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
                                 </span>
                             </Link>
                         </li>

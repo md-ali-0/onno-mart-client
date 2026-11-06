@@ -24,7 +24,7 @@ export function SectionHeader({
     return (
         <div
             className={cn(
-                "mb-8 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-t pt-7",
+                "mb-5 flex flex-wrap items-center justify-between gap-x-6 gap-y-3",
                 className
             )}
         >

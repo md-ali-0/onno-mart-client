@@ -1,74 +1,79 @@
-import { ArrowRight } from "lucide-react";
+import { discountedPrice, formatPrice, savingsPercent } from "@/lib/format";
+import { getRankedProducts } from "@/lib/get-products";
+import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-const HERO_IMAGE =
-    "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png";
+const TONES = ["#EDE4D2", "#E3EAF8"];
 
-const facts = [
-    { term: "Shops", detail: "5 verified" },
-    { term: "Delivery", detail: "24–48 hours" },
-    { term: "Returns", detail: "7 days" },
-];
+/** Two wide promotional cards, matching the template's hero slider. */
+export default async function HeroBanner() {
+    const products = await getRankedProducts("best-selling", 2);
 
-export default function HeroBanner() {
+    if (products.length === 0) return null;
+
     return (
-        <section className="band-tint border-b">
+        <section className="py-6">
             <div className="container-page">
-                <div className="grid gap-10 py-12 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16 lg:py-20">
-                    <div>
-                        <p className="eyebrow">OnnoMart — Dhaka, since 2024</p>
+                <div className="grid gap-5 lg:grid-cols-2">
+                    {products.map((product, index) => {
+                        const price = discountedPrice(product);
+                        const saved = savingsPercent(product);
 
-                        <h1 className="mt-5 max-w-[13ch] font-display text-[46px] leading-[0.92] tracking-[-0.03em] sm:text-[64px] lg:text-[78px]">
-                            Fewer, better things.
-                        </h1>
+                        return (
+                            <article
+                                key={product.id}
+                                className="relative overflow-hidden rounded-2xl"
+                                style={{ backgroundColor: TONES[index % TONES.length] }}
+                            >
+                                <div className="flex items-center justify-between gap-4 p-6 sm:p-8">
+                                    <div className="min-w-0 max-w-[58%]">
+                                        <p className="text-[13px] text-muted-foreground">
+                                            {index === 0
+                                                ? "Exclusive offer going"
+                                                : "Limited weekend deal"}
+                                        </p>
+                                        <h2 className="mt-1.5 line-clamp-2 text-[22px] font-bold leading-[1.15] sm:text-[26px]">
+                                            {product.name}
+                                        </h2>
 
-                        <p className="mt-6 max-w-[38ch] text-[14px] leading-[1.85] text-muted-foreground">
-                            A considered edit of electronics, clothing and
-                            homeware from five verified shops. Chosen for how
-                            they last, not for how they sell.
-                        </p>
+                                        <div className="mt-3 flex flex-wrap items-center gap-2">
+                                            <span className="price-strike">
+                                                {formatPrice(product.price)}
+                                            </span>
+                                            <span className="text-[20px] font-bold text-primary">
+                                                {formatPrice(price)}
+                                            </span>
+                                            {saved > 0 && (
+                                                <span className="rounded-full bg-sale px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-sale-foreground">
+                                                    Save {saved}%
+                                                </span>
+                                            )}
+                                        </div>
 
-                        <div className="mt-9 flex flex-wrap items-center gap-3">
-                            <Link href="/products" className="btn-ink">
-                                Shop the edit
-                                <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-                            </Link>
-                            <Link href="/flash-sale" className="btn-line">
-                                Private sale
-                            </Link>
-                        </div>
+                                        <Link
+                                            href={`/product/${product.slug}`}
+                                            className="mt-6 inline-flex h-14 w-14 flex-col items-center justify-center gap-0.5 rounded-full bg-primary text-[8px] font-semibold uppercase leading-none tracking-wide text-primary-foreground transition-transform hover:scale-105"
+                                        >
+                                            <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+                                            Shop now
+                                        </Link>
+                                    </div>
 
-                        <dl className="mt-12 grid max-w-md grid-cols-3 gap-6 border-t pt-6">
-                            {facts.map((fact) => (
-                                <div key={fact.term}>
-                                    <dt className="text-[9px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
-                                        {fact.term}
-                                    </dt>
-                                    <dd className="mt-1.5 text-[12px] font-medium">
-                                        {fact.detail}
-                                    </dd>
+                                    <div className="relative h-40 w-40 shrink-0 overflow-hidden rounded-xl sm:h-52 sm:w-52">
+                                        <Image
+                                            src={product.thumbnail}
+                                            alt={product.name}
+                                            fill
+                                            priority={index === 0}
+                                            sizes="(min-width: 640px) 220px, 160px"
+                                            className="object-cover"
+                                        />
+                                    </div>
                                 </div>
-                            ))}
-                        </dl>
-                    </div>
-
-                    <div>
-                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-surface">
-                            <Image
-                                src={HERO_IMAGE}
-                                alt="A shopper carrying bags from OnnoMart"
-                                fill
-                                priority
-                                sizes="(min-width: 1024px) 42vw, 92vw"
-                                className="object-contain object-bottom p-6 sm:p-10"
-                            />
-                        </div>
-                        <p className="mt-3 flex items-center justify-between text-[9px] uppercase tracking-[0.2em] text-muted-foreground">
-                            <span>The autumn edit</span>
-                            <span>01 / 04</span>
-                        </p>
-                    </div>
+                            </article>
+                        );
+                    })}
                 </div>
             </div>
         </section>

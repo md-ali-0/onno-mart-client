@@ -3,107 +3,112 @@
 @tailwind utilities;
 
 /*
- * Design tokens — "quiet luxury retail".
- * Ivory canvas, ink text, one deep royal blue used sparingly. Hairline borders
- * and near-square corners instead of soft shadows: the restraint is the point.
+ * Design tokens — matched to the Unimart electronics template.
+ * Blue #215ADA for header/nav/links, orange #FF4C1A for sale accents, Cabin
+ * for all type, 8px cards with soft shadows on a #F9F9F9 page.
  */
 @layer base {
     :root {
-        --background: 40 22% 97%;
-        --foreground: 220 22% 9%;
+        --background: 0 0% 98%;
+        --foreground: 0 0% 0%;
 
         --card: 0 0% 100%;
-        --card-foreground: 220 22% 9%;
+        --card-foreground: 0 0% 0%;
 
         --popover: 0 0% 100%;
-        --popover-foreground: 220 22% 9%;
+        --popover-foreground: 0 0% 0%;
 
-        --primary: 224 58% 27%;
-        --primary-foreground: 40 22% 97%;
+        --primary: 222 74% 49%;
+        --primary-foreground: 0 0% 100%;
 
-        --secondary: 220 14% 94%;
-        --secondary-foreground: 220 22% 12%;
+        --sale: 13 100% 55%;
+        --sale-foreground: 0 0% 100%;
 
-        --muted: 220 12% 94%;
-        --muted-foreground: 220 8% 41%;
+        --secondary: 0 0% 96%;
+        --secondary-foreground: 0 0% 8%;
 
-        --accent: 222 28% 93%;
-        --accent-foreground: 224 58% 27%;
+        --muted: 0 0% 96%;
+        --muted-foreground: 0 0% 45%;
 
-        --destructive: 0 62% 42%;
-        --destructive-foreground: 40 22% 97%;
+        --accent: 213 80% 96%;
+        --accent-foreground: 222 74% 45%;
 
-        --success: 156 40% 28%;
-        --success-foreground: 40 22% 97%;
+        --destructive: 13 100% 55%;
+        --destructive-foreground: 0 0% 100%;
 
-        --navy: 220 24% 8%;
-        --navy-foreground: 40 22% 94%;
+        --success: 122 68% 44%;
+        --success-foreground: 0 0% 100%;
 
-        --border: 220 12% 87%;
-        --input: 220 12% 84%;
-        --ring: 224 58% 27%;
+        --navy: 220 57% 13%;
+        --navy-foreground: 0 0% 100%;
 
-        /* Near-square. Soft 12px corners are the fastest way to look generic. */
-        --radius: 0.25rem;
+        --border: 0 0% 94%;
+        --input: 0 0% 90%;
+        --ring: 222 74% 49%;
 
-        --surface: 40 18% 95%;
-        --tint: 222 30% 95%;
-        --shadow-color: 220 30% 10%;
+        --radius: 0.5rem;
 
-        --chart-1: 224 58% 27%;
-        --chart-2: 156 40% 30%;
-        --chart-3: 38 60% 48%;
-        --chart-4: 262 40% 45%;
-        --chart-5: 340 45% 45%;
+        --surface: 0 0% 96%;
+        --tint: 213 80% 96%;
+        --shadow-color: 0 0% 0%;
+
+        --chart-1: 222 74% 49%;
+        --chart-2: 122 68% 44%;
+        --chart-3: 43 97% 54%;
+        --chart-4: 262 60% 55%;
+        --chart-5: 13 100% 55%;
     }
 
     .dark {
-        --background: 220 20% 7%;
-        --foreground: 40 20% 94%;
+        --background: 220 30% 8%;
+        --foreground: 0 0% 96%;
 
-        --card: 220 18% 10%;
-        --card-foreground: 40 20% 94%;
+        --card: 220 25% 11%;
+        --card-foreground: 0 0% 96%;
 
-        --popover: 220 18% 10%;
-        --popover-foreground: 40 20% 94%;
+        --popover: 220 25% 11%;
+        --popover-foreground: 0 0% 96%;
 
-        --primary: 222 55% 62%;
-        --primary-foreground: 220 20% 7%;
+        --primary: 217 85% 62%;
+        --primary-foreground: 220 30% 8%;
 
-        --secondary: 220 14% 16%;
-        --secondary-foreground: 40 20% 94%;
+        --sale: 13 100% 60%;
+        --sale-foreground: 0 0% 100%;
 
-        --muted: 220 14% 16%;
-        --muted-foreground: 220 10% 62%;
+        --secondary: 220 20% 17%;
+        --secondary-foreground: 0 0% 96%;
 
-        --accent: 222 20% 18%;
-        --accent-foreground: 222 55% 78%;
+        --muted: 220 20% 17%;
+        --muted-foreground: 220 10% 65%;
 
-        --destructive: 0 55% 45%;
-        --destructive-foreground: 40 20% 94%;
+        --accent: 222 30% 20%;
+        --accent-foreground: 213 80% 85%;
 
-        --success: 156 35% 45%;
-        --success-foreground: 220 20% 7%;
+        --destructive: 13 90% 55%;
+        --destructive-foreground: 0 0% 100%;
 
-        --navy: 220 24% 6%;
-        --navy-foreground: 40 20% 94%;
+        --success: 122 55% 50%;
+        --success-foreground: 220 30% 8%;
 
-        --border: 220 12% 20%;
-        --input: 220 12% 22%;
-        --ring: 222 55% 62%;
+        --navy: 220 40% 10%;
+        --navy-foreground: 0 0% 96%;
 
-        --surface: 220 18% 9%;
-        --tint: 222 20% 12%;
+        --border: 220 15% 22%;
+        --input: 220 15% 24%;
+        --ring: 217 85% 62%;
 
-        --chart-1: 222 55% 62%;
-        --chart-2: 160 45% 45%;
-        --chart-3: 30 60% 55%;
-        --chart-4: 280 45% 60%;
-        --chart-5: 340 50% 58%;
-        --chart-canceled: 357 80% 60%;
-        --chart-failed: 5 80% 55%;
-        --chart-pending: 31 85% 52%;
-        --chart-completed: 142 50% 50%;
+        --surface: 220 25% 12%;
+        --tint: 222 30% 16%;
+
+        --chart-1: 217 85% 62%;
+        --chart-2: 160 50% 45%;
+        --chart-3: 30 70% 55%;
+        --chart-4: 280 55% 60%;
+        --chart-5: 340 65% 58%;
+        --chart-canceled: 357 90% 60%;
+        --chart-failed: 5 90% 55%;
+        --chart-pending: 31 95% 52%;
+        --chart-completed: 142 60% 50%;
     }
 
     * {
@@ -117,20 +122,18 @@
 
     body {
         @apply bg-background text-foreground font-sans;
+        font-size: 16px;
+        line-height: 1.5;
         text-rendering: optimizeLegibility;
-        font-feature-settings: "ss01", "cv01";
     }
 
     h1,
     h2,
-    h3 {
-        @apply font-display font-normal text-foreground;
-        letter-spacing: -0.015em;
-        text-wrap: balance;
-    }
-
+    h3,
     h4 {
-        @apply font-sans font-semibold text-foreground;
+        @apply font-sans font-bold text-foreground;
+        letter-spacing: -0.01em;
+        text-wrap: balance;
     }
 
     p {
@@ -138,12 +141,12 @@
     }
 
     ::selection {
-        background-color: hsl(var(--primary) / 0.14);
+        background-color: hsl(var(--primary) / 0.16);
         color: hsl(var(--foreground));
     }
 
     :focus-visible {
-        @apply outline-none ring-1 ring-ring ring-offset-2 ring-offset-background;
+        @apply outline-none ring-2 ring-ring/40 ring-offset-2 ring-offset-background;
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -166,51 +169,50 @@
     }
 
     .sideLink {
-        @apply flex items-center gap-x-3.5 px-2.5 py-2 text-[14px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
+        @apply flex items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
     }
 
     .sideLinkActive {
-        @apply flex items-center gap-x-3.5 bg-white/10 px-2.5 py-2 text-[14px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
+        @apply flex items-center gap-x-3.5 rounded-lg bg-white/10 px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
     }
 
     .dropdownSideBar {
-        @apply relative flex w-full items-center gap-x-3.5 px-2.5 py-2 text-[14px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
+        @apply relative flex w-full items-center gap-x-3.5 rounded-lg px-2.5 py-2 text-[15px] text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none;
     }
 }
 
 @layer components {
     .container-page {
-        @apply mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-10;
+        @apply mx-auto w-full max-w-[1230px] px-4 sm:px-6;
     }
 
     .section {
-        @apply py-14 sm:py-16 lg:py-20;
+        @apply py-10 sm:py-12;
     }
 
-    /* Display sizes. Serif at these sizes needs negative tracking to stay tight. */
+    /* Section title, e.g. "Deals of The Day" */
     .section-heading {
-        @apply font-display text-[28px] font-normal leading-[1.05] tracking-[-0.02em] sm:text-[36px];
+        @apply font-sans text-[24px] font-bold leading-tight tracking-[-0.01em] text-foreground sm:text-[28px];
     }
 
     .eyebrow {
-        @apply text-[10px] font-medium uppercase tracking-[0.24em] text-muted-foreground;
+        @apply text-[12px] font-medium uppercase tracking-[0.12em] text-primary;
     }
 
     .label-caps {
-        @apply text-[10px] font-medium uppercase tracking-[0.2em] text-muted-foreground;
+        @apply text-[11px] font-medium uppercase tracking-[0.12em] text-muted-foreground;
     }
 
     .rule {
         @apply h-px w-full bg-border;
     }
 
-    /* Pale wash used behind the hero and the newsletter. */
     .band-tint {
-        background: linear-gradient(180deg, hsl(var(--tint)), hsl(var(--background)));
+        background: hsl(var(--background));
     }
 
     .surface-card {
-        @apply border bg-card text-card-foreground;
+        @apply rounded-lg border bg-card text-card-foreground;
     }
 
     .surface-muted {
@@ -218,31 +220,31 @@
     }
 
     .price {
-        @apply text-[14px] font-medium tabular-nums tracking-tight text-foreground;
+        @apply text-[15px] font-bold tabular-nums tracking-tight text-foreground;
     }
 
     .price-strike {
-        @apply text-[12px] font-normal text-muted-foreground line-through tabular-nums;
+        @apply text-[13px] font-normal text-muted-foreground line-through tabular-nums;
     }
 
     .badge-discount {
-        @apply inline-flex items-center bg-primary px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-primary-foreground;
+        @apply inline-flex items-center rounded bg-sale px-1.5 py-0.5 text-[11px] font-semibold text-sale-foreground;
     }
 
     .badge-sale {
-        @apply inline-flex items-center bg-primary px-1.5 py-1 text-[9px] font-semibold uppercase leading-none tracking-[0.12em] text-primary-foreground;
+        @apply inline-flex items-center rounded bg-sale px-2 py-0.5 text-[10px] font-bold uppercase leading-none tracking-wide text-sale-foreground;
     }
 
     .badge-stock {
-        @apply inline-flex items-center bg-card px-1.5 py-1 text-[9px] font-semibold uppercase leading-none tracking-[0.12em] text-foreground;
+        @apply inline-flex items-center rounded bg-card px-1.5 py-1 text-[10px] font-semibold uppercase leading-none tracking-wide text-foreground;
     }
 
     .badge-muted {
-        @apply inline-flex items-center bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground;
+        @apply inline-flex items-center rounded bg-muted px-1.5 py-0.5 text-[11px] font-medium text-muted-foreground;
     }
 
     .skeleton {
-        @apply relative overflow-hidden bg-muted;
+        @apply relative overflow-hidden rounded-md bg-muted;
     }
 
     .skeleton::after {
@@ -267,12 +269,11 @@
     }
 
     .link-underline {
-        @apply underline decoration-border decoration-1 underline-offset-4 transition-colors hover:decoration-foreground;
+        @apply underline decoration-border decoration-1 underline-offset-4 transition-colors hover:decoration-primary;
     }
 
-    /* Quiet "View all" link. */
     .link-arrow {
-        @apply inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-[0.16em] text-foreground transition-colors hover:text-primary;
+        @apply inline-flex items-center gap-1 text-[14px] font-medium text-primary transition-colors hover:text-primary/80;
     }
 
     .link-arrow svg {
@@ -283,13 +284,14 @@
         transform: translateX(3px);
     }
 
-    /* Primary call to action: ink block, no rounding, letterspaced caps. */
-    .btn-ink {
-        @apply inline-flex items-center justify-center gap-2 bg-foreground px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.16em] text-background transition-colors hover:bg-primary;
+    /* Blue pill button, as used in the template's hero and cart. */
+    .btn-primary {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-2.5 text-[14px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90;
     }
 
-    .btn-line {
-        @apply inline-flex items-center justify-center gap-2 border border-foreground/25 px-7 py-3.5 text-[11px] font-medium uppercase tracking-[0.16em] text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background;
+    /* Outlined "Add To Cart" used on product cards. */
+    .btn-outline-primary {
+        @apply inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/40 px-4 py-2 text-[13px] font-medium text-primary transition-colors hover:border-primary hover:bg-primary hover:text-primary-foreground;
     }
 }
 
@@ -299,16 +301,16 @@
     }
 
     .link-button {
-        @apply inline-block bg-secondary px-2 py-1 text-center font-medium text-secondary-foreground transition-colors hover:bg-primary hover:text-primary-foreground;
+        @apply inline-block rounded bg-secondary px-2 py-1 text-center font-medium text-secondary-foreground transition-colors hover:bg-primary hover:text-primary-foreground;
     }
 
     .nav-link {
-        @apply relative block pb-1 text-[12px] font-medium;
+        @apply relative block pb-1 text-[14px] font-medium;
     }
 
     .nav-link::after {
         content: "";
-        @apply absolute bottom-0 left-0 h-px w-0 bg-foreground duration-300 ease-in-out;
+        @apply absolute bottom-0 left-0 h-[2px] w-0 bg-white duration-300 ease-in-out;
     }
 
     .nav-link:hover::after,
@@ -333,7 +335,7 @@
     }
 
     .custom-scroll::-webkit-scrollbar-thumb {
-        @apply bg-slate-300 dark:bg-slate-700;
+        @apply rounded-full bg-slate-300 dark:bg-slate-700;
     }
 
     .category-scroll {
@@ -345,7 +347,7 @@
     }
 
     .category-scroll::-webkit-scrollbar-thumb {
-        @apply bg-primary/20;
+        @apply rounded-full bg-primary/20;
     }
 
     .no-scrollbar {

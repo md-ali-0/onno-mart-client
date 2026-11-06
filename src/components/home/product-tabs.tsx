@@ -37,7 +37,7 @@ export default function ProductTabs({ all, onSale, topRated }: Props) {
             <div
                 role="tablist"
                 aria-label="Product collections"
-                className="no-scrollbar mb-7 flex gap-7 overflow-x-auto border-b"
+                className="no-scrollbar mb-5 flex gap-2 overflow-x-auto"
             >
                 {TABS.map((tab) => (
                     <button
@@ -49,10 +49,10 @@ export default function ProductTabs({ all, onSale, topRated }: Props) {
                         aria-controls={`panel-${tab.id}`}
                         onClick={() => setActive(tab.id)}
                         className={cn(
-                            "-mb-px shrink-0 border-b pb-3 text-[10px] font-medium uppercase tracking-[0.16em] transition-colors",
+                            "h-9 shrink-0 rounded-full px-4 text-[13px] font-medium transition-colors",
                             active === tab.id
-                                ? "border-foreground text-foreground"
-                                : "border-transparent text-muted-foreground hover:text-foreground"
+                                ? "bg-card text-foreground shadow-sm"
+                                : "bg-secondary text-muted-foreground hover:text-foreground"
                         )}
                     >
                         {tab.label}
@@ -67,7 +67,7 @@ export default function ProductTabs({ all, onSale, topRated }: Props) {
                     role="tabpanel"
                     aria-labelledby={`tab-${id}`}
                     className={cn(
-                        "grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 lg:grid-cols-4",
+                        "grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4",
                         active !== id && "hidden"
                     )}
                 >

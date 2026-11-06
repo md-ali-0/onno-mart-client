@@ -7,7 +7,6 @@ import PopularBrands from "@/components/home/popular-brands";
 import ProductListing from "@/components/home/product-listing";
 import PromoBanner from "@/components/home/promo-banner";
 import RecentProducts from "@/components/home/recent-product";
-import TrustStrip from "@/components/home/trust-strip";
 
 // Prerendered at build time and refreshed every minute in the background.
 export const revalidate = 60;
@@ -16,7 +15,6 @@ export default function Home() {
     return (
         <>
             <HeroBanner />
-            <TrustStrip />
             <BrowseByCategory />
             <FlashSale />
             <ProductListing />

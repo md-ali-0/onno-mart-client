@@ -31,10 +31,12 @@ const config: Config = {
                     "sans-serif",
                 ],
                 display: [
-                    "var(--font-display)",
-                    "Georgia",
-                    "Times New Roman",
-                    "serif",
+                    "var(--font-sans)",
+                    "system-ui",
+                    "Segoe UI",
+                    "Helvetica",
+                    "Arial",
+                    "sans-serif",
                 ],
             },
             colors: {
@@ -73,6 +75,10 @@ const config: Config = {
                     DEFAULT: "hsl(var(--success))",
                     foreground: "hsl(var(--success-foreground))",
                 },
+                sale: {
+                    DEFAULT: "hsl(var(--sale))",
+                    foreground: "hsl(var(--sale-foreground))",
+                },
                 forest: {
                     DEFAULT: "hsl(var(--navy))",
                     foreground: "hsl(var(--navy-foreground))",
@@ -94,16 +100,15 @@ const config: Config = {
             },
             borderRadius: {
                 lg: "var(--radius)",
-                md: "calc(var(--radius) - 1px)",
-                sm: "calc(var(--radius) - 1px)",
-                /* Keep the large steps near-square too. */
+                md: "calc(var(--radius) - 2px)",
+                sm: "calc(var(--radius) - 4px)",
                 xl: "calc(var(--radius) + 2px)",
-                "2xl": "calc(var(--radius) + 4px)",
-                "3xl": "calc(var(--radius) + 6px)",
+                "2xl": "calc(var(--radius) + 8px)",
+                "3xl": "calc(var(--radius) + 16px)",
             },
             boxShadow: {
-                card: "0 1px 2px 0 hsl(var(--shadow-color) / 0.04)",
-                lift: "0 24px 60px -36px hsl(var(--shadow-color) / 0.4)",
+                card: "0 8px 30px 5px hsl(var(--shadow-color) / 0.05)",
+                lift: "0 20px 70px 0 hsl(var(--shadow-color) / 0.1)",
             },
             letterSpacing: {
                 tightest: "-0.03em",

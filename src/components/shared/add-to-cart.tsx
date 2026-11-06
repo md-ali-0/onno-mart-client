@@ -25,6 +25,8 @@ const VARIANTS = {
     icon: "h-9 w-9 bg-primary text-primary-foreground hover:bg-primary/90",
     /** Full-width bar revealed on tile hover. */
     bar: "h-10 w-full bg-foreground text-[10px] uppercase tracking-[0.14em] text-background hover:bg-primary",
+    /** Outlined pill used on product cards. */
+    "outline-primary": "h-9 w-full rounded-full border border-primary/40 bg-transparent px-4 text-[13px] font-medium text-primary hover:border-primary hover:bg-primary hover:text-primary-foreground",
 } as const;
 
 type AddToCartButtonProps = {

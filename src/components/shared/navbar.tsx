@@ -7,29 +7,25 @@ import { useGetMeQuery } from "@/redux/features/user/userApi";
 import { useAppSelector } from "@/redux/hooks";
 import {
     ArrowLeftRight,
-    FileText,
+    ChevronDown,
+    Heart,
     LayoutGrid,
     LogIn,
     LogOut,
+    MapPin,
     Menu,
-    Search,
-    Settings,
+    Phone,
     ShoppingBag,
     ShoppingCart,
-    Star,
     User,
     X,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import CartDrawer from "../cart/cart-drawer";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Skeleton } from "../ui/skeleton";
-import NavCategory from "./nav-category";
 import NavbarCategorySearch from "./navbar-category-search";
-import TopBar from "./top-bar";
 
 const NAV_LINKS = [
     { href: "/", label: "Home" },
@@ -40,53 +36,8 @@ const NAV_LINKS = [
     { href: "/contact", label: "Contact" },
 ] as const;
 
-const USER_LINKS = [
-    { href: "/user/dashboard", label: "My account", icon: User },
-    { href: "/user/purchased-items", label: "Purchased items", icon: ShoppingBag },
-    { href: "/user/my-reviews", label: "My reviews", icon: Star },
-    { href: "/user/transactions", label: "Transactions", icon: FileText },
-    { href: "/user/edit-profile", label: "Edit profile", icon: Settings },
-] as const;
-
 function isActive(path: string, href: string) {
     return href === "/" ? path === "/" : path === href || path.startsWith(`${href}/`);
-}
-
-function CountBadge({ count }: { count: number }) {
-    if (count <= 0) return null;
-    return (
-        <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold leading-none text-primary-foreground">
-            {count > 9 ? "9+" : count}
-        </span>
-    );
-}
-
-function IconButton({
-    href,
-    label,
-    count,
-    className,
-    children,
-}: {
-    href: string;
-    label: string;
-    count?: number;
-    className?: string;
-    children: ReactNode;
-}) {
-    return (
-        <Link
-            href={href}
-            aria-label={label}
-            className={cn(
-                "relative flex h-9 w-9 items-center justify-center text-foreground transition-colors hover:text-primary",
-                className
-            )}
-        >
-            {children}
-            {count !== undefined && <CountBadge count={count} />}
-        </Link>
-    );
 }
 
 export default function Navbar() {
@@ -95,17 +46,14 @@ export default function Navbar() {
     const [cartOpen, setCartOpen] = useState(false);
     const path = usePathname();
     const router = useRouter();
-    const cartCount = useAppSelector((state) => state.cart.cart.length);
+    const cart = useAppSelector((state) => state.cart.cart);
     const compareCount = useAppSelector((state) => state.compare.compare.length);
     const { session, setIsLoading } = useSession();
-    // Guests have no token; /api/user/me would just return a 500 on every page.
-    const { data, isLoading, refetch } = useGetMeQuery(undefined, {
+    const { data } = useGetMeQuery(undefined, {
         skip: !session?.isAuth,
     });
 
-    useEffect(() => {
-        if (session?.isAuth && !session?.role) refetch();
-    }, [session?.isAuth, session?.role, refetch]);
+    const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     useEffect(() => {
         setShowMenu(false);
@@ -121,19 +69,11 @@ export default function Navbar() {
             setIsDropDownOpen(false);
             router.replace("/auth/signin");
             toast.success("Signed out");
-        } catch (error) {
+        } catch {
             setIsLoading(false);
-            console.error("Logout failed:", error);
             toast.error("Could not sign out. Please try again.");
         }
     };
-
-    const accountLinks =
-        session?.role === "ADMIN"
-            ? [{ href: "/dashboard", label: "Dashboard", icon: LayoutGrid }]
-            : session?.role === "VENDOR"
-              ? [{ href: "/dashboard", label: "Vendor dashboard", icon: LayoutGrid }]
-              : USER_LINKS;
 
     return (
         <>
@@ -146,86 +86,74 @@ export default function Navbar() {
                 />
             )}
 
-            <TopBar />
+            <header className="sticky top-0 z-50 bg-card shadow-sm">
+                {/* Utility strip */}
+                <div className="border-b">
+                    <div className="container-page flex h-9 items-center justify-between text-[12px] text-muted-foreground">
+                        <p className="truncate">
+                            Trending now:{" "}
+                            <span className="text-foreground">
+                                free delivery over ৳2,000
+                            </span>{" "}
+                            <Link href="/flash-sale" className="text-primary hover:underline">
+                                Know more
+                            </Link>
+                        </p>
 
-            <header className="sticky top-0 z-50 w-full border-b bg-background">
+                        <ul className="hidden items-center gap-5 md:flex">
+                            <li className="flex items-center gap-1.5">
+                                <MapPin className="h-3.5 w-3.5" aria-hidden />
+                                Dhaka
+                            </li>
+                            <li>
+                                <Link href="/user/purchased-items" className="hover:text-foreground">
+                                    Track your order
+                                </Link>
+                            </li>
+                            <li>৳ BDT</li>
+                            <li>English</li>
+                        </ul>
+                    </div>
+                </div>
+
+                {/* Main row */}
                 <div className="container-page">
-                    <div className="flex h-[76px] items-center gap-3 lg:gap-6">
-                        <Link
-                            href="/"
-                            className="flex shrink-0 items-center"
-                            aria-label="OnnoMart home"
-                        >
-                            <span className="font-display text-[25px] leading-none tracking-[-0.02em] text-foreground">
-                                OnnoMart
+                    <div className="flex h-[74px] items-center gap-4">
+                        <Link href="/" className="flex shrink-0 items-center gap-2" aria-label="OnnoMart home">
+                            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                                <ShoppingBag className="h-[18px] w-[18px]" aria-hidden />
+                            </span>
+                            <span className="text-[21px] font-bold tracking-[-0.02em]">
+                                Onno<span className="text-primary">Mart</span>
                             </span>
                         </Link>
 
-                        <nav aria-label="Main navigation" className="hidden lg:block">
-                            <ul className="flex items-center gap-6">
-                                {NAV_LINKS.slice(0, 2).map((link) => (
-                                    <li key={link.href}>
-                                        <Link
-                                            href={link.href}
-                                            aria-current={
-                                                isActive(path, link.href) ? "page" : undefined
-                                            }
-                                            className={cn(
-                                                "text-[11px] font-medium uppercase tracking-[0.14em] transition-colors hover:text-primary",
-                                                isActive(path, link.href)
-                                                    ? "text-primary"
-                                                    : "text-foreground"
-                                            )}
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    </li>
-                                ))}
-                                <li>
-                                    <NavCategory />
-                                </li>
-                                {NAV_LINKS.slice(2).map((link) => (
-                                    <li key={link.href}>
-                                        <Link
-                                            href={link.href}
-                                            aria-current={
-                                                isActive(path, link.href) ? "page" : undefined
-                                            }
-                                            className={cn(
-                                                "text-[11px] font-medium uppercase tracking-[0.14em] transition-colors hover:text-primary",
-                                                isActive(path, link.href)
-                                                    ? "text-primary"
-                                                    : "text-foreground"
-                                            )}
-                                        >
-                                            {link.label}
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </nav>
+                        <button
+                            type="button"
+                            aria-label={showMenu ? "Close menu" : "Open menu"}
+                            onClick={() => setShowMenu(!showMenu)}
+                            className="ml-1 flex h-9 w-9 items-center justify-center rounded-lg text-foreground hover:bg-secondary lg:hidden"
+                        >
+                            {showMenu ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                        </button>
 
-                        <div className="ml-auto hidden min-w-0 max-w-[300px] flex-1 lg:block">
+                        <div className="hidden min-w-0 flex-1 md:block">
                             <NavbarCategorySearch />
                         </div>
 
-                        <div className="ml-auto flex items-center gap-0.5 lg:ml-0">
-                            <IconButton
-                                href="/products"
-                                label="Search products"
-                                className="lg:hidden"
+                        <div className="ml-auto flex items-center gap-1 sm:gap-3">
+                            <a
+                                href="tel:+8801700000000"
+                                className="hidden items-center gap-2 xl:flex"
                             >
-                                <Search className="h-[17px] w-[17px]" />
-                            </IconButton>
-
-                            <IconButton
-                                href="/compare"
-                                label="Compare products"
-                                count={compareCount}
-                                className="hidden sm:flex"
-                            >
-                                <ArrowLeftRight className="h-[17px] w-[17px]" />
-                            </IconButton>
+                                <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-primary">
+                                    <Phone className="h-4 w-4" aria-hidden />
+                                </span>
+                                <span className="text-[11px] leading-tight">
+                                    <span className="block text-muted-foreground">Hotline</span>
+                                    <span className="block font-semibold">+880 1700 000000</span>
+                                </span>
+                            </a>
 
                             <div className="relative">
                                 <button
@@ -233,143 +161,153 @@ export default function Navbar() {
                                     aria-label="Account menu"
                                     aria-expanded={isDropdownOpen}
                                     onClick={() => setIsDropDownOpen(!isDropdownOpen)}
-                                    className="flex h-9 w-9 items-center justify-center text-foreground transition-colors hover:text-primary"
+                                    className="flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-secondary"
                                 >
-                                    {session?.isAuth ? (
-                                        isLoading ? (
-                                            <Skeleton className="h-7 w-7 rounded-full" />
-                                        ) : (
-                                            <Avatar className="h-7 w-7">
-                                                <AvatarImage
-                                                    src={data?.avatar}
-                                                    alt={data?.name ?? "Your avatar"}
-                                                />
-                                                <AvatarFallback className="bg-secondary text-[10px] font-semibold">
-                                                    {data?.name?.[0]?.toUpperCase() ?? "U"}
-                                                </AvatarFallback>
-                                            </Avatar>
-                                        )
-                                    ) : (
-                                        <User className="h-[17px] w-[17px]" />
-                                    )}
+                                    <span className="flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-primary">
+                                        <User className="h-4 w-4" aria-hidden />
+                                    </span>
+                                    <span className="hidden text-[11px] leading-tight lg:block">
+                                        <span className="block text-muted-foreground">
+                                            {session?.isAuth ? "Signed in" : "Log in / Sign up"}
+                                        </span>
+                                        <span className="block font-semibold">
+                                            {session?.isAuth
+                                                ? (data?.name?.split(" ")[0] ?? "Account")
+                                                : "Access account"}
+                                        </span>
+                                    </span>
                                 </button>
 
                                 {isDropdownOpen && (
-                                    <div className="absolute right-0 top-full z-50 mt-3 w-64 border bg-card py-2 shadow-lift">
+                                    <div className="absolute right-0 top-full z-50 mt-2 w-56 overflow-hidden rounded-lg border bg-card py-1.5 shadow-lift">
                                         {session?.isAuth ? (
                                             <>
-                                                <div className="border-b px-4 pb-2.5 pt-1">
-                                                    <p className="truncate text-[14px] font-semibold">
-                                                        {data?.name ?? "Your account"}
-                                                    </p>
-                                                    <p className="truncate text-[11px] text-muted-foreground">
-                                                        {data?.email ?? session.role}
-                                                    </p>
-                                                </div>
-                                                <ul className="py-1">
-                                                    {accountLinks.map(({ href, label, icon: Icon }) => (
-                                                        <li key={href}>
-                                                            <Link
-                                                                href={href}
-                                                                onClick={() => setIsDropDownOpen(false)}
-                                                                className="flex items-center gap-2.5 px-4 py-2 text-[13px] transition-colors hover:bg-secondary"
-                                                            >
-                                                                <Icon
-                                                                    className="h-4 w-4 text-muted-foreground"
-                                                                    aria-hidden
-                                                                />
-                                                                {label}
-                                                            </Link>
-                                                        </li>
-                                                    ))}
-                                                </ul>
-                                                <div className="border-t pt-1">
-                                                    <button
-                                                        type="button"
-                                                        onClick={handleLogout}
-                                                        className="flex w-full items-center gap-2.5 px-4 py-2 text-[13px] text-destructive transition-colors hover:bg-secondary"
-                                                    >
-                                                        <LogOut className="h-4 w-4" aria-hidden />
-                                                        Sign out
-                                                    </button>
-                                                </div>
+                                                <Link
+                                                    href={session.role === "ADMIN" || session.role === "VENDOR" ? "/dashboard" : "/user/dashboard"}
+                                                    onClick={() => setIsDropDownOpen(false)}
+                                                    className="flex items-center gap-2 px-4 py-2 text-[13px] hover:bg-secondary"
+                                                >
+                                                    <LayoutGrid className="h-4 w-4 text-muted-foreground" aria-hidden />
+                                                    {session.role === "ADMIN" || session.role === "VENDOR"
+                                                        ? "Dashboard"
+                                                        : "My account"}
+                                                </Link>
+                                                <Link
+                                                    href="/user/purchased-items"
+                                                    onClick={() => setIsDropDownOpen(false)}
+                                                    className="flex items-center gap-2 px-4 py-2 text-[13px] hover:bg-secondary"
+                                                >
+                                                    <ShoppingBag className="h-4 w-4 text-muted-foreground" aria-hidden />
+                                                    Orders
+                                                </Link>
+                                                <button
+                                                    type="button"
+                                                    onClick={handleLogout}
+                                                    className="flex w-full items-center gap-2 border-t px-4 py-2 text-[13px] text-sale hover:bg-secondary"
+                                                >
+                                                    <LogOut className="h-4 w-4" aria-hidden />
+                                                    Sign out
+                                                </button>
                                             </>
                                         ) : (
-                                            <ul className="py-1">
-                                                <li>
-                                                    <Link
-                                                        href="/auth/signin"
-                                                        onClick={() => setIsDropDownOpen(false)}
-                                                        className="flex items-center gap-2.5 px-4 py-2 text-[13px] transition-colors hover:bg-secondary"
-                                                    >
-                                                        <LogIn
-                                                            className="h-4 w-4 text-muted-foreground"
-                                                            aria-hidden
-                                                        />
-                                                        Sign in
-                                                    </Link>
-                                                </li>
-                                                <li>
-                                                    <Link
-                                                        href="/auth/signup"
-                                                        onClick={() => setIsDropDownOpen(false)}
-                                                        className="flex items-center gap-2.5 px-4 py-2 text-[13px] transition-colors hover:bg-secondary"
-                                                    >
-                                                        <User
-                                                            className="h-4 w-4 text-muted-foreground"
-                                                            aria-hidden
-                                                        />
-                                                        Create an account
-                                                    </Link>
-                                                </li>
-                                                <li className="border-t pt-1">
-                                                    <Link
-                                                        href="/auth/vendor-signup"
-                                                        onClick={() => setIsDropDownOpen(false)}
-                                                        className="flex items-center gap-2.5 px-4 py-2 text-[13px] transition-colors hover:bg-secondary"
-                                                    >
-                                                        <LayoutGrid
-                                                            className="h-4 w-4 text-muted-foreground"
-                                                            aria-hidden
-                                                        />
-                                                        Join as a vendor
-                                                    </Link>
-                                                </li>
-                                            </ul>
+                                            <>
+                                                <Link
+                                                    href="/auth/signin"
+                                                    onClick={() => setIsDropDownOpen(false)}
+                                                    className="flex items-center gap-2 px-4 py-2 text-[13px] hover:bg-secondary"
+                                                >
+                                                    <LogIn className="h-4 w-4 text-muted-foreground" aria-hidden />
+                                                    Sign in
+                                                </Link>
+                                                <Link
+                                                    href="/auth/signup"
+                                                    onClick={() => setIsDropDownOpen(false)}
+                                                    className="flex items-center gap-2 px-4 py-2 text-[13px] hover:bg-secondary"
+                                                >
+                                                    <User className="h-4 w-4 text-muted-foreground" aria-hidden />
+                                                    Create an account
+                                                </Link>
+                                            </>
                                         )}
                                     </div>
                                 )}
                             </div>
 
-                            <button
-                                type="button"
-                                onClick={() => setCartOpen(true)}
-                                aria-label={`Cart, ${cartCount} item${cartCount === 1 ? "" : "s"}`}
-                                className="relative flex h-9 w-9 items-center justify-center text-foreground transition-colors hover:text-primary"
+                            <Link
+                                href="/compare"
+                                className="relative hidden h-9 w-9 items-center justify-center rounded-full bg-secondary text-primary sm:flex"
+                                aria-label="Compare products"
                             >
-                                <ShoppingCart className="h-[17px] w-[17px]" />
-                                <CountBadge count={cartCount} />
-                            </button>
+                                <ArrowLeftRight className="h-4 w-4" aria-hidden />
+                                {compareCount > 0 && (
+                                    <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-sale px-1 text-[10px] font-bold text-sale-foreground">
+                                        {compareCount}
+                                    </span>
+                                )}
+                            </Link>
 
                             <button
                                 type="button"
-                                aria-label={showMenu ? "Close menu" : "Open menu"}
-                                aria-expanded={showMenu}
-                                onClick={() => setShowMenu(!showMenu)}
-                                className="flex h-9 w-9 items-center justify-center text-foreground transition-colors hover:text-primary lg:hidden"
+                                onClick={() => setCartOpen(true)}
+                                aria-label={`Cart, ${cartCount} items`}
+                                className="relative flex items-center gap-2 rounded-lg px-1.5 py-1 hover:bg-secondary"
                             >
-                                {showMenu ? (
-                                    <X className="h-[17px] w-[17px]" />
-                                ) : (
-                                    <Menu className="h-[17px] w-[17px]" />
-                                )}
+                                <span className="relative flex h-9 w-9 items-center justify-center rounded-full bg-secondary text-primary">
+                                    <ShoppingCart className="h-4 w-4" aria-hidden />
+                                    <span className="absolute -right-1 -top-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-sale px-1 text-[10px] font-bold text-sale-foreground">
+                                        {cartCount}
+                                    </span>
+                                </span>
+                                <span className="hidden text-[11px] leading-tight lg:block">
+                                    <span className="block text-muted-foreground">Total cart</span>
+                                    <span className="block font-semibold">
+                                        {cartCount} item{cartCount === 1 ? "" : "s"}
+                                    </span>
+                                </span>
                             </button>
                         </div>
                     </div>
                 </div>
 
+                {/* Blue navigation bar */}
+                <div className="bg-primary text-primary-foreground">
+                    <div className="container-page flex h-11 items-center justify-between">
+                        <nav aria-label="Main navigation" className="hidden lg:block">
+                            <ul className="flex items-center gap-6">
+                                {NAV_LINKS.map((link) => (
+                                    <li key={link.href}>
+                                        <Link
+                                            href={link.href}
+                                            aria-current={isActive(path, link.href) ? "page" : undefined}
+                                            className={cn(
+                                                "flex items-center gap-1 text-[14px] font-medium transition-opacity hover:opacity-80",
+                                                isActive(path, link.href) && "font-semibold"
+                                            )}
+                                        >
+                                            {link.label}
+                                            {link.href === "/products" && (
+                                                <ChevronDown className="h-3.5 w-3.5" aria-hidden />
+                                            )}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+
+                        <div className="flex items-center gap-5 text-[13px]">
+                            <Link href="/flash-sale" className="flex items-center gap-1.5 hover:opacity-80">
+                                <Heart className="h-3.5 w-3.5" aria-hidden />
+                                Special offers
+                            </Link>
+                            <Link href="/user/recent-view-products" className="hidden items-center gap-1.5 hover:opacity-80 sm:flex">
+                                Recent viewed
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+
                 {showMenu && (
-                    <div className="border-t lg:hidden">
+                    <div className="border-t bg-card lg:hidden">
                         <div className="container-page py-4">
                             <div className="mb-4">
                                 <NavbarCategorySearch />
@@ -382,10 +320,10 @@ export default function Navbar() {
                                                 href={link.href}
                                                 onClick={() => setShowMenu(false)}
                                                 className={cn(
-                                                    "block px-3 py-2.5 text-[11px] font-medium uppercase tracking-[0.12em] transition-colors hover:text-primary",
+                                                    "block rounded-lg px-3 py-2.5 text-[13px] font-medium",
                                                     isActive(path, link.href)
-                                                        ? "bg-secondary text-primary"
-                                                        : "text-foreground"
+                                                        ? "bg-accent text-primary"
+                                                        : "text-foreground hover:bg-secondary"
                                                 )}
                                             >
                                                 {link.label}
@@ -394,18 +332,6 @@ export default function Navbar() {
                                     ))}
                                 </ul>
                             </nav>
-                            <div className="mt-3 border-t pt-3">
-                                <NavCategory />
-                            </div>
-                            {!session?.isAuth && (
-                                <Link
-                                    href="/auth/vendor-signup"
-                                    onClick={() => setShowMenu(false)}
-                                    className="mt-4 flex items-center justify-center rounded-lg bg-foreground px-4 py-2.5 text-[13px] font-semibold text-background"
-                                >
-                                    Sell on OnnoMart
-                                </Link>
-                            )}
                         </div>
                     </div>
                 )}

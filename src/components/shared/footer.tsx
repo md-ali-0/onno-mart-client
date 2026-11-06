@@ -52,7 +52,7 @@ export default function Footer() {
                                 OnnoMart
                             </span>
                         </Link>
-                        <p className="mt-5 max-w-xs text-[12.5px] leading-[1.8] text-navy-foreground/60">
+                        <p className="mt-5 max-w-xs text-[13px] leading-[1.8] text-navy-foreground/60">
                             A multi-vendor marketplace in Dhaka. Verified shops,
                             honest prices, and a return policy that does not
                             require an argument.
@@ -77,7 +77,7 @@ export default function Footer() {
 
                     {columns.map((column) => (
                         <div key={column.title}>
-                            <h2 className="text-[9px] font-medium uppercase tracking-[0.22em] text-navy-foreground/45">
+                            <h2 className="text-[13px] font-semibold text-navy-foreground">
                                 {column.title}
                             </h2>
                             <ul className="mt-4 space-y-2.5">
@@ -85,7 +85,7 @@ export default function Footer() {
                                     <li key={link.label}>
                                         <Link
                                             href={link.href}
-                                            className="text-[12.5px] text-navy-foreground/70 transition-colors hover:text-navy-foreground"
+                                            className="text-[13px] text-navy-foreground/60 transition-colors hover:text-primary-foreground"
                                         >
                                             {link.label}
                                         </Link>
