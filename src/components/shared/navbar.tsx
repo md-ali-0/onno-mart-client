@@ -97,11 +97,14 @@ export default function Navbar() {
     const cartCount = useAppSelector((state) => state.cart.cart.length);
     const compareCount = useAppSelector((state) => state.compare.compare.length);
     const { session, setIsLoading } = useSession();
-    const { data, isLoading, refetch } = useGetMeQuery(undefined);
+    // Guests have no token; /api/user/me would just return a 500 on every page.
+    const { data, isLoading, refetch } = useGetMeQuery(undefined, {
+        skip: !session?.isAuth,
+    });
 
     useEffect(() => {
-        if (!session?.role) refetch();
-    }, [session?.role, refetch]);
+        if (session?.isAuth && !session?.role) refetch();
+    }, [session?.isAuth, session?.role, refetch]);
 
     useEffect(() => {
         setShowMenu(false);
@@ -113,7 +116,6 @@ export default function Navbar() {
             setIsLoading(true);
             localStorage.removeItem("accessToken");
             await signout();
-            refetch();
             setIsLoading(false);
             setIsDropDownOpen(false);
             router.replace("/auth/signin");

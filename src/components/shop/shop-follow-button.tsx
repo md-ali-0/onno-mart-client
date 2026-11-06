@@ -11,7 +11,9 @@ import { toast } from "sonner";
 /** The only interactive part of a shop page; the header itself is server HTML. */
 export default function ShopFollowButton({ shopId }: { shopId: string }) {
     const { session } = useSession();
-    const { data: user } = useGetMeQuery(undefined);
+    const { data: user } = useGetMeQuery(undefined, {
+        skip: !session?.isAuth,
+    });
     const [followShop, { isLoading: isFollowing }] = useFollowShopMutation();
     const [unfollowShop, { isLoading: isUnfollowing }] =
         useUnfollowShopMutation();

@@ -13,8 +13,10 @@ import { toast } from "sonner";
 import { Skeleton } from "../ui/skeleton";
 
 export default function ShopCard({ shop }: { shop: Shop }) {
-    const { data: user, isLoading } = useGetMeQuery(undefined);
     const { session } = useSession();
+    const { data: user, isLoading } = useGetMeQuery(undefined, {
+        skip: !session?.isAuth,
+    });
 
     const [followShop, { isLoading: isFollowing }] = useFollowShopMutation();
     const [unfollowShop, { isLoading: isUnfollowing }] =
@@ -24,7 +26,8 @@ export default function ShopCard({ shop }: { shop: Shop }) {
 
     const handleFollowUnfollow = async () => {
         if (!session?.isAuth) {
-            toast.warning("You are not LoggedIn");
+            toast.warning("Sign in to follow this shop");
+            return;
         }
         if (isShopFollowed) {
             await unfollowShop(shop.id);
