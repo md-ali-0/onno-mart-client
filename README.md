@@ -47,7 +47,9 @@ server-rendered and will fail without it.
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_BASE_URL` | API origin. Inlined at build time, so it must be set **before** building. |
+| `NEXT_PUBLIC_SITE_URL` | Public origin for canonical URLs, sitemap and social cards. Falls back to the Vercel domain. |
 | `AUTH_SECRET` | Signs the encrypted session cookie (`jose`). Server-side only. |
+| `REVALIDATE_SECRET` | Guards `POST /api/revalidate`. Without it the on-demand cache endpoint refuses requests. |
 
 `.env` is ignored and no secret is committed. If you fork this, generate a fresh
 `AUTH_SECRET`:
@@ -76,6 +78,25 @@ so changing the API origin means redeploying, not just restarting.
 The API's CORS allowlist is a single origin (`CLIENT_URL` on the server project).
 Deploy the storefront under a new domain and the API will reject its requests
 until that value is updated.
+
+## Design system & performance
+
+One set of tokens lives in `src/styles/globals.css` and `tailwind.config.ts`
+(zinc neutrals, a warm amber primary, one radius and shadow scale). Shared
+primitives: `container-page`, `section`, `SectionHeader`, `ProductCard`, and
+`formatPrice()` — all prices render as BDT (`৳`), never `$`.
+
+The home page is static (`revalidate = 60`). Its catalogue sections are server
+components using tagged `fetch` in `src/lib/api.ts` rather than client-side RTK
+Query, so the products are present in the HTML. Only the tab switch, the
+newsletter form, cart buttons and the header are client islands. Product and
+shop detail pages are prerendered with `generateStaticParams`; the dashboard
+loads Recharts on demand. Home first-load JS is ~160 kB.
+
+SEO: root metadata, `sitemap.xml`, `robots.txt`, `manifest.webmanifest`,
+generated icon/OG images, per-route canonicals, and `OnlineStore`, `WebSite`,
+`Product`, `BreadcrumbList` and `Store` JSON-LD. `POST /api/revalidate?tag=&secret=`
+busts the cache on demand — set `REVALIDATE_SECRET` on Vercel to enable it.
 
 ## Notes
 
