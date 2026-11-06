@@ -1,122 +1,88 @@
-# OnnoMart - E-Commerce Application
+# OnnoMart Storefront
 
-## Project Name & Description
-The **OnnoMart - E-Commerce Application** is a complete online shopping platform designed to cater to users, vendors, and administrators. It provides an intuitive, secure, and responsive experience for all roles. Users can browse and purchase products, vendors can manage shops and inventories, and administrators can monitor and control the entire system. The application is built with modern web technologies and ensures scalability and high performance.
+The customer-facing side of **OnnoMart**, a multi-vendor marketplace. Shoppers browse
+and compare products, vendors manage their own shop, and the platform admin sees
+everything from one dashboard.
 
----
+- **Live site**: https://onno-mart.vercel.app
+- **API**: https://onnomart-api.vercel.app
+- **API repo**: https://github.com/md-ali-0/onno-mart-server
 
-## Live URLs
--   **Frontend Deployment**: [Frontend Live URL](https://onno-mart.vercel.app)
--   **Backend Deployment**: [Backend Live URL](https://onnomart-api.vercel.app)
+## What's in here
 
----
+| Area | Routes |
+| --- | --- |
+| Shopping | `/`, `/products`, `/product/[slug]`, `/shops`, `/shop`, `/flash-sale`, `/compare` |
+| Account | `/auth/signin`, `/auth/signup`, `/auth/signup-vendor`, `/auth/forgot-password` |
+| Customer area | `/user/dashboard`, `/user/purchased-items`, `/user/my-reviews`, `/user/favorite-seller`, `/user/recent-view-products` |
+| Vendor + admin | `/dashboard` and its children — products, categories, brands, coupons, orders, reviews, newsletter, users, shops |
+| Checkout | `/cart`, `/payment/success`, `/payment/cancel`, `/payment/failed` |
 
-## Technology Stack & Packages
+Stack: Next.js 14 (App Router) · TypeScript · Redux Toolkit + RTK Query ·
+Tailwind CSS · Radix UI primitives · React Hook Form + Zod · Recharts · Sonner.
 
-### Backend:
+Data reaches the pages two ways: RTK Query for anything behind a login or a user
+action, and `fetch` inside server components for the catalogue, which keeps the
+first paint fast and lets metadata render on the server.
 
--   **Framework**: Node.js with Express.js
--   **Database**: PostgreSQL (managed using Prisma)
--   **Authentication**: JSON Web Tokens (JWT)
--   **Image Uploads**: Integrated with Cloudinary
--   **Payment Gateways**: SSLCommerz and Aamarpay
+## Local setup
 
-### Frontend:
+```bash
+git clone https://github.com/md-ali-0/onno-mart-client.git
+cd onno-mart-client
+pnpm install
 
--   **Framework**: React.js or Next.js
--   **State Management**: Redux
--   **CSS**: TailwindCSS for styling
+cp .env.example .env.local     # point NEXT_PUBLIC_BASE_URL at the API
+pnpm dev                       # http://localhost:3000
+```
 
-### Other Packages:
+Run the API first (`onno-mart-server`, port 5000) — the catalogue pages are
+server-rendered and will fail without it.
 
--   **bcrypt**: For password hashing
--   **jsonwebtoken**: For handling authentication
--   **multer**: For file uploads
--   **pg**: PostgreSQL client for Node.js
--   **redux**: For handeling state and rtk query making HTTP requests
+`pnpm build` for a production build, `pnpm lint` to check the code.
 
----
+## Environment
 
-## Features & Functionalities
+| Variable | Purpose |
+| --- | --- |
+| `NEXT_PUBLIC_BASE_URL` | API origin. Inlined at build time, so it must be set **before** building. |
+| `AUTH_SECRET` | Signs the encrypted session cookie (`jose`). Server-side only. |
 
--   User Features:
-    -   Browse products with advanced filtering and sorting options.
-    -   Add items to the cart and checkout with secure payment options.
-    -   View order history and leave reviews for purchased products.
-    -   Compare up to three products from the same category.
--   Vendor Features:
-    -   Manage shops and products (add, edit, or delete).
-    -   View and respond to customer reviews.
-    -   Track order history for better inventory management.
--   Admin Features:
-    -   Manage users, vendors, and product categories.
-    -   Monitor transactions and platform activities.
--   Other Features:
-    -   Follow specific shops for personalized product prioritization.
-    -   Recent products page to view recently browsed items.
-    -   Responsive design for an optimized experience across devices.
+`.env` is ignored and no secret is committed. If you fork this, generate a fresh
+`AUTH_SECRET`:
 
-### General Features:
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
+```
 
--   Mobile and desktop responsive design.
--   Paginated APIs for list-based data (products, order history, etc.).
--   Cart functionality allowing products only from one vendor at a time.
--   Flash sale and related product views.
+## Demo accounts
 
----
+The sign-in page has three shortcut buttons that fill these in for you. Password
+is the same for all of them: `OnnoMart@123`.
 
+| Role | Email |
+| --- | --- |
+| Admin | `admin@onnomart.dev` |
+| Vendor | `gadget@onnomart.dev` |
+| Customer | `customer@onnomart.dev` |
 
-## Setup Instructions
+## Deploying to Vercel
 
-### Prerequisites
+Straight Next.js deploy — nothing special beyond the two environment variables
+above. `NEXT_PUBLIC_BASE_URL` is baked into the client bundle during the build,
+so changing the API origin means redeploying, not just restarting.
 
--   Node.js and npm installed
--   PostgreSQL database running
+The API's CORS allowlist is a single origin (`CLIENT_URL` on the server project).
+Deploy the storefront under a new domain and the API will reject its requests
+until that value is updated.
 
-### Frontend Setup:
+## Notes
 
-1. Navigate to the frontend directory:
-    ```bash
-    cd frontend
-    ```
-2. Install dependencies:
-    ```bash
-    npm install
-    ```
-3. Create a `.env` file in the root of the frontend directory and add the following:
-    ```env
-    NEXT_PUBLIC_BASE_URL=<your-database-url>
-    AUTH_SECRET=<your-jwt-secret>
-    ```
-4. Start the development server:
-    ```bash
-    npm run dev
-    ```
+- Images come from whatever URL the product record holds, so `next.config.mjs`
+  allows any HTTPS host. Tighten that allowlist if you ever open uploads publicly.
+- Payments redirect back into `/payment/*`. The redirect works; the gateway
+  handshake needs real SSLCommerz credentials on the API side.
 
 ---
 
-## Key Features & Functionality
-
--   Comprehensive admin dashboard with user and product management capabilities.
--   Vendor dashboard for shop and product management.
--   Advanced cart functionality with vendor-specific restrictions.
--   Integrated payment gateways (SSLCommerz and Aamarpay).
--   Paginated APIs for efficient data handling.
--   Responsive design for both mobile and desktop platforms.
-
----
-
-### Admin:
-- Email: admin@gmail.com
-- Password: 123456
-
-### Vendor:
-- Email: vendor1@gmail.com
-- Password: 123456
-
-### Customer:
-- Email: ali@gmail.com
-- Password: 123456
-
-## Contact
-For queries or support, reach out via [Mohammad Ali](mailto:md.ali.office@gmail.com). or the project repository.
+Built by [Mohammad Ali](https://github.com/md-ali-0).
