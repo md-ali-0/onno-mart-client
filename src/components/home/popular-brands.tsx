@@ -1,11 +1,13 @@
 import { getBrands } from "@/lib/get-brands";
-import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import SectionHeader from "../shared/section-header";
 
 /**
- * Server-rendered brand strip. Swiper used to carry this section; a
- * scroll-snap row does the same job and keeps the markup crawlable.
+ * A typographic index of the brands we stock. The old version showed one
+ * placeholder image per brand inside a bordered card, which looked like a logo
+ * wall built from stock art. Names set in the display face read better and cost
+ * nothing to load.
  */
 export default async function PopularBrands() {
     const brands = await getBrands();
@@ -13,39 +15,33 @@ export default async function PopularBrands() {
     if (brands.length === 0) return null;
 
     return (
-        <section className="section pt-0">
+        <section className="section">
             <div className="container-page">
                 <SectionHeader
-                    eyebrow="Trusted names"
-                    title="Popular brands"
+                    index="04"
+                    eyebrow="Stockists"
+                    title="Brands we keep"
                     href="/products"
                     linkLabel="Browse all"
                 />
 
-                <ul className="no-scrollbar -mx-4 flex snap-x gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:gap-3 sm:px-0">
+                <ul className="grid grid-cols-2 gap-y-0 border-t sm:grid-cols-3 lg:grid-cols-5">
                     {brands.map((brand) => (
                         <li
                             key={brand.id}
-                            className="w-28 shrink-0 snap-start sm:w-32"
+                            className="border-b sm:border-r sm:[&:nth-child(3n)]:border-r-0 lg:[&:nth-child(3n)]:border-r lg:[&:nth-child(5n)]:border-r-0"
                         >
                             <Link
                                 href={`/products?brandId=${brand.slug}`}
-                                className="group flex h-full flex-col items-center gap-2 rounded-xl border bg-card p-3 transition-colors hover:border-foreground/20"
+                                className="group flex items-baseline justify-between gap-2 py-4 pr-4 transition-colors hover:text-primary"
                             >
-                                <span className="relative h-14 w-full">
-                                    {brand.image ? (
-                                        <Image
-                                            src={brand.image}
-                                            alt=""
-                                            fill
-                                            sizes="128px"
-                                            className="object-contain"
-                                        />
-                                    ) : null}
-                                </span>
-                                <span className="w-full truncate text-center text-xs font-medium capitalize text-muted-foreground group-hover:text-foreground">
+                                <span className="truncate font-display text-[17px]">
                                     {brand.name}
                                 </span>
+                                <ArrowUpRight
+                                    aria-hidden
+                                    className="h-3.5 w-3.5 shrink-0 text-muted-foreground transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary"
+                                />
                             </Link>
                         </li>
                     ))}

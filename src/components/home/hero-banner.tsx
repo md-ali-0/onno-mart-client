@@ -1,117 +1,98 @@
-import { ArrowRight, BadgeCheck, Headphones, RotateCcw, Truck } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 const HERO_IMAGE =
     "https://res.cloudinary.com/dy8ef1ngb/image/upload/v1734151072/1_nqe7tw.png";
 
-const trustPoints = [
-    {
-        icon: Truck,
-        title: "Delivery in 24–48h",
-        body: "Inside Dhaka, 2–4 days nationwide.",
-    },
-    {
-        icon: BadgeCheck,
-        title: "Cash on delivery",
-        body: "Or pay online with SSLCommerz.",
-    },
-    {
-        icon: RotateCcw,
-        title: "7-day returns",
-        body: "Unused items, no arguing needed.",
-    },
-    {
-        icon: Headphones,
-        title: "Support that replies",
-        body: "Real people, 9am–9pm.",
-    },
+const meta = [
+    { title: "Delivery", body: "24–48h in Dhaka, 2–4 days nationwide." },
+    { title: "Payment", body: "Cash on delivery, or pay with SSLCommerz." },
+    { title: "Returns", body: "Seven days on unused items, no arguing." },
+    { title: "Support", body: "Real people, 9am to 9pm, every day." },
 ];
 
+/**
+ * Editorial hero: type on paper, a still-life plate on the right, and a plain
+ * meta strip underneath. No gradient panel, no floating badge cluster.
+ */
 export default function HeroBanner() {
     return (
-        <section className="pb-12 pt-6 sm:pb-16 sm:pt-10">
+        <section className="border-b">
             <div className="container-page">
-                <div className="relative overflow-hidden rounded-2xl border bg-gradient-to-br from-accent via-background to-background">
-                    <div className="grid items-center gap-8 p-6 sm:p-10 lg:grid-cols-2 lg:gap-6 lg:p-14">
-                        <div>
-                            <p className="eyebrow">Multi-vendor marketplace</p>
-                            <h1 className="mt-3 max-w-xl text-3xl font-semibold leading-[1.1] tracking-tightest sm:text-4xl lg:text-5xl">
-                                Online shopping in Bangladesh, without the guesswork.
-                            </h1>
-                            <p className="mt-4 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
-                                Electronics, fashion, home, beauty and grocery from
-                                verified shops. Compare before you buy, pay when it
-                                arrives, return it if it is not right.
-                            </p>
-
-                            <div className="mt-7 flex flex-wrap items-center gap-3">
-                                <Link
-                                    href="/products"
-                                    className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-                                >
-                                    Start shopping
-                                    <ArrowRight className="h-4 w-4" aria-hidden />
-                                </Link>
-                                <Link
-                                    href="/flash-sale"
-                                    className="inline-flex items-center gap-2 rounded-lg border px-5 py-3 text-sm font-semibold transition-colors hover:bg-secondary"
-                                >
-                                    Today&apos;s deals
-                                </Link>
-                            </div>
-
-                            <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3">
-                                {[
-                                    ["5", "verified shops"],
-                                    ["24", "products listed"],
-                                    ["3", "payment methods"],
-                                ].map(([value, label]) => (
-                                    <div key={label}>
-                                        <dt className="sr-only">{label}</dt>
-                                        <dd>
-                                            <span className="price text-xl">{value}</span>
-                                            <span className="ml-1.5 text-xs text-muted-foreground">
-                                                {label}
-                                            </span>
-                                        </dd>
-                                    </div>
-                                ))}
-                            </dl>
+                <div className="grid gap-10 py-10 sm:py-14 lg:grid-cols-[1.06fr_0.94fr] lg:items-center lg:gap-16 lg:py-16">
+                    <div>
+                        <div className="flex items-center gap-3">
+                            <span className="label-caps">Dhaka · since 2024</span>
+                            <span aria-hidden className="h-px w-8 bg-border" />
+                            <span className="label-caps">5 shops</span>
                         </div>
 
-                        <div className="relative mx-auto aspect-[4/3] w-full max-w-md lg:max-w-none">
+                        <h1 className="mt-6 max-w-[13ch] font-display text-[40px] font-medium leading-[0.95] tracking-[-0.03em] sm:text-[56px] lg:text-[64px]">
+                            Shopping that
+                            <span className="text-primary"> respects </span>
+                            your time.
+                        </h1>
+
+                        <p className="mt-6 max-w-md text-[15px] leading-[1.7] text-muted-foreground">
+                            Electronics, fashion, home, beauty and grocery from
+                            verified shops. Compare before you buy, pay when it
+                            arrives, and send it back if it is not right.
+                        </p>
+
+                        <div className="mt-8 flex flex-wrap items-center gap-x-7 gap-y-4">
+                            <Link
+                                href="/products"
+                                className="inline-flex items-center gap-2 bg-primary px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.12em] text-primary-foreground transition-colors hover:bg-foreground"
+                            >
+                                Start shopping
+                                <ArrowRight className="h-4 w-4" aria-hidden />
+                            </Link>
+                            <Link
+                                href="/flash-sale"
+                                className="link-underline text-[13px] font-medium"
+                            >
+                                See today&apos;s deals
+                            </Link>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-surface">
                             <Image
                                 src={HERO_IMAGE}
-                                alt="Featured products on OnnoMart"
+                                alt="A selection of products sold on OnnoMart"
                                 fill
                                 priority
-                                sizes="(min-width: 1024px) 46vw, (min-width: 640px) 70vw, 90vw"
-                                className="object-contain drop-shadow-xl"
+                                sizes="(min-width: 1024px) 44vw, 90vw"
+                                className="object-contain p-6 sm:p-10"
                             />
                         </div>
+                        <p className="mt-2.5 flex items-center justify-between text-[10px] uppercase tracking-[0.16em] text-muted-foreground">
+                            <span>Featured selection</span>
+                            <span>Gadget House · Dhaka</span>
+                        </p>
                     </div>
                 </div>
 
-                <ul className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-                    {trustPoints.map(({ icon: Icon, title, body }) => (
-                        <li
-                            key={title}
-                            className="flex items-start gap-3 rounded-xl border bg-card p-4"
+                <dl className="grid grid-cols-2 gap-y-6 border-t py-6 sm:grid-cols-4">
+                    {meta.map((item, index) => (
+                        <div
+                            key={item.title}
+                            className={cn(
+                                "sm:px-6",
+                                index === 0 && "sm:pl-0",
+                                index > 0 && "sm:border-l"
+                            )}
                         >
-                            <Icon
-                                className="mt-0.5 h-5 w-5 shrink-0 text-primary"
-                                aria-hidden
-                            />
-                            <div>
-                                <p className="text-sm font-semibold">{title}</p>
-                                <p className="mt-0.5 text-xs text-muted-foreground">
-                                    {body}
-                                </p>
-                            </div>
-                        </li>
+                            <dt className="label-caps">{item.title}</dt>
+                            <dd className="mt-1.5 text-[13px] leading-relaxed text-muted-foreground">
+                                {item.body}
+                            </dd>
+                        </div>
                     ))}
-                </ul>
+                </dl>
             </div>
         </section>
     );

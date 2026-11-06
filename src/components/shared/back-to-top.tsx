@@ -31,10 +31,10 @@ function BackToTop() {
         <>
             {showButton && (
                 <div
-                    className="fixed bottom-8 right-6 z-50 cursor-pointer rounded-md bg-primary p-2 text-primary-foreground shadow-lg transition-all hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                    className="fixed bottom-6 right-5 z-50 flex h-10 w-10 cursor-pointer items-center justify-center border border-foreground/20 bg-background text-foreground transition-colors hover:border-foreground hover:bg-foreground hover:text-background focus:outline-none focus:ring-2 focus:ring-ring/50 focus:ring-offset-2"
                     onClick={scrollToTop}
                 >
-                    <ArrowUp className="size-5" />
+                    <ArrowUp className="size-4" />
                     <span className="sr-only">Back to top</span>
                 </div>
             )}

@@ -10,17 +10,18 @@ const FlashSale = async () => {
     if (discounted.length === 0) return null;
 
     return (
-        <section className="section pt-0">
+        <section className="section">
             <div className="container-page">
                 <SectionHeader
+                    index="02"
                     eyebrow="Limited time"
-                    title="Flash sale"
+                    title="On sale this week"
                     description="Discounts that will not wait for payday."
                     href="/flash-sale"
                     linkLabel="See all deals"
                 />
 
-                <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 lg:grid-cols-4">
                     {discounted.map((product: Product) => (
                         <ProductCard key={product.id} product={product} />
                     ))}

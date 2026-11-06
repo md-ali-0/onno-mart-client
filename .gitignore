@@ -37,3 +37,6 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# scratch build dirs used by NEXT_DIST_DIR
+.next-*

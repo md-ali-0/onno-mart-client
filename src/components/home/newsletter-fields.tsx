@@ -40,16 +40,16 @@ export default function NewsletterFields() {
 
     if (isSuccess) {
         return (
-            <div className="flex items-start gap-3 rounded-xl border bg-card p-5">
+            <div className="flex items-start gap-3 border-l-2 border-success bg-card px-5 py-4">
                 <CheckCircle2
                     className="mt-0.5 h-5 w-5 shrink-0 text-success"
                     aria-hidden
                 />
                 <div>
-                    <p className="text-sm font-semibold">You are subscribed</p>
-                    <p className="mt-1 text-sm text-muted-foreground">
-                        We will send the next round-up to {email}. Unsubscribe
-                        anytime from the footer of any email.
+                    <p className="font-display text-[17px]">You are subscribed</p>
+                    <p className="mt-1 text-[13px] leading-relaxed text-muted-foreground">
+                        The next round-up goes to {email}. Unsubscribe anytime
+                        from the footer of any email.
                     </p>
                 </div>
             </div>
@@ -58,10 +58,14 @@ export default function NewsletterFields() {
 
     return (
         <form onSubmit={handleSubmit} className="w-full">
-            <div className="flex flex-col gap-2 sm:flex-row">
-                <label htmlFor="newsletter-email" className="sr-only">
-                    Email address
-                </label>
+            <label
+                htmlFor="newsletter-email"
+                className="label-caps block"
+            >
+                Email address
+            </label>
+
+            <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-stretch">
                 <input
                     id="newsletter-email"
                     type="email"
@@ -70,32 +74,32 @@ export default function NewsletterFields() {
                     placeholder="you@example.com"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
-                    className="h-11 w-full rounded-lg border border-input bg-card px-4 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/30"
+                    className="h-11 w-full flex-1 border-0 border-b border-foreground/25 bg-transparent px-0 text-[15px] outline-none transition-colors placeholder:text-muted-foreground focus:border-primary"
                 />
                 <button
                     type="submit"
                     disabled={isLoading || !email || !agreed}
-                    className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-lg bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="inline-flex h-11 shrink-0 items-center justify-center gap-2 bg-primary px-6 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary-foreground transition-colors hover:bg-foreground disabled:cursor-not-allowed disabled:opacity-50"
                 >
-                    <Send className="h-4 w-4" aria-hidden />
-                    {isLoading ? "Subscribing…" : "Subscribe"}
+                    <Send className="h-3.5 w-3.5" aria-hidden />
+                    {isLoading ? "Subscribing" : "Subscribe"}
                 </button>
             </div>
 
-            <div className="mt-3 flex items-start gap-2">
+            <div className="mt-4 flex items-start gap-2">
                 <input
                     id="newsletter-terms"
                     type="checkbox"
                     checked={agreed}
                     onChange={(event) => setAgreed(event.target.checked)}
-                    className="mt-0.5 h-4 w-4 shrink-0 accent-primary"
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0 accent-primary"
                 />
                 <label
                     htmlFor="newsletter-terms"
-                    className="text-xs leading-relaxed text-muted-foreground"
+                    className="text-[12px] leading-relaxed text-muted-foreground"
                 >
                     I agree to receive occasional product updates and accept the
-                    privacy policy. No spam, unsubscribe anytime.
+                    privacy policy.
                 </label>
             </div>
         </form>

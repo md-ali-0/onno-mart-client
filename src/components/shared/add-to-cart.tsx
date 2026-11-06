@@ -17,9 +17,10 @@ import { ShoppingCart } from "lucide-react";
 import { useState } from "react";
 
 const VARIANTS = {
-    primary: "bg-primary text-primary-foreground hover:bg-primary/90",
-    subtle: "bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground",
-    outline: "border border-input bg-transparent hover:bg-secondary",
+    primary: "h-10 px-5 text-sm bg-primary text-primary-foreground hover:bg-foreground",
+    subtle: "h-10 px-4 text-sm bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground",
+    outline: "h-10 px-4 text-sm border border-input bg-transparent hover:bg-secondary",
+    quiet: "h-9 px-4 text-[11px] uppercase tracking-[0.12em] border border-foreground/20 bg-transparent hover:border-foreground hover:bg-foreground hover:text-background",
 } as const;
 
 type AddToCartButtonProps = {
@@ -75,7 +76,7 @@ export function AddToCartButton({
                 disabled={isDisabled}
                 aria-label={outOfStock ? `${product.name} is out of stock` : `Add ${product.name} to cart`}
                 className={cn(
-                    "inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold transition-colors",
+                    "inline-flex items-center justify-center gap-2 font-semibold transition-colors",
                     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring/60 focus-visible:ring-offset-2",
                     "disabled:cursor-not-allowed disabled:opacity-50",
                     VARIANTS[variant],

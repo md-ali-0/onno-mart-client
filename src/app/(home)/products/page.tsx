@@ -54,10 +54,10 @@ export default function ProductsPage() {
     return (
         <>
             <Breadcumb />
-            <section className="relative py-16">
-                <div className="container mx-auto px-4 lg:px-0 relative">
-                    <div className="grid md:grid-cols-12 sm:grid-cols-2 grid-cols-1 gap-6">
-                        <div className="lg:col-span-3 md:col-span-4">
+            <section className="section">
+                <div className="container-page">
+                    <div className="grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-12">
+                        <div className="md:col-span-4 lg:col-span-3">
                             <ShopSidebar
                                 selectedCategory={category}
                                 setCategory={setCategory}
@@ -69,16 +69,23 @@ export default function ProductsPage() {
                                 setMaxPrice={setMaxPrice}
                             />
                         </div>
-                        <div className="lg:col-span-9 md:col-span-8">
+                        <div className="md:col-span-8 lg:col-span-9">
+                            <p className="mb-5 border-b pb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                                {data?.meta?.total ?? 0} products
+                            </p>
                             {isLoading || isFetching ? (
                                 <SkeletonGrid />
                             ) : data?.data && data?.data.length > 0 ? (
                                 <ProductGrid products={data?.data || []} />
                             ) : (
-                                <div className="flex justify-center my-10">
-                                    <h3 className="text-xl font-medium">
-                                        No Product Available
-                                    </h3>
+                                <div className="border border-dashed py-20 text-center">
+                                    <p className="font-display text-[20px]">
+                                        Nothing here yet
+                                    </p>
+                                    <p className="mt-1 text-[13px] text-muted-foreground">
+                                        Try a wider price range or another
+                                        category.
+                                    </p>
                                 </div>
                             )}
 

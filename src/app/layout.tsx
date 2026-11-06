@@ -3,15 +3,37 @@ import ReduxProvider from "@/provider/redux-provider";
 import { ThemeProvider } from "@/provider/theme-provider";
 import { site } from "@/lib/site";
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import "../styles/globals.css";
 
-const inter = Inter({
-    subsets: ["latin"],
+/**
+ * A serif display face plus a humanist sans. Inter on its own is the fastest
+ * way to look like every other generated dashboard; Fraunces gives headings a
+ * printed, slightly bookish character and Work Sans keeps body copy plain.
+ *
+ * Both are self-hosted variable fonts (36 kB and 50 kB). Fetching them through
+ * next/font/google failed on Google's `l/font?kit=` URLs, and self-hosting also
+ * removes a build-time network dependency.
+ */
+const display = localFont({
+    src: "../assets/fonts/fraunces-variable.woff2",
+    weight: "100 900",
+    style: "normal",
+    variable: "--font-display",
     display: "swap",
+    fallback: ["Georgia", "Times New Roman", "serif"],
+    adjustFontFallback: false,
+});
+
+const sans = localFont({
+    src: "../assets/fonts/work-sans-variable.woff2",
+    weight: "100 900",
+    style: "normal",
     variable: "--font-sans",
+    display: "swap",
     fallback: ["system-ui", "Segoe UI", "Helvetica", "Arial", "sans-serif"],
+    adjustFontFallback: false,
 });
 
 const homeTitle = `${site.name} — ${site.tagline}`;
@@ -77,8 +99,8 @@ export const viewport: Viewport = {
     width: "device-width",
     initialScale: 1,
     themeColor: [
-        { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-        { media: "(prefers-color-scheme: dark)", color: "#09090b" },
+        { media: "(prefers-color-scheme: light)", color: "#f7f3eb" },
+        { media: "(prefers-color-scheme: dark)", color: "#171410" },
     ],
     colorScheme: "light dark",
 };
@@ -120,7 +142,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang={site.language} className={inter.variable} suppressHydrationWarning>
+        <html
+            lang={site.language}
+            className={`${sans.variable} ${display.variable}`}
+            suppressHydrationWarning
+        >
             <body className="min-h-dvh bg-background font-sans text-foreground antialiased">
                 <a
                     href="#main-content"

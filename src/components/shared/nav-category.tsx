@@ -32,43 +32,43 @@ export default function NavCategory() {
                 aria-expanded={dropdownOpen}
                 aria-haspopup="true"
                 onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="inline-flex items-center gap-2 rounded-lg bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                className="inline-flex items-center gap-2 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:text-primary"
             >
-                <LayoutGrid className="h-4 w-4" aria-hidden />
+                <LayoutGrid className="h-3.5 w-3.5" aria-hidden />
                 All categories
                 <ChevronDown
-                    className={`h-4 w-4 transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
+                    className={`h-3.5 w-3.5 transition-transform ${dropdownOpen ? "rotate-180" : ""}`}
                     aria-hidden
                 />
             </button>
 
             {dropdownOpen && (
-                <div className="absolute left-0 top-full z-50 mt-2 max-h-[22rem] w-60 overflow-y-auto rounded-xl border bg-card p-2 shadow-lift category-scroll">
+                <div className="absolute left-0 top-full z-50 mt-2 max-h-[24rem] w-64 overflow-y-auto border bg-card py-2 shadow-lift category-scroll">
                     <Link
                         href="/products"
                         onClick={() => setDropdownOpen(false)}
-                        className="mb-1 block rounded-lg bg-secondary px-3 py-2 text-sm font-medium"
+                        className="block px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground transition-colors hover:text-foreground"
                     >
                         All products
                     </Link>
-                    <ul>
+                    <ul className="mt-1 border-t pt-1">
                         {(data?.data ?? []).map((category) => (
                             <li key={category.id}>
                                 <button
                                     type="button"
                                     onClick={() => handleCategoryClick(category.slug)}
-                                    className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-left text-sm transition-colors hover:bg-secondary"
+                                    className="flex w-full items-center gap-3 px-4 py-2 text-left text-[13px] transition-colors hover:bg-secondary"
                                 >
                                     {category.image ? (
                                         <Image
                                             src={category.image}
                                             alt=""
-                                            width={24}
-                                            height={24}
-                                            className="h-6 w-6 shrink-0 rounded object-cover"
+                                            width={22}
+                                            height={22}
+                                            className="h-[22px] w-[22px] shrink-0 object-cover"
                                         />
                                     ) : (
-                                        <span className="h-6 w-6 shrink-0 rounded bg-muted" />
+                                        <span className="h-[22px] w-[22px] shrink-0 bg-muted" />
                                     )}
                                     <span className="truncate">{category.name}</span>
                                 </button>

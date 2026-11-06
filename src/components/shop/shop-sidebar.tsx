@@ -11,7 +11,9 @@ import { useGetAllBrandsQuery } from "@/redux/features/brand/brandApi";
 import { useGetAllCategoriesQuery } from "@/redux/features/category/categoryApi";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
-import { Button } from "../ui/button";
+
+const FIELD =
+    "mt-1.5 h-9 w-full border-0 border-b border-foreground/25 bg-transparent px-0 text-[13px] outline-none transition-colors placeholder:text-muted-foreground focus:border-primary";
 
 function ShopSidebar({
     selectedCategory,
@@ -64,59 +66,109 @@ function ShopSidebar({
         } else {
             params.delete("maxPrice");
         }
-        params.delete("page"); // Reset pagination to the first page
+        params.delete("page");
         router.push(`/products?${params.toString()}`);
     };
 
     return (
-        <div className="rounded-xl border p-4 sticky top-40">
-            <form className="mt-4">
+        <aside className="lg:sticky lg:top-32">
+            <p className="label-caps">Filter</p>
+
+            <form className="mt-4 space-y-5 border-t pt-5">
                 <div>
-                    <label htmlFor="searchname" className="font-medium">
-                        Search:
+                    <label htmlFor="filter-search" className="label-caps">
+                        Search
                     </label>
-                    <div className="relative mt-2">
-                        <input
-                            type="text"
-                            id="searchname"
-                            className="h-9 w-full rounded px-3 border focus:ring-0 outline-none bg-white dark:bg-slate-900"
-                            placeholder="Search..."
-                            value={localSearch || ""}
-                            onChange={(e) => setLocalSearch(e.target.value)}
-                        />
-                    </div>
+                    <input
+                        id="filter-search"
+                        type="text"
+                        className={FIELD}
+                        placeholder="What are you after?"
+                        value={localSearch || ""}
+                        onChange={(event) => setLocalSearch(event.target.value)}
+                    />
                 </div>
-                <div className="mt-4">
-                    <label className="font-medium">Price Range:</label>
-                    <div className="flex space-x-2 mt-2">
+
+                <div>
+                    <span className="label-caps">Price</span>
+                    <div className="mt-1.5 flex items-center gap-2">
                         <input
                             type="number"
-                            className="h-9 w-full rounded px-3 border focus:ring-0 outline-none bg-white dark:bg-slate-900"
+                            aria-label="Minimum price"
+                            className="h-9 w-full border border-input bg-transparent px-2 text-[13px] outline-none transition-colors focus:border-primary"
                             placeholder="Min"
                             value={localMinPrice || ""}
-                            onChange={(e) =>
-                                setLocalMinPrice(
-                                    Number(e.target.value) || undefined
-                                )
+                            onChange={(event) =>
+                                setLocalMinPrice(Number(event.target.value) || undefined)
                             }
                         />
+                        <span aria-hidden className="text-muted-foreground">
+                            –
+                        </span>
                         <input
                             type="number"
-                            className="h-9 w-full rounded px-3 border focus:ring-0 outline-none bg-white dark:bg-slate-900"
+                            aria-label="Maximum price"
+                            className="h-9 w-full border border-input bg-transparent px-2 text-[13px] outline-none transition-colors focus:border-primary"
                             placeholder="Max"
                             value={localMaxPrice || ""}
-                            onChange={(e) =>
-                                setLocalMaxPrice(
-                                    Number(e.target.value) || undefined
-                                )
+                            onChange={(event) =>
+                                setLocalMaxPrice(Number(event.target.value) || undefined)
                             }
                         />
                     </div>
                 </div>
-                <div className="flex justify-between mt-4">
-                    <Button
+
+                <div>
+                    <span className="label-caps">Brand</span>
+                    <Select
+                        onValueChange={(value) => setBrand(value)}
+                        value={selectedBrand}
+                        disabled={isBrandLoading}
+                    >
+                        <SelectTrigger className="mt-1.5 h-9 rounded-none border-0 border-b border-foreground/25 bg-transparent px-0 text-[13px] focus:ring-0">
+                            <SelectValue
+                                placeholder={isBrandLoading ? "Loading…" : "All brands"}
+                            />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All brands</SelectItem>
+                            {brands?.data?.map((item) => (
+                                <SelectItem key={item.slug} value={String(item.slug)}>
+                                    {item.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                <div>
+                    <span className="label-caps">Category</span>
+                    <Select
+                        onValueChange={(value) => setCategory(value)}
+                        value={selectedCategory}
+                        disabled={isCategoryLoading}
+                    >
+                        <SelectTrigger className="mt-1.5 h-9 rounded-none border-0 border-b border-foreground/25 bg-transparent px-0 text-[13px] focus:ring-0">
+                            <SelectValue
+                                placeholder={
+                                    isCategoryLoading ? "Loading…" : "All categories"
+                                }
+                            />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="all">All categories</SelectItem>
+                            {categories?.data?.map((item) => (
+                                <SelectItem key={item.slug} value={String(item.slug)}>
+                                    {item.name}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                <div className="flex items-center justify-between gap-3 border-t pt-5">
+                    <button
                         type="button"
-                        variant={"outline"}
                         onClick={() => {
                             setLocalSearch(undefined);
                             setLocalMinPrice(undefined);
@@ -127,83 +179,20 @@ function ShopSidebar({
                             setCategory("all");
                             setBrand("all");
                         }}
+                        className="text-[11px] font-semibold uppercase tracking-[0.12em] text-muted-foreground underline decoration-border underline-offset-4 transition-colors hover:text-foreground hover:decoration-foreground"
                     >
-                        Clear Filters
-                    </Button>
-                    <Button
+                        Clear
+                    </button>
+                    <button
                         type="button"
-                        variant={"default"}
                         onClick={handleApplyFilters}
+                        className="bg-primary px-5 py-2.5 text-[11px] font-semibold uppercase tracking-[0.12em] text-primary-foreground transition-colors hover:bg-foreground"
                     >
-                        Apply Filters
-                    </Button>
+                        Apply
+                    </button>
                 </div>
             </form>
-            <div className="mt-4">
-                <h5 className="font-medium">Brands:</h5>
-                <div className="mt-2 space-y-1.5">
-                    <Select
-                        onValueChange={(value) => setBrand(value)}
-                        value={selectedBrand}
-                        disabled={isBrandLoading}
-                    >
-                        <SelectTrigger>
-                            <SelectValue
-                                placeholder={
-                                    isBrandLoading
-                                        ? "Loading..."
-                                        : "Select Brand"
-                                }
-                            />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All Brands</SelectItem>
-
-                            {brands?.data?.map((item) => (
-                                <SelectItem
-                                    key={item.slug}
-                                    value={String(item.slug)}
-                                >
-                                    {item.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div>
-            <div className="mt-4">
-                <h5 className="font-medium">Categories:</h5>
-                <div className="mt-2 space-y-1.5">
-                    <Select
-                        onValueChange={(value) => setCategory(value)}
-                        value={selectedCategory}
-                        disabled={isCategoryLoading}
-                    >
-                        <SelectTrigger>
-                            <SelectValue
-                                placeholder={
-                                    isCategoryLoading
-                                        ? "Loading..."
-                                        : "Select Category"
-                                }
-                            />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="all">All Categories</SelectItem>
-
-                            {categories?.data?.map((item) => (
-                                <SelectItem
-                                    key={item.slug}
-                                    value={String(item.slug)}
-                                >
-                                    {item.name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                </div>
-            </div>
-        </div>
+        </aside>
     );
 }
 

@@ -9,17 +9,18 @@ export default async function RecentProducts() {
     if (products.length === 0) return null;
 
     return (
-        <section className="section pt-0">
+        <section className="section">
             <div className="container-page">
                 <SectionHeader
+                    index="05"
                     eyebrow="Just landed"
-                    title="Recent products"
+                    title="New in the shops"
                     description="Freshly added by our verified shops."
                     href="/products"
                     linkLabel="Show more"
                 />
 
-                <div className="grid grid-cols-2 gap-3 sm:gap-5 lg:grid-cols-4">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-9 sm:gap-x-6 lg:grid-cols-4">
                     {products.map((product) => (
                         <ProductCard key={product.id} product={product} />
                     ))}

@@ -1,39 +1,27 @@
-import { BellRing, ShieldCheck, Tag } from "lucide-react";
 import NewsletterFields from "./newsletter-fields";
 
-const perks = [
-    { icon: Tag, label: "Price drops first" },
-    { icon: BellRing, label: "One email a week" },
-    { icon: ShieldCheck, label: "No spam, ever" },
-];
+const perks = ["Price drops first", "One email a week", "No spam, ever"];
 
 /** Server wrapper: the copy is static HTML, only the form hydrates. */
 export default function NewsletterSection() {
     return (
-        <section id="newsletter" className="section scroll-mt-24 pt-0">
+        <section id="newsletter" className="scroll-mt-24 border-t">
             <div className="container-page">
-                <div className="surface-muted grid gap-8 rounded-2xl border px-6 py-8 sm:px-10 sm:py-10 lg:grid-cols-[1fr_0.9fr] lg:items-center lg:gap-14">
+                <div className="grid gap-8 py-12 sm:py-16 lg:grid-cols-[0.95fr_1.05fr] lg:items-start lg:gap-16">
                     <div>
-                        <p className="eyebrow">Stay in the loop</p>
-                        <h2 className="section-heading mt-2">
+                        <p className="label-caps">Newsletter</p>
+                        <h2 className="mt-3 max-w-[18ch] font-display text-[30px] font-medium leading-[1.05] tracking-[-0.02em] sm:text-[38px]">
                             Deals worth opening an email for.
                         </h2>
-                        <p className="mt-2 max-w-lg text-sm leading-relaxed text-muted-foreground">
+                        <p className="mt-3 max-w-md text-[13px] leading-relaxed text-muted-foreground">
                             New arrivals, genuine price drops and offers from
-                            verified shops — once a week, nothing more.
+                            verified shops. Once a week, nothing more.
                         </p>
 
-                        <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-2">
-                            {perks.map(({ icon: Icon, label }) => (
-                                <li
-                                    key={label}
-                                    className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground"
-                                >
-                                    <Icon
-                                        className="h-3.5 w-3.5 text-primary"
-                                        aria-hidden
-                                    />
-                                    {label}
+                        <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2">
+                            {perks.map((perk) => (
+                                <li key={perk} className="label-caps">
+                                    {perk}
                                 </li>
                             ))}
                         </ul>

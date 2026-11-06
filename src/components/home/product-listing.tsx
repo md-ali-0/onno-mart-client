@@ -16,49 +16,45 @@ export default async function ProductListing() {
     ]);
 
     return (
-        <section className="section pt-0">
-            <div className="container-page space-y-12 sm:space-y-16">
-                {/* Seasonal offer — one warm moment between the white sections. */}
-                <div className="relative overflow-hidden rounded-2xl bg-primary px-6 py-8 text-primary-foreground sm:px-10 sm:py-10">
-                    <div
-                        aria-hidden
-                        className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-white/10"
-                    />
-                    <div
-                        aria-hidden
-                        className="pointer-events-none absolute -bottom-28 right-28 h-56 w-56 rounded-full bg-white/10"
-                    />
-                    <div className="relative flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+        <>
+            {/* A printed offer band: clay field, serif headline, letter-spaced code. */}
+            <section className="border-y border-primary/30 bg-primary text-primary-foreground">
+                <div className="container-page">
+                    <div className="grid items-center gap-6 py-9 sm:grid-cols-[1fr_auto] sm:gap-10 sm:py-12">
                         <div>
-                            <p className="text-xs font-semibold uppercase tracking-[0.14em] text-primary-foreground/80">
-                                Seasonal offer
+                            <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-primary-foreground/70">
+                                Winter offer · while stocks last
                             </p>
-                            <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
-                                Hurry up — 25% off
+                            <h2 className="mt-2.5 max-w-[22ch] font-display text-[28px] font-medium leading-[1.05] tracking-[-0.02em] sm:text-[36px]">
+                                Twenty-five percent off your first order.
                             </h2>
-                            <p className="mt-2 max-w-lg text-sm text-primary-foreground/90 sm:text-base">
-                                Use code{" "}
-                                <span className="rounded-md bg-white/20 px-2 py-0.5 font-semibold tracking-wide">
+                            <p className="mt-3 max-w-lg text-[13px] leading-relaxed text-primary-foreground/85">
+                                Use the code{" "}
+                                <span className="border border-primary-foreground/40 px-1.5 py-0.5 text-[11px] font-semibold tracking-[0.14em]">
                                     WINTER25
                                 </span>{" "}
-                                at checkout on every item from our verified
+                                at checkout, on every item from our verified
                                 shops.
                             </p>
                         </div>
+
                         <Link
                             href="/products"
-                            className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-primary transition-transform hover:-translate-y-0.5"
+                            className="inline-flex w-fit items-center gap-2 border border-primary-foreground/45 px-6 py-3.5 text-[12px] font-semibold uppercase tracking-[0.12em] transition-colors hover:bg-primary-foreground hover:text-primary"
                         >
                             Shop the offer
                             <ArrowRight className="h-4 w-4" aria-hidden />
                         </Link>
                     </div>
                 </div>
+            </section>
 
-                <div>
+            <section className="section">
+                <div className="container-page">
                     <SectionHeader
+                        index="03"
                         eyebrow="Customer favourites"
-                        title="Most loved products"
+                        title="Most loved"
                         description="The items people keep coming back for."
                         href="/products"
                         linkLabel="All products"
@@ -68,7 +64,7 @@ export default async function ProductListing() {
                         topRated={topRated}
                     />
                 </div>
-            </div>
-        </section>
+            </section>
+        </>
     );
 }

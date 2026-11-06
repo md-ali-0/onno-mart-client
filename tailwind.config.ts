@@ -30,6 +30,12 @@ const config: Config = {
                     "Arial",
                     "sans-serif",
                 ],
+                display: [
+                    "var(--font-display)",
+                    "Georgia",
+                    "Times New Roman",
+                    "serif",
+                ],
             },
             colors: {
                 background: "hsl(var(--background))",
@@ -67,6 +73,10 @@ const config: Config = {
                     DEFAULT: "hsl(var(--success))",
                     foreground: "hsl(var(--success-foreground))",
                 },
+                forest: {
+                    DEFAULT: "hsl(var(--forest))",
+                    foreground: "hsl(var(--forest-foreground))",
+                },
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",
@@ -80,12 +90,17 @@ const config: Config = {
             },
             borderRadius: {
                 lg: "var(--radius)",
-                md: "calc(var(--radius) - 2px)",
-                sm: "calc(var(--radius) - 4px)",
+                md: "calc(var(--radius) - 1px)",
+                sm: "calc(var(--radius) - 1px)",
+                /* Override the large defaults too, otherwise a stray
+                   rounded-xl/2xl keeps the soft template look. */
+                xl: "calc(var(--radius) + 1px)",
+                "2xl": "calc(var(--radius) + 2px)",
+                "3xl": "calc(var(--radius) + 3px)",
             },
             boxShadow: {
-                card: "0 1px 2px 0 hsl(var(--shadow-color) / 0.04), 0 8px 24px -12px hsl(var(--shadow-color) / 0.12)",
-                lift: "0 2px 4px -2px hsl(var(--shadow-color) / 0.06), 0 16px 32px -16px hsl(var(--shadow-color) / 0.18)",
+                card: "0 1px 0 0 hsl(var(--shadow-color) / 0.05)",
+                lift: "0 22px 44px -30px hsl(var(--shadow-color) / 0.45)",
             },
             letterSpacing: {
                 tightest: "-0.03em",

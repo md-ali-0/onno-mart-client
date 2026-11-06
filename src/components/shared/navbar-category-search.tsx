@@ -29,7 +29,7 @@ export default function NavbarCategorySearch() {
 
     return (
         <form onSubmit={handleSubmit} role="search" className="w-full">
-            <div className="flex h-11 w-full items-stretch overflow-hidden rounded-lg border bg-surface">
+            <div className="flex h-9 w-full items-center border-b border-foreground/20 transition-colors focus-within:border-primary">
                 <label htmlFor="nav-category" className="sr-only">
                     Category
                 </label>
@@ -38,9 +38,9 @@ export default function NavbarCategorySearch() {
                     name="categoryId"
                     disabled={!data?.data?.length}
                     onChange={(event) => setCategoryId(event.target.value)}
-                    className="hidden max-w-[9.5rem] shrink-0 border-r bg-transparent px-3 text-sm font-medium outline-none sm:block"
+                    className="hidden max-w-[8.5rem] shrink-0 cursor-pointer border-r border-foreground/15 bg-transparent pr-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted-foreground outline-none sm:block"
                 >
-                    <option value="">All categories</option>
+                    <option value="">Everything</option>
                     {(data?.data ?? []).map((category) => (
                         <option key={category.id} value={category.slug}>
                             {category.name}
@@ -55,16 +55,16 @@ export default function NavbarCategorySearch() {
                     id="nav-search"
                     type="search"
                     name="searchTerm"
-                    placeholder="What are you looking for?"
+                    placeholder="Search products, brands, shops"
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
-                    className="min-w-0 flex-1 bg-transparent px-3 text-sm outline-none placeholder:text-muted-foreground"
+                    className="min-w-0 flex-1 bg-transparent px-3 text-[13px] outline-none placeholder:text-muted-foreground"
                 />
 
                 <button
                     type="submit"
                     aria-label="Search"
-                    className="flex w-12 shrink-0 items-center justify-center bg-primary text-primary-foreground transition-colors hover:bg-primary/90"
+                    className="flex h-full w-8 shrink-0 items-center justify-center text-muted-foreground transition-colors hover:text-primary"
                 >
                     <Search className="h-4 w-4" aria-hidden />
                 </button>
