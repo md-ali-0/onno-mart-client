@@ -90,7 +90,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
                             fill
                             sizes="(min-width: 1280px) 23vw, (min-width: 1024px) 25vw, (min-width: 640px) 32vw, 46vw"
                             onError={() => setImageFailed(true)}
-                            className="object-contain p-2 transition-transform duration-500 group-hover:scale-105"
+                            className="object-contain transition-transform duration-500 group-hover:scale-105"
                         />
                     )}
                 </Link>

@@ -11,6 +11,27 @@ const roleBasedAccess: { [key: string]: string[] } = {
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
+    // Legacy browse URLs: /products?categoryId=beauty-care used to be the only
+    // way in. Send them to the canonical path with a real 308 (the page-level
+    // redirect only produced a meta refresh for streamed responses).
+    if (pathname === "/products") {
+        const categoryId = req.nextUrl.searchParams.get("categoryId");
+        const brandId = req.nextUrl.searchParams.get("brandId");
+
+        if (categoryId || brandId) {
+            const target = new URL(
+                categoryId ? `/category/${categoryId}` : `/brand/${brandId}`,
+                req.nextUrl.origin
+            );
+            req.nextUrl.searchParams.forEach((value, key) => {
+                if (key !== "categoryId" && key !== "brandId") {
+                    target.searchParams.set(key, value);
+                }
+            });
+            return NextResponse.redirect(target, 308);
+        }
+    }
+
     const cookie = req.cookies.get("session")?.value;
 
     let session : DecryptedSession | undefined = {
@@ -49,5 +70,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/dashboard/:path*", "/user/:path*", "/auth/:path*"],
+    matcher: ["/dashboard/:path*", "/user/:path*", "/auth/:path*", "/products"],
 };

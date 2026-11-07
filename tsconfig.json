@@ -54,7 +54,8 @@
     ".next-polish/types/**/*.ts",
     ".next-polish2/types/**/*.ts",
     ".next-ssr/types/**/*.ts",
-    ".next-slug/types/**/*.ts"
+    ".next-slug/types/**/*.ts",
+    ".next-slug2/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
