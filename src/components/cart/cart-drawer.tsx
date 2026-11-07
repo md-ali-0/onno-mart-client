@@ -8,7 +8,7 @@ import {
     removeProduct,
 } from "@/redux/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { Check, Minus, Plus, ShoppingBag, Trash2, Truck, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -17,6 +17,9 @@ type CartDrawerProps = {
     open: boolean;
     onClose: () => void;
 };
+
+/** Matches the "free delivery over ৳2,000" promise in the top bar. */
+const FREE_DELIVERY_AT = 2000;
 
 /**
  * Slide-over cart. Keeps the shopper on the page instead of bouncing them to
@@ -31,6 +34,8 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
         0
     );
     const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+    const remaining = Math.max(0, FREE_DELIVERY_AT - subtotal);
+    const progress = Math.min(100, (subtotal / FREE_DELIVERY_AT) * 100);
 
     useEffect(() => {
         if (!open) return;
@@ -73,23 +78,23 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                 aria-modal="true"
                 aria-label="Shopping cart"
                 className={cn(
-                    "absolute right-0 top-0 flex h-full w-full max-w-[420px] flex-col border-l bg-card transition-transform duration-300 ease-out",
+                    "absolute right-0 top-0 flex h-full w-full max-w-[420px] flex-col bg-card shadow-lift transition-transform duration-300 ease-out",
                     open ? "translate-x-0" : "translate-x-full"
                 )}
             >
-                <header className="flex items-center justify-between border-b px-5 py-4">
-                    <h2 className="flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.16em]">
+                <header className="flex h-14 shrink-0 items-center justify-between border-b px-5">
+                    <h2 className="flex items-center gap-2 text-[15px] font-semibold">
                         <ShoppingBag className="h-4 w-4 text-primary" aria-hidden />
                         Your cart
-                        <span className="text-muted-foreground">
-                            ({itemCount})
+                        <span className="rounded-full bg-accent px-2 py-0.5 text-[12px] font-semibold text-primary">
+                            {itemCount}
                         </span>
                     </h2>
                     <button
                         type="button"
                         onClick={onClose}
                         aria-label="Close cart"
-                        className="flex h-9 w-9 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
                     >
                         <X className="h-4 w-4" />
                     </button>
@@ -103,50 +108,94 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                         <p className="text-[16px] font-semibold">
                             Your cart is empty
                         </p>
-                        <p className="text-[14px] text-muted-foreground">
+                        <p className="text-[13px] leading-relaxed text-muted-foreground">
                             Browse the shops and add something you like.
                         </p>
                         <Link
                             href="/products"
                             onClick={onClose}
-                            className="mt-3 inline-flex h-11 items-center justify-center bg-foreground px-6 text-[11px] font-medium uppercase tracking-[0.16em] text-background transition-colors hover:bg-primary"
+                            className="mt-3 inline-flex h-10 items-center justify-center rounded-lg bg-primary px-6 text-[13px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                         >
                             Start shopping
                         </Link>
                     </div>
                 ) : (
                     <>
+                        {/* Delivery nudge: the most useful line in a cart. */}
+                        <div className="shrink-0 border-b bg-secondary/60 px-5 py-3">
+                            {remaining > 0 ? (
+                                <>
+                                    <p className="flex items-center gap-1.5 text-[12px] text-muted-foreground">
+                                        <Truck className="h-3.5 w-3.5" aria-hidden />
+                                        Add{" "}
+                                        <span className="font-semibold text-foreground">
+                                            {formatPrice(remaining)}
+                                        </span>{" "}
+                                        more for free delivery
+                                    </p>
+                                    <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-border">
+                                        <div
+                                            className="h-full rounded-full bg-primary transition-all duration-500"
+                                            style={{ width: `${progress}%` }}
+                                        />
+                                    </div>
+                                </>
+                            ) : (
+                                <p className="flex items-center gap-1.5 text-[12px] font-medium text-[#1F7A20]">
+                                    <Check className="h-3.5 w-3.5" aria-hidden />
+                                    Free delivery unlocked
+                                </p>
+                            )}
+                        </div>
+
                         <ul className="flex-1 divide-y overflow-y-auto px-5">
                             {cart.map((item) => (
-                                <li key={item.id} className="flex gap-3 py-4">
+                                <li key={item.id} className="group flex gap-3 py-4">
                                     <Link
                                         href={`/product/${item.slug}`}
                                         onClick={onClose}
-                                        className="relative h-24 w-20 shrink-0 overflow-hidden bg-surface"
+                                        className="relative h-[76px] w-[76px] shrink-0 overflow-hidden rounded-lg border bg-secondary"
                                     >
                                         <Image
                                             src={item.thumbnail}
                                             alt=""
                                             fill
-                                            sizes="64px"
+                                            sizes="76px"
                                             className="object-cover"
                                         />
                                     </Link>
 
                                     <div className="flex min-w-0 flex-1 flex-col">
-                                        <Link
-                                            href={`/product/${item.slug}`}
-                                            onClick={onClose}
-                                            className="line-clamp-2 text-[14px] font-semibold leading-snug hover:text-primary"
-                                        >
-                                            {item.name}
-                                        </Link>
+                                        <div className="flex items-start justify-between gap-2">
+                                            <Link
+                                                href={`/product/${item.slug}`}
+                                                onClick={onClose}
+                                                className="line-clamp-2 text-[13.5px] font-medium leading-snug transition-colors hover:text-primary"
+                                            >
+                                                {item.name}
+                                            </Link>
+                                            <button
+                                                type="button"
+                                                aria-label={`Remove ${item.name}`}
+                                                onClick={() =>
+                                                    dispatch(
+                                                        removeProduct({
+                                                            id: item.id,
+                                                        })
+                                                    )
+                                                }
+                                                className="shrink-0 rounded p-0.5 text-muted-foreground/60 transition-colors hover:text-sale"
+                                            >
+                                                <Trash2 className="h-3.5 w-3.5" />
+                                            </button>
+                                        </div>
+
                                         <p className="mt-0.5 truncate text-[12px] text-muted-foreground">
                                             {item.shop?.name}
                                         </p>
 
                                         <div className="mt-auto flex items-center justify-between gap-2 pt-2">
-                                            <div className="flex items-center border">
+                                            <div className="flex h-7 items-center rounded-full border">
                                                 <button
                                                     type="button"
                                                     aria-label={`Decrease quantity of ${item.name}`}
@@ -157,7 +206,7 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                                             })
                                                         )
                                                     }
-                                                    className="flex h-7 w-7 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                                                    className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-primary"
                                                 >
                                                     <Minus className="h-3 w-3" />
                                                 </button>
@@ -174,64 +223,48 @@ export default function CartDrawer({ open, onClose }: CartDrawerProps) {
                                                             })
                                                         )
                                                     }
-                                                    className="flex h-7 w-7 items-center justify-center text-muted-foreground transition-colors hover:text-foreground"
+                                                    className="flex h-7 w-7 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-primary"
                                                 >
                                                     <Plus className="h-3 w-3" />
                                                 </button>
                                             </div>
 
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-[14px] font-bold tabular-nums">
-                                                    {formatPrice(
-                                                        discountedPrice(item) *
-                                                            item.quantity
-                                                    )}
-                                                </span>
-                                                <button
-                                                    type="button"
-                                                    aria-label={`Remove ${item.name}`}
-                                                    onClick={() =>
-                                                        dispatch(
-                                                            removeProduct({
-                                                                id: item.id,
-                                                            })
-                                                        )
-                                                    }
-                                                    className="text-muted-foreground transition-colors hover:text-destructive"
-                                                >
-                                                    <Trash2 className="h-3.5 w-3.5" />
-                                                </button>
-                                            </div>
+                                            <span className="text-[14px] font-bold tabular-nums">
+                                                {formatPrice(
+                                                    discountedPrice(item) *
+                                                        item.quantity
+                                                )}
+                                            </span>
                                         </div>
                                     </div>
                                 </li>
                             ))}
                         </ul>
 
-                        <footer className="border-t px-5 py-4">
+                        <footer className="shrink-0 border-t bg-card px-5 pb-5 pt-4">
                             <div className="flex items-baseline justify-between">
-                                <span className="text-[14px] text-muted-foreground">
+                                <span className="text-[13px] text-muted-foreground">
                                     Subtotal
                                 </span>
-                                <span className="text-[18px] font-bold tabular-nums">
+                                <span className="text-[20px] font-bold tabular-nums">
                                     {formatPrice(subtotal)}
                                 </span>
                             </div>
-                            <p className="mt-1 text-[12px] text-muted-foreground">
-                                Delivery calculated at checkout.
+                            <p className="mt-0.5 text-[12px] text-muted-foreground">
+                                Delivery and VAT calculated at checkout.
                             </p>
 
                             <Link
                                 href="/checkout"
                                 onClick={onClose}
-                                className="mt-5 flex h-12 items-center justify-center bg-foreground text-[11px] font-medium uppercase tracking-[0.18em] text-background transition-colors hover:bg-primary"
+                                className="mt-4 flex h-12 items-center justify-center rounded-lg bg-primary text-[14px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                             >
                                 Checkout
                             </Link>
                             <Link
                                 href="/cart"
                                 onClick={onClose}
-                                className="mt-2 flex h-11 items-center justify-center border text-[11px] font-medium uppercase tracking-[0.16em] transition-colors hover:bg-secondary"
+                                className="mt-2 flex h-11 items-center justify-center rounded-lg border text-[13px] font-medium text-foreground transition-colors hover:border-primary hover:text-primary"
                             >
                                 View full cart
                             </Link>
