@@ -2,18 +2,19 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { decrypt, DecryptedSession } from "./lib/session";
 
-const roleBasedAccess: { [key: string]: string[] } = {
+/** Only these prefixes require a session, and only these roles may see them. */
+const PROTECTED: Record<string, string[]> = {
     "/dashboard": ["ADMIN", "VENDOR"],
     "/user": ["USER", "ADMIN"],
-    // /checkout stays open so guests can order without an account.
 };
+
+const GUEST: DecryptedSession = { user: null, role: "guest", iat: 0, exp: 0 };
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
 
-    // Legacy browse URLs: /products?categoryId=beauty-care used to be the only
-    // way in. Send them to the canonical path with a real 308 (the page-level
-    // redirect only produced a meta refresh for streamed responses).
+    // Legacy browse URLs: /products?categoryId=beauty-care was the only way in
+    // before the slug routes. 308 to the canonical path, keeping the filters.
     if (pathname === "/products") {
         const categoryId = req.nextUrl.searchParams.get("categoryId");
         const brandId = req.nextUrl.searchParams.get("brandId");
@@ -30,40 +31,39 @@ export async function middleware(req: NextRequest) {
             });
             return NextResponse.redirect(target, 308);
         }
+
+        // /products is public; it is only in the matcher for the redirect above.
+        return NextResponse.next();
     }
 
     const cookie = req.cookies.get("session")?.value;
+    const session = cookie ? await decrypt(cookie) : GUEST;
 
-    let session : DecryptedSession | undefined = {
-        user: null,
-        role: 'guest',
-        iat: 0,
-        exp: 0
+    if (pathname.startsWith("/auth")) {
+        // Signed-in visitors have no business on the sign-in page.
+        return session?.user
+            ? NextResponse.redirect(new URL("/", req.nextUrl))
+            : NextResponse.next();
     }
 
-    if (cookie) {
-        session = await decrypt(cookie);
-    }
-
-    if (!session?.user) {
-        if (pathname.startsWith("/auth")) {
-            return NextResponse.next();
-        } else {
-            return NextResponse.redirect(new URL(`/auth/signin?redirect=${pathname}`, req.url));
-        }
-    } else if (session?.user && pathname.startsWith("/auth")) {
-        return NextResponse.redirect(new URL("/", req.nextUrl));
-    }
-
-    const requiredRole = Object.keys(roleBasedAccess).find((route) =>
+    const requiredRole = Object.keys(PROTECTED).find((route) =>
         pathname.startsWith(route)
     );
 
-    if (requiredRole) {
-        const allowedRoles = roleBasedAccess[requiredRole];
-        if (!allowedRoles.includes(session?.role)) {
-            return NextResponse.redirect(new URL("/", req.nextUrl));
-        }
+    // Any other matched path is public. Previously every matched path required a
+    // session, which locked anonymous visitors out of /products.
+    if (!requiredRole) {
+        return NextResponse.next();
+    }
+
+    if (!session?.user) {
+        return NextResponse.redirect(
+            new URL(`/auth/signin?redirect=${pathname}`, req.url)
+        );
+    }
+
+    if (!PROTECTED[requiredRole].includes(session.role)) {
+        return NextResponse.redirect(new URL("/", req.nextUrl));
     }
 
     return NextResponse.next();
