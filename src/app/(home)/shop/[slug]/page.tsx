@@ -11,7 +11,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = {
-    params: { id: string };
+    params: { slug: string };
     searchParams: { page?: string };
 };
 
@@ -21,14 +21,14 @@ export const revalidate = 180;
 export async function generateStaticParams() {
     try {
         const { data } = await getShops(1);
-        return data.map((shop) => ({ id: shop.id }));
+        return data.map((shop) => ({ slug: shop.slug ?? shop.id }));
     } catch {
         return [];
     }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const shop = await getShopById(params.id);
+    const shop = await getShopById(params.slug);
     if (!shop) return { title: "Shop not found" };
 
     const description = truncate(
@@ -39,11 +39,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
         title: shop.name,
         description,
-        alternates: { canonical: `/shop/${params.id}` },
+        alternates: { canonical: `/shop/${shop.slug ?? shop.id}` },
         openGraph: {
             title: `${shop.name} | ${site.name}`,
             description,
-            url: `/shop/${params.id}`,
+            url: `/shop/${shop.slug ?? shop.id}`,
             images: shop.logoUrl ? [shop.logoUrl] : undefined,
         },
     };
@@ -52,12 +52,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function ShopPage({ params, searchParams }: Props) {
     const page = Number(searchParams.page) || 1;
 
-    const [shop, result] = await Promise.all([
-        getShopById(params.id),
-        getProductsByShop(page, params.id).catch(() => null),
-    ]);
+    const shop = await getShopById(params.slug);
 
     if (!shop) notFound();
+
+    const result = await getProductsByShop(page, shop.id).catch(() => null);
 
     const products = result?.data ?? [];
     const totalPages = result?.meta?.totalPage ?? 1;
@@ -158,7 +157,7 @@ export default async function ShopPage({ params, searchParams }: Props) {
                     >
                         {page > 1 && (
                             <Link
-                                href={`/shop/${shop.id}?page=${page - 1}`}
+                                href={`/shop/${shop.slug ?? shop.id}?page=${page - 1}`}
                                 className="rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary"
                             >
                                 Previous
@@ -169,7 +168,7 @@ export default async function ShopPage({ params, searchParams }: Props) {
                         </span>
                         {page < totalPages && (
                             <Link
-                                href={`/shop/${shop.id}?page=${page + 1}`}
+                                href={`/shop/${shop.slug ?? shop.id}?page=${page + 1}`}
                                 className="rounded-lg border px-4 py-2 text-sm font-medium transition-colors hover:bg-secondary"
                             >
                                 Next

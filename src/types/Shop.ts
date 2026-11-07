@@ -5,6 +5,7 @@ import { User } from "./User";
 export type Shop = {
     id: string;
     name: string;
+    slug?: string | null;
     logoUrl: string | null;
     description: string | null;
     vendorId: string;

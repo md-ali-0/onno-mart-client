@@ -309,7 +309,7 @@ export default async function ProductPage({
                                         </p>
                                     </div>
                                     <Link
-                                        href={`/shop/${product.shop.id}`}
+                                        href={`/shop/${product.shop.slug ?? product.shop.id}`}
                                         className="text-sm font-medium text-primary hover:underline"
                                     >
                                         Visit shop

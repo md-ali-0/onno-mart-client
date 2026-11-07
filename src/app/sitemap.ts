@@ -35,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         }));
 
         const shopRoutes: MetadataRoute.Sitemap = shops.map((shop) => ({
-            url: `${site.url}/shop/${shop.id}`,
+            url: `${site.url}/shop/${shop.slug ?? shop.id}`,
             lastModified: shop.updatedAt ? new Date(shop.updatedAt) : now,
             changeFrequency: "weekly",
             priority: 0.5,

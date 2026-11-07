@@ -32,32 +32,13 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".next-preview/types/**/*.ts",
-    ".next-preview2/types/**/*.ts",
-    ".next-preview3/types/**/*.ts",
-    ".next-blue/types/**/*.ts",
-    ".next-blue2/types/**/*.ts",
-    ".next-blue3/types/**/*.ts",
-    ".next-blue4/types/**/*.ts",
-    ".next-blue5/types/**/*.ts",
-    ".next-lux/types/**/*.ts",
-    ".next-lux2/types/**/*.ts",
-    ".next-lux3/types/**/*.ts",
-    ".next-uni/types/**/*.ts",
-    ".next-uni2/types/**/*.ts",
-    ".next-uni3/types/**/*.ts",
-    ".next-type/types/**/*.ts",
-    ".next-auth/types/**/*.ts",
-    ".next-admin/types/**/*.ts",
-    ".next-guest/types/**/*.ts",
-    ".next-guest2/types/**/*.ts",
-    ".next-polish/types/**/*.ts",
-    ".next-polish2/types/**/*.ts",
-    ".next-ssr/types/**/*.ts",
-    ".next-slug/types/**/*.ts",
-    ".next-slug2/types/**/*.ts"
+    ".next-shop/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    ".next",
+    ".next-*",
+    ".next-*/**",
+    "out"
   ]
 }

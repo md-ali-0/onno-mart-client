@@ -26,7 +26,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
                 <div className="flex items-center">
                     <h5 className="text-lg font-semibold me-2">Seller:</h5>
                     <Link
-                        href={`/shop/${product?.shop.id}`}
+                        href={`/shop/${product?.shop.slug ?? product?.shop.id}`}
                         className="flex items-center gap-2"
                     >
                         <Image

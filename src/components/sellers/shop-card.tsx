@@ -85,7 +85,7 @@ export default function ShopCard({ shop }: { shop: Shop }) {
                                 : "Follow"}
                         </button>
                         <Link
-                            href={`/shop/${shop.id}`}
+                            href={`/shop/${shop.slug ?? shop.id}`}
                             className="bg-gray-800 text-white px-4 py-2 rounded"
                         >
                             Visit Store

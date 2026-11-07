@@ -5,17 +5,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC, Fragment } from "react";
 
+/** Route groups that exist only for routing, not for the visible trail. */
+const HIDDEN_SEGMENTS = new Set(["category", "brand"]);
+
 /**
- * Page masthead: the page name set in the display face on the left, the trail
- * on the right. The old version was a grey band with an orange breadcrumb and
- * an h3, which left every inner page without an h1.
+ * Page masthead: the page name on the left, the trail on the right.
+ * `/category/beauty-care` reads "Home > Beauty & Care" — the extra "category"
+ * step was noise.
  */
 const Breadcumb: FC<{ title?: string }> = ({ title: explicitTitle }) => {
     const pathname = usePathname();
-    const pathnames = pathname.split("/").filter((x) => x);
-    const lastIndex = pathnames.length - 1;
+    const pathnames = pathname.split("/").filter(Boolean);
+
     const title =
-        explicitTitle ?? (pathnames[lastIndex] ?? "shop").replace(/-/g, " ");
+        explicitTitle ??
+        (pathnames[pathnames.length - 1] ?? "shop").replace(/-/g, " ");
+
+    const trail = pathnames
+        .map((value, index) => ({
+            value,
+            href: `/${pathnames.slice(0, index + 1).join("/")}`,
+        }))
+        .filter((item) => !HIDDEN_SEGMENTS.has(item.value));
 
     return (
         <section className="border-b">
@@ -27,34 +38,38 @@ const Breadcumb: FC<{ title?: string }> = ({ title: explicitTitle }) => {
                 <nav aria-label="Breadcrumb">
                     <ol className="flex flex-wrap items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
                         <li>
-                            <Link href="/" className="transition-colors hover:text-foreground">
+                            <Link
+                                href="/"
+                                className="transition-colors hover:text-foreground"
+                            >
                                 Home
                             </Link>
                         </li>
 
-                        {pathnames.map((value, index) => {
-                            const currentPath = `/${pathnames
-                                .slice(0, index + 1)
-                                .join("/")}`;
-                            const isLast = index === pathnames.length - 1;
+                        {trail.map((item, index) => {
+                            const isLast = index === trail.length - 1;
 
                             return (
-                                <Fragment key={currentPath}>
+                                <Fragment key={item.href}>
                                     <li aria-hidden>
                                         <ChevronRight className="h-3 w-3" />
                                     </li>
                                     <li
                                         aria-current={isLast ? "page" : undefined}
-                                        className={isLast ? "text-foreground" : undefined}
+                                        className={
+                                            isLast
+                                                ? "capitalize text-foreground"
+                                                : "capitalize"
+                                        }
                                     >
                                         {isLast ? (
-                                            value.replace(/-/g, " ")
+                                            title
                                         ) : (
                                             <Link
-                                                href={currentPath}
+                                                href={item.href}
                                                 className="transition-colors hover:text-foreground"
                                             >
-                                                {value.replace(/-/g, " ")}
+                                                {item.value.replace(/-/g, " ")}
                                             </Link>
                                         )}
                                     </li>
