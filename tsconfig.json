@@ -37,7 +37,8 @@
     ".next-pro2/types/**/*.ts",
     ".next-mw/types/**/*.ts",
     ".next-fin/types/**/*.ts",
-    ".next-cart/types/**/*.ts"
+    ".next-cart/types/**/*.ts",
+    ".next-co/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

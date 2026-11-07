@@ -6,6 +6,7 @@ import { useSession } from "@/provider/session-provider";
 import { clearCart } from "@/redux/features/cart/cartSlice";
 import { useCreatePaymentIntentMutation } from "@/redux/features/payment/paymentApi";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -291,56 +292,73 @@ export default function CheckoutPage() {
                         </div>
                     </div>
                     <div className="lg:col-span-4">
-                        <div className="p-6 rounded-md border">
-                            <div className="flex justify-between items-center">
-                                <h5 className="text-lg font-semibold">
-                                    Your Cart
-                                </h5>
+                        <div className="rounded-lg border bg-card lg:sticky lg:top-32">
+                            <div className="flex items-center justify-between border-b px-5 py-4">
+                                <h2 className="text-[15px] font-semibold">
+                                    Order summary
+                                </h2>
                                 <Link
-                                    className="bg-primary flex justify-center items-center text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full h-5"
                                     href="/cart"
+                                    className="text-[12px] font-medium text-primary hover:underline"
                                 >
-                                    {cart.length}
+                                    Edit cart
                                 </Link>
                             </div>
-                            <div className="mt-4">
-                                {cart.map((catItem, idx) => (
-                                    <div
-                                        key={idx}
-                                        className="p-3 border flex justify-between items-center mb-1"
-                                    >
-                                        <div>
-                                            <h5 className="font-semibold">
-                                                {catItem.name}
-                                            </h5>
-                                        </div>
-                                        <p className="text-slate-400 font-semibold">
-                                            {formatPrice(catItem.price)}
-                                        </p>
-                                    </div>
-                                ))}
 
-                                <div className="p-3 flex justify-between items-center border bg-gray-50 dark:bg-slate-800 text-green-600 mb-1">
-                                    <div>
-                                        <h5 className="font-semibold">
-                                            Discount Price
-                                        </h5>
-                                    </div>
-                                    <p className="text-red-600 font-semibold">
-                                        -{formatPrice(discountPrice)}
-                                    </p>
+                            <ul className="divide-y px-5">
+                                {cart.map((item) => (
+                                    <li
+                                        key={item.id}
+                                        className="flex items-center gap-3 py-3"
+                                    >
+                                        <span className="relative h-11 w-11 shrink-0 overflow-hidden rounded-md border bg-secondary">
+                                            <Image
+                                                src={item.thumbnail}
+                                                alt=""
+                                                fill
+                                                sizes="44px"
+                                                className="object-cover"
+                                            />
+                                        </span>
+                                        <span className="min-w-0 flex-1">
+                                            <span className="line-clamp-1 block text-[13px] font-medium">
+                                                {item.name}
+                                            </span>
+                                            <span className="text-[12px] text-muted-foreground">
+                                                Qty {item.quantity}
+                                            </span>
+                                        </span>
+                                        <span className="text-[13px] font-semibold tabular-nums">
+                                            {formatPrice(item.price * item.quantity)}
+                                        </span>
+                                    </li>
+                                ))}
+                            </ul>
+
+                            <dl className="space-y-2 border-t px-5 py-4 text-[13px]">
+                                <div className="flex justify-between">
+                                    <dt className="text-muted-foreground">Subtotal</dt>
+                                    <dd className="tabular-nums">{formatPrice(total)}</dd>
                                 </div>
-                                <div className="p-3 flex justify-between items-center border mb-1">
-                                    <div>
-                                        <h5 className="font-semibold">
-                                            Total (BDT)
-                                        </h5>
+                                <div className="flex justify-between">
+                                    <dt className="text-muted-foreground">VAT (15%)</dt>
+                                    <dd className="tabular-nums">{formatPrice(vatAmount)}</dd>
+                                </div>
+                                {discountPrice > 0 && (
+                                    <div className="flex justify-between text-[#1F7A20]">
+                                        <dt>Coupon discount</dt>
+                                        <dd className="tabular-nums">
+                                            -{formatPrice(discountPrice)}
+                                        </dd>
                                     </div>
-                                    <p className="font-semibold">
+                                )}
+                                <div className="flex items-baseline justify-between border-t pt-2.5">
+                                    <dt className="text-[14px] font-semibold">Total</dt>
+                                    <dd className="text-[20px] font-bold tabular-nums">
                                         {formatPrice(totalPriceAfterDiscount)}
-                                    </p>
+                                    </dd>
                                 </div>
-                            </div>
+                            </dl>
                         </div>
                     </div>
                 </div>
