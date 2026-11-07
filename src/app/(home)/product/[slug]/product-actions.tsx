@@ -44,7 +44,7 @@ export default function ProductActions({ product }: ProductActionsProps) {
                     <div className="qty-icons ms-3 space-x-0.5">
                         <button
                             onClick={() => setQuantity(quantity - 1)}
-                            className="size-9 inline-flex items-center justify-center tracking-wide align-middle text-base text-center rounded-md bg-orange-500/5 hover:bg-orange-500 text-orange-500 hover:text-white minus"
+                            className="size-9 inline-flex items-center justify-center tracking-wide align-middle text-base text-center rounded-md bg-primary/5 hover:bg-primary text-primary hover:text-white minus"
                             disabled={quantity === 1}
                         >
                             -
@@ -56,12 +56,12 @@ export default function ProductActions({ product }: ProductActionsProps) {
                             name="quantity"
                             type="number"
                             readOnly
-                            className="h-9 inline-flex items-center justify-center tracking-wide align-middle text-base text-center rounded-md bg-orange-500/5 hover:bg-orange-500 text-orange-500 hover:text-white pointer-events-none w-16 ps-4 quantity"
+                            className="h-9 inline-flex items-center justify-center tracking-wide align-middle text-base text-center rounded-md bg-primary/5 hover:bg-primary text-primary hover:text-white pointer-events-none w-16 ps-4 quantity"
                             defaultValue={1}
                         />
                         <button
                             onClick={() => setQuantity(quantity + 1)}
-                            className="size-9 inline-flex items-center justify-center tracking-wide align-middle text-base text-center rounded-md bg-orange-500/5 hover:bg-orange-500 text-orange-500 hover:text-white plus"
+                            className="size-9 inline-flex items-center justify-center tracking-wide align-middle text-base text-center rounded-md bg-primary/5 hover:bg-primary text-primary hover:text-white plus"
                             disabled={quantity === product.inventory}
                         >
                             +

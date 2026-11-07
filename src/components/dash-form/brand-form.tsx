@@ -17,6 +17,7 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { revalidateCatalogue } from "@/actions/revalidate";
 
 type BrandFormValues = {
     name: string;
@@ -55,6 +56,7 @@ export default function BrandForm() {
             toast.error(errorMessage);
         } else if (isSuccess) {
             toast.success("Brand Successfully Added");
+            revalidateCatalogue(["brands", "products"]);
             reset();
         }
     }, [isError, isSuccess, error, reset]);

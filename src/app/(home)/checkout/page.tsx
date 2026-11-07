@@ -230,7 +230,7 @@ export default function CheckoutPage() {
                                                                 }
                                                             )}
                                                             type="radio"
-                                                            className="form-radio border-gray-100 dark:border-gray-800 text-orange-500 focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50 me-2"
+                                                            className="form-radio border-gray-100 dark:border-gray-800 text-primary focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50 me-2"
                                                             value="AmarPay"
                                                             defaultChecked
                                                         />
@@ -250,7 +250,7 @@ export default function CheckoutPage() {
                                                                 }
                                                             )}
                                                             type="radio"
-                                                            className="form-radio border-gray-100 dark:border-gray-800 text-orange-500 focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50 me-2"
+                                                            className="form-radio border-gray-100 dark:border-gray-800 text-primary focus:border-orange-300 focus:ring focus:ring-offset-0 focus:ring-orange-200 focus:ring-opacity-50 me-2"
                                                             value="SSLCommerz"
                                                             
                                                         />
@@ -266,7 +266,7 @@ export default function CheckoutPage() {
                                 <div className="mt-4">
                                     <Input
                                         type="submit"
-                                        className="py-2 px-5 inline-block tracking-wide align-middle duration-500 text-base text-center bg-orange-500 text-white rounded-md w-full cursor-pointer"
+                                        className="inline-block w-full cursor-pointer rounded-lg bg-primary px-5 py-2.5 text-center text-base tracking-wide text-primary-foreground transition-colors duration-300 hover:bg-primary/90"
                                         value="Continue to checkout"
                                     />
                                 </div>
@@ -280,7 +280,7 @@ export default function CheckoutPage() {
                                     Your Cart
                                 </h5>
                                 <Link
-                                    className="bg-orange-500 flex justify-center items-center text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full h-5"
+                                    className="bg-primary flex justify-center items-center text-white text-[11px] font-bold px-2.5 py-0.5 rounded-full h-5"
                                     href="/cart"
                                 >
                                     {cart.length}

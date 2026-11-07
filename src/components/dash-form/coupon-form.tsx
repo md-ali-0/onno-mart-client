@@ -17,6 +17,7 @@ import { SerializedError } from "@reduxjs/toolkit";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { revalidateCatalogue } from "@/actions/revalidate";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 type CouponFormValues = {
@@ -74,6 +75,7 @@ export default function CouponForm() {
         };
 
         await createCoupon(couponData);
+        await revalidateCatalogue(["products"]);
         toast.dismiss(loadingToast);
     };
 

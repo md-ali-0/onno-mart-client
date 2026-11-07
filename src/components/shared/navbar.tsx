@@ -12,7 +12,6 @@ import {
     LayoutGrid,
     LogIn,
     LogOut,
-    MapPin,
     Menu,
     Phone,
     ShoppingBag,
@@ -87,35 +86,6 @@ export default function Navbar() {
             )}
 
             <header className="sticky top-0 z-50 bg-card shadow-sm">
-                {/* Utility strip */}
-                <div className="border-b">
-                    <div className="container-page flex h-9 items-center justify-between text-[13px] text-muted-foreground">
-                        <p className="truncate">
-                            Trending now:{" "}
-                            <span className="text-foreground">
-                                free delivery over ৳2,000
-                            </span>{" "}
-                            <Link href="/flash-sale" className="text-primary hover:underline">
-                                Know more
-                            </Link>
-                        </p>
-
-                        <ul className="hidden items-center gap-5 md:flex">
-                            <li className="flex items-center gap-1.5">
-                                <MapPin className="h-3.5 w-3.5" aria-hidden />
-                                Dhaka
-                            </li>
-                            <li>
-                                <Link href="/user/purchased-items" className="hover:text-foreground">
-                                    Track your order
-                                </Link>
-                            </li>
-                            <li>৳ BDT</li>
-                            <li>English</li>
-                        </ul>
-                    </div>
-                </div>
-
                 {/* Main row */}
                 <div className="container-page">
                     <div className="flex h-[74px] items-center gap-4">

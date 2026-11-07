@@ -62,14 +62,14 @@ export default function Sidebar() {
                         className={`flex items-center gap-3 px-3 py-2 rounded-lg text-lg ${
                             path === link.href
                                 ? "bg-primary text-white"
-                                : "text-gray-700 hover:bg-gray-100"
+                                : "text-gray-700 hover:bg-secondary"
                         }`}
                     >
                         <link.icon className="h-4 w-4" />
                         {link.label}
                     </Link>
                 ))}
-                <button className="flex items-center gap-3 px-3 py-2 rounded-lg text-lg text-gray-700 hover:bg-gray-100 w-full" onClick={handleLogout}>
+                <button className="flex items-center gap-3 px-3 py-2 rounded-lg text-lg text-gray-700 hover:bg-secondary w-full" onClick={handleLogout}>
                     <LogOut className="h-4 w-4" /> LogOut
                 </button>
             </nav>

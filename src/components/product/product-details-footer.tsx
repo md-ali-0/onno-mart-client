@@ -26,9 +26,9 @@ export default function ProductDetailsFooter({
                     >
                         <li className="ms-0">
                             <button
-                                className={`px-4 py-2 text-start text-base font-semibold rounded-md w-full hover:text-orange-500 duration-500 ${
+                                className={`px-4 py-2 text-start text-base font-semibold rounded-md w-full hover:text-primary duration-500 ${
                                     activeTab === "description"
-                                        ? "text-white bg-orange-500 hover:text-white"
+                                        ? "text-white bg-primary hover:text-white"
                                         : ""
                                 }`}
                                 onClick={() => setActiveTab("description")}
@@ -38,9 +38,9 @@ export default function ProductDetailsFooter({
                         </li>
                         <li className="ms-0">
                             <button
-                                className={`px-4 py-2 text-start text-base font-semibold rounded-md w-full hover:text-orange-500 duration-500 ${
+                                className={`px-4 py-2 text-start text-base font-semibold rounded-md w-full hover:text-primary duration-500 ${
                                     activeTab === "review"
-                                        ? "text-white bg-orange-500 hover:text-white"
+                                        ? "text-white bg-primary hover:text-white"
                                         : ""
                                 }`}
                                 onClick={() => setActiveTab("review")}
@@ -83,7 +83,7 @@ export default function ProductDetailsFooter({
                                                         alt={review.user.name}
                                                     />
                                                     <div className="ms-3 flex-1">
-                                                        <div className="text-lg font-semibold hover:text-orange-500 duration-500">
+                                                        <div className="text-lg font-semibold hover:text-primary duration-500">
                                                             {review.user.name}
                                                         </div>
                                                         <p className="text-sm text-slate-400">
@@ -135,7 +135,7 @@ export default function ProductDetailsFooter({
                                                                     }
                                                                 />
                                                                 <div>
-                                                                    <div className="text-sm font-semibold hover:text-orange-500 duration-500">
+                                                                    <div className="text-sm font-semibold hover:text-primary duration-500">
                                                                         {
                                                                             reply.user
                                                                                 .name

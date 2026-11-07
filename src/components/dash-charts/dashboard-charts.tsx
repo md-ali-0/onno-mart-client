@@ -26,10 +26,13 @@ export type DashboardChartData = {
 };
 
 const STATUS_COLORS: Record<string, string> = {
-    CANCELED: "#FF6B6B",
-    FAILED: "#FF9F43",
-    PENDING: "#54A0FF",
-    COMPLETED: "#5ED5A8",
+    CANCELED: "#FF4C1A",
+    FAILED: "#E53E3E",
+    PENDING: "#FCC418",
+    PROCESSING: "#215ADA",
+    SHIPPED: "#648BE5",
+    DELIVERED: "#24BD25",
+    COMPLETED: "#24BD25",
 };
 
 /**
@@ -53,7 +56,7 @@ export default function DashboardCharts({
                         config={{
                             totalSales: {
                                 label: "Total Sales",
-                                color: "#4CAF50",
+                                color: "#215ADA",
                             },
                         }}
                         className="sm:h-[300px]"
@@ -62,7 +65,7 @@ export default function DashboardCharts({
                             <BarChart data={charts?.barChartData ?? []}>
                                 <XAxis dataKey="month" />
                                 <YAxis />
-                                <Bar dataKey="totalSales" fill="#4CAF50" />
+                                <Bar dataKey="totalSales" fill="#215ADA" radius={[4, 4, 0, 0]} />
                                 <ChartTooltip
                                     content={<ChartTooltipContent />}
                                 />

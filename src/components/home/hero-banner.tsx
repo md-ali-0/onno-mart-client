@@ -23,7 +23,7 @@ export default async function HeroBanner() {
                         return (
                             <article
                                 key={product.id}
-                                className="relative overflow-hidden rounded-2xl"
+                                className="relative overflow-hidden rounded-xl"
                                 style={{ backgroundColor: TONES[index % TONES.length] }}
                             >
                                 <div className="flex items-center justify-between gap-4 p-6 sm:p-8">

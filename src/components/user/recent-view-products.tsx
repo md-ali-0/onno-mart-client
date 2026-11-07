@@ -21,7 +21,7 @@ export default function RecentViewProducts() {
             {recentProducts.length > 0 ? (
                 <table className="w-full border-collapse border border-gray-300">
                     <thead>
-                        <tr className="bg-gray-100">
+                        <tr className="bg-secondary">
                             <th className="border border-gray-300 px-4 py-2 text-left">
                                 Image
                             </th>

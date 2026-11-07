@@ -38,7 +38,7 @@ export default function PopularShops() {
                             <div key={index} className="border rounded-lg p-4">
                                 <div className="flex items-center gap-2 mb-4">
                                     <div className="relative">
-                                        <div className="w-16 h-16 bg-orange-500 rounded-full flex items-center justify-center overflow-hidden">
+                                        <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center overflow-hidden">
                                             <Image
                                                 src={shop?.logoUrl as string}
                                                 alt=""

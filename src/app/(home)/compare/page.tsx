@@ -58,7 +58,7 @@ export default function ProductComparisonDemo() {
                                         >
                                             <div className="absolute right-2 top-3.5">
                                                 <Button
-                                                    className="bg-orange-500/20 hover:bg-orange-500 text-orange-500 hover:text-white rounded-full"
+                                                    className="bg-primary/20 hover:bg-primary text-primary hover:text-white rounded-full"
                                                     onClick={() =>
                                                         dispatch(
                                                             removeProduct({

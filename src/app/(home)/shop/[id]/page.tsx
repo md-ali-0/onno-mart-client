@@ -95,7 +95,7 @@ export default async function ShopPage({ params, searchParams }: Props) {
                 <span className="text-foreground">{shop.name}</span>
             </nav>
 
-            <header className="surface-muted flex flex-col gap-5 rounded-2xl border p-6 sm:flex-row sm:items-center sm:p-8">
+            <header className="surface-muted flex flex-col gap-5 rounded-xl border p-6 sm:flex-row sm:items-center sm:p-8">
                 {shop.logoUrl ? (
                     <Image
                         src={shop.logoUrl}

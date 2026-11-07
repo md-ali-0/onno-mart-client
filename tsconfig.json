@@ -50,7 +50,9 @@
     ".next-auth/types/**/*.ts",
     ".next-admin/types/**/*.ts",
     ".next-guest/types/**/*.ts",
-    ".next-guest2/types/**/*.ts"
+    ".next-guest2/types/**/*.ts",
+    ".next-polish/types/**/*.ts",
+    ".next-polish2/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

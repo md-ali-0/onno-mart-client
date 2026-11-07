@@ -31,7 +31,7 @@ function Pagination({
                                 className={`size-[40px] inline-flex justify-center items-center text-slate-400 bg-white dark:bg-slate-900 rounded-s-3xl hover:text-white border border-gray-100 dark:border-gray-800 ${
                                     currentPage === 1
                                         ? "cursor-not-allowed opacity-50"
-                                        : "hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-500 dark:hover:bg-orange-500"
+                                        : "hover:border-primary dark:hover:border-primary hover:bg-primary dark:hover:bg-primary"
                                 }`}
                             >
                                 <svg
@@ -61,8 +61,8 @@ function Pagination({
                                         aria-current={pageNum === currentPage ? "page" : undefined}
                                         className={`size-[40px] inline-flex justify-center items-center ${
                                             pageNum === currentPage
-                                                ? "text-white bg-orange-500 border border-orange-500"
-                                                : "text-slate-400 hover:text-white bg-white dark:bg-slate-900 border border-gray-100 dark:border-gray-800 hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-500 dark:hover:bg-orange-500"
+                                                ? "text-white bg-primary border border-primary"
+                                                : "text-slate-400 hover:text-white bg-white dark:bg-slate-900 border border-gray-100 dark:border-gray-800 hover:border-primary dark:hover:border-primary hover:bg-primary dark:hover:bg-primary"
                                         }`}
                                     >
                                         {pageNum}
@@ -84,7 +84,7 @@ function Pagination({
                                 className={`size-[40px] inline-flex justify-center items-center text-slate-400 bg-white dark:bg-slate-900 rounded-e-3xl hover:text-white border border-gray-100 dark:border-gray-800 ${
                                     currentPage === totalPages
                                         ? "cursor-not-allowed opacity-50"
-                                        : "hover:border-orange-500 dark:hover:border-orange-500 hover:bg-orange-500 dark:hover:bg-orange-500"
+                                        : "hover:border-primary dark:hover:border-primary hover:bg-primary dark:hover:bg-primary"
                                 }`}
                             >
                                 <svg

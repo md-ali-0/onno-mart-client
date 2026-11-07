@@ -17,17 +17,17 @@ export default async function Statistics() {
                         <div className="flex items-center mb-1">
                             <div className="text-2xl font-semibold">{statisticsData.specifications}</div>
                         </div>
-                        <div className="text-sm font-medium text-orange-500">
+                        <div className="text-sm font-medium text-primary">
                             Specifications
                         </div>
                     </div>
                     <div>
-                        <TabletSmartphone className="text-orange-500" size={35}/>
+                        <TabletSmartphone className="text-primary" size={35}/>
                     </div>
                 </div>
                 <Link
                     href="/dashboard/specifications"
-                    className="text-orange-500 font-medium text-sm hover:text-blue-500"
+                    className="text-primary font-medium text-sm hover:text-blue-500"
                 >
                     View
                 </Link>

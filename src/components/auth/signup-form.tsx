@@ -48,7 +48,7 @@ const SignUpForm: React.FC = () => {
     };
 
     return (
-        <div className="p-8 rounded-2xl bg-white border">
+        <div className="p-8 rounded-xl bg-white border">
             <h2 className="text-gray-800 text-center text-2xl font-bold">
                 Sign Up
             </h2>
