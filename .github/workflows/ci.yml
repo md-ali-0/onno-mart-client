@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+
+      - name: Lint
+        run: pnpm run lint
+
+      # `next build` also runs ESLint, which catches things `next lint` misses
+      # (an unused import broke a deploy once).
+      - name: Build
+        run: pnpm run build
+        env:
+          NEXT_PUBLIC_BASE_URL: https://onnomart-api.vercel.app
+          AUTH_SECRET: ci-placeholder-not-a-real-secret

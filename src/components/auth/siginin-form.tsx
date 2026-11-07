@@ -140,8 +140,14 @@ const SignInForm: React.FC = () => {
                 </p>
             </form>
 
-            {/* Quick login credentials */}
-            <div className="mt-8 space-y-4">
+            {/* Seeded demo accounts: local convenience only, never in production. */}
+            <div
+                className={
+                    process.env.NODE_ENV === "production"
+                        ? "hidden"
+                        : "mt-8 space-y-4"
+                }
+            >
                 <div className="flex items-center justify-between bg-blue-100 p-3 rounded-lg">
                     <span className="text-blue-800">Admin: admin@onnomart.dev / OnnoMart@123</span>
                     <Button

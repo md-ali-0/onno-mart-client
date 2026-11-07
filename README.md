@@ -1,110 +1,83 @@
-# OnnoMart Storefront
+# OnnoMart — storefront
 
-The customer-facing side of **OnnoMart**, a multi-vendor marketplace. Shoppers browse
-and compare products, vendors manage their own shop, and the platform admin sees
-everything from one dashboard.
+Multi-vendor marketplace for Bangladesh. Next.js App Router front end for the
+`onno-mart-server` API (Express + Prisma + Postgres).
 
-- **Live site**: https://onno-mart.vercel.app
-- **API**: https://onnomart-api.vercel.app
-- **API repo**: https://github.com/md-ali-0/onno-mart-server
+Live: https://onno-mart.vercel.app
 
-## What's in here
+## Stack
 
-| Area | Routes |
-| --- | --- |
-| Shopping | `/`, `/products`, `/product/[slug]`, `/shops`, `/shop`, `/flash-sale`, `/compare` |
-| Account | `/auth/signin`, `/auth/signup`, `/auth/vendor-signup`, `/auth/forgot-password` |
-| Shop pages | `/shop/[id]` (canonical; `/shop?shopId=…` redirects here) |
-| Customer area | `/user/dashboard`, `/user/purchased-items`, `/user/my-reviews`, `/user/favorite-seller`, `/user/recent-view-products` |
-| Vendor + admin | `/dashboard` and its children — products, categories, brands, coupons, orders, reviews, newsletter, users, shops |
-| Checkout | `/cart`, `/payment/success`, `/payment/cancel`, `/payment/failed` |
+| | |
+|---|---|
+| Framework | Next.js 14 (App Router, RSC) |
+| State | Redux Toolkit + RTK Query (cart, compare, user-scoped reads) |
+| Styling | Tailwind + CSS variables in `src/styles/globals.css` |
+| Auth | httpOnly `session` cookie holding the API's access token |
+| Data | Server components fetch through `src/lib/api.ts` with cache tags |
 
-Stack: Next.js 14 (App Router) · TypeScript · Redux Toolkit + RTK Query ·
-Tailwind CSS · Radix UI primitives · React Hook Form + Zod · Recharts · Sonner.
-
-Data reaches the pages two ways: RTK Query for anything behind a login or a user
-action, and `fetch` inside server components for the catalogue, which keeps the
-first paint fast and lets metadata render on the server.
-
-## Local setup
+## Getting started
 
 ```bash
-git clone https://github.com/md-ali-0/onno-mart-client.git
-cd onno-mart-client
 pnpm install
-
-cp .env.example .env.local     # point NEXT_PUBLIC_BASE_URL at the API
-pnpm dev                       # http://localhost:3000
+cp .env.example .env.local     # then fill in the two values below
+pnpm dev
 ```
-
-Run the API first (`onno-mart-server`, port 5000) — the catalogue pages are
-server-rendered and will fail without it.
-
-`pnpm build` for a production build, `pnpm lint` to check the code.
-
-## Environment
 
 | Variable | Purpose |
-| --- | --- |
-| `NEXT_PUBLIC_BASE_URL` | API origin. Inlined at build time, so it must be set **before** building. |
-| `NEXT_PUBLIC_SITE_URL` | Public origin for canonical URLs, sitemap and social cards. Falls back to the Vercel domain. |
-| `AUTH_SECRET` | Signs the encrypted session cookie (`jose`). Server-side only. |
-| `REVALIDATE_SECRET` | Guards `POST /api/revalidate`. Without it the on-demand cache endpoint refuses requests. |
+|---|---|
+| `NEXT_PUBLIC_BASE_URL` | API origin, e.g. `https://onnomart-api.vercel.app` |
+| `AUTH_SECRET` | Signs the session cookie. Set it to the API's `JWT_ACCESS_SECRET` if you want signature verification; otherwise the cookie payload is read and expiry-checked. |
 
-`.env` is ignored and no secret is committed. If you fork this, generate a fresh
-`AUTH_SECRET`:
+Seeded demo accounts (local only, hidden in production builds):
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin@onnomart.dev` | `OnnoMart@123` |
+| Vendor | `gadget@onnomart.dev` | `OnnoMart@123` |
+| Customer | `customer@onnomart.dev` | `OnnoMart@123` |
+
+## Scripts
 
 ```bash
-node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
+pnpm dev                  # local dev server
+pnpm build                # production build (also runs ESLint)
+pnpm start                # serve the build
+pnpm lint                 # eslint only
+pnpm exec tsc --noEmit    # typecheck
 ```
 
-## Demo accounts
+## How the main pieces fit
 
-The sign-in page has three shortcut buttons that fill these in for you. Password
-is the same for all of them: `OnnoMart@123`.
+**Caching.** Every server read goes through `apiGet(path, { tags, revalidate })`
+in `src/lib/api.ts`, so one file decides the cache window. Tags are declared in
+`cacheTags`; `revalidateCatalogue()` (`src/actions/revalidate.ts`) is a guarded
+server action the admin panel calls after a mutation, because those mutations
+run in the browser through RTK Query and cannot reach `revalidateTag` directly.
 
-| Role | Email |
-| --- | --- |
-| Admin | `admin@onnomart.dev` |
-| Vendor | `gadget@onnomart.dev` |
-| Customer | `customer@onnomart.dev` |
+**Routing.** Browse state lives in the URL, not in React state:
 
-## Deploying to Vercel
+```
+/products                     all products
+/category/beauty-care         category scope
+/brand/nivea                  brand scope
+/…?searchTerm=&minPrice=&sort=&page=
+```
 
-Straight Next.js deploy — nothing special beyond the two environment variables
-above. `NEXT_PUBLIC_BASE_URL` is baked into the client bundle during the build,
-so changing the API origin means redeploying, not just restarting.
+`/products?categoryId=…` and `?brandId=…` are 308-redirected by middleware to
+the canonical path. `ProductListing` (`src/components/shop/product-listing.tsx`)
+renders all three routes; filters submit as a plain GET form.
 
-The API's CORS allowlist is a single origin (`CLIENT_URL` on the server project).
-Deploy the storefront under a new domain and the API will reject its requests
-until that value is updated.
+**Auth.** `verifyCredentials` (`src/lib/auth.ts`) exchanges credentials for an
+access token and stores it in an httpOnly cookie. `getSession()` reads it back
+for the session provider and the route guard in `src/middleware.ts`.
 
-## Design system & performance
+**Admin.** `/dashboard` is ADMIN/VENDOR only. The orders table edits status
+inline; the dashboard header can flush the storefront cache.
 
-One set of tokens lives in `src/styles/globals.css` and `tailwind.config.ts`
-(zinc neutrals, a warm amber primary, one radius and shadow scale). Shared
-primitives: `container-page`, `section`, `SectionHeader`, `ProductCard`, and
-`formatPrice()` — all prices render as BDT (`৳`), never `$`.
+## Conventions
 
-The home page is static (`revalidate = 60`). Its catalogue sections are server
-components using tagged `fetch` in `src/lib/api.ts` rather than client-side RTK
-Query, so the products are present in the HTML. Only the tab switch, the
-newsletter form, cart buttons and the header are client islands. Product and
-shop detail pages are prerendered with `generateStaticParams`; the dashboard
-loads Recharts on demand. Home first-load JS is ~160 kB.
-
-SEO: root metadata, `sitemap.xml`, `robots.txt`, `manifest.webmanifest`,
-generated icon/OG images, per-route canonicals, and `OnlineStore`, `WebSite`,
-`Product`, `BreadcrumbList` and `Store` JSON-LD. `POST /api/revalidate?tag=&secret=`
-busts the cache on demand — set `REVALIDATE_SECRET` on Vercel to enable it.
-
-## Notes
-
-- Images come from whatever URL the product record holds, so `next.config.mjs`
-  allows any HTTPS host. Tighten that allowlist if you ever open uploads publicly.
-- Payments redirect back into `/payment/*`. The redirect works; the gateway
-  handshake needs real SSLCommerz credentials on the API side.
-
----
-
-Built by [Mohammad Ali](https://github.com/md-ali-0).
+- Body/UI text 14–15px, card titles 15–16px, section headings 26–30px.
+- Colour comes from tokens (`--primary`, `--sale`, `--navy`); no raw hex in
+  components.
+- Server components by default. `"use client"` only where a browser API is
+  actually needed.
