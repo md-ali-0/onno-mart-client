@@ -10,11 +10,12 @@ import { FC, Fragment } from "react";
  * on the right. The old version was a grey band with an orange breadcrumb and
  * an h3, which left every inner page without an h1.
  */
-const Breadcumb: FC = () => {
+const Breadcumb: FC<{ title?: string }> = ({ title: explicitTitle }) => {
     const pathname = usePathname();
     const pathnames = pathname.split("/").filter((x) => x);
     const lastIndex = pathnames.length - 1;
-    const title = (pathnames[lastIndex] ?? "shop").replace(/-/g, " ");
+    const title =
+        explicitTitle ?? (pathnames[lastIndex] ?? "shop").replace(/-/g, " ");
 
     return (
         <section className="border-b">

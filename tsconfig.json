@@ -53,7 +53,8 @@
     ".next-guest2/types/**/*.ts",
     ".next-polish/types/**/*.ts",
     ".next-polish2/types/**/*.ts",
-    ".next-ssr/types/**/*.ts"
+    ".next-ssr/types/**/*.ts",
+    ".next-slug/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

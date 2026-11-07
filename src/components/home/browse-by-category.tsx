@@ -26,7 +26,7 @@ export default async function BrowseByCategory() {
                     {categories.map((category) => (
                         <li key={category.id}>
                             <Link
-                                href={`/products?categoryId=${category.slug}`}
+                                href={`/category/${category.slug}`}
                                 className="group flex h-full items-center gap-3 rounded-lg border bg-card p-4 transition-shadow hover:shadow-card"
                             >
                                 <span className="min-w-0 flex-1">

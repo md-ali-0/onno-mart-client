@@ -1,4 +1,6 @@
 import type { MetadataRoute } from "next";
+import { getBrands } from "@/lib/get-brands";
+import { getCategories } from "@/lib/get-categories";
 import { getProducts, getShops } from "@/lib/get-products";
 import { site } from "@/lib/site";
 
@@ -18,9 +20,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     const now = new Date();
 
     try {
-        const [{ products }, { data: shops }] = await Promise.all([
+        const [{ products }, { data: shops }, categories, brands] = await Promise.all([
             getProducts(1, 200),
             getShops(1),
+            getCategories(),
+            getBrands(),
         ]);
 
         const productRoutes: MetadataRoute.Sitemap = products.map((product) => ({
@@ -37,7 +41,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.5,
         }));
 
-        return [...staticRoutes, ...productRoutes, ...shopRoutes];
+        const categoryRoutes: MetadataRoute.Sitemap = categories.map((category) => ({
+            url: `${site.url}/category/${category.slug}`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.8,
+        }));
+
+        const brandRoutes: MetadataRoute.Sitemap = brands.map((brand) => ({
+            url: `${site.url}/brand/${brand.slug}`,
+            lastModified: now,
+            changeFrequency: "weekly",
+            priority: 0.6,
+        }));
+
+        return [
+            ...staticRoutes,
+            ...categoryRoutes,
+            ...brandRoutes,
+            ...productRoutes,
+            ...shopRoutes,
+        ];
     } catch {
         // If the API is unreachable during a build, still ship a valid sitemap
         // for the static routes rather than failing the deploy.

@@ -21,7 +21,7 @@ export default async function PopularBrands() {
                     {brands.map((brand) => (
                         <li key={brand.id} className="border-b border-r">
                             <Link
-                                href={`/products?brandId=${brand.slug}`}
+                                href={`/brand/${brand.slug}`}
                                 className="flex h-20 items-center justify-center px-3 font-display text-[17px] text-muted-foreground transition-colors hover:text-foreground"
                             >
                                 <span className="truncate">{brand.name}</span>

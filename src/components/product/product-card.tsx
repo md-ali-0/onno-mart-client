@@ -126,7 +126,7 @@ export default function ProductCard({ product, className }: ProductCardProps) {
             <div className="flex flex-1 flex-col pt-2.5">
                 {categoryName && (
                     <Link
-                        href={`/products?categoryId=${product.category.slug}`}
+                        href={`/category/${product.category.slug}`}
                         className="truncate text-[13px] font-medium text-primary hover:underline"
                     >
                         {categoryName}

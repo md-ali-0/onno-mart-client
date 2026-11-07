@@ -22,7 +22,7 @@ export default function NavCategory() {
 
     const handleCategoryClick = (slug: string) => {
         setDropdownOpen(false);
-        router.push(`/products?categoryId=${slug}`);
+        router.push(`/category/${slug}`);
     };
 
     return (

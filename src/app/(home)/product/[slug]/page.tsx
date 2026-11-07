@@ -156,7 +156,7 @@ export default async function ProductPage({
                           "@type": "ListItem",
                           position: 3,
                           name: product.category.name,
-                          item: `${site.url}/products?categoryId=${product.category.slug}`,
+                          item: `${site.url}/category/${product.category.slug}`,
                       },
                   ]
                 : []),
@@ -190,7 +190,7 @@ export default async function ProductPage({
                                 <li aria-hidden>/</li>
                                 <li>
                                     <Link
-                                        href={`/products?categoryId=${product.category.slug}`}
+                                        href={`/category/${product.category.slug}`}
                                         className="hover:text-foreground"
                                     >
                                         {product.category.name}

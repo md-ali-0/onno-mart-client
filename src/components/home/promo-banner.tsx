@@ -21,7 +21,7 @@ export default function PromoBanner() {
                             hold up, not for how they read on a spec sheet.
                         </p>
                         <Link
-                            href="/products?categoryId=electronics"
+                            href="/category/electronics"
                             className="btn-line mt-8 w-fit"
                         >
                             Shop electronics
