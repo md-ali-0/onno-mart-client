@@ -70,13 +70,30 @@ export default function CheckoutPage() {
             customer: data,
             totalAmount: totalPriceAfterDiscount.toFixed(),
         };
-        const toastId = toast.success("Redrecting to Payment....");
-        const response = await createPayment({orderData, paymentMethod: data.paymentMethod}).unwrap();
-        toast.dismiss(toastId);
+        const toastId = toast.loading("Starting the payment...");
 
-        if (response?.data) {
-            dispatch(clearCart());
-            window.location.href = response.data;
+        try {
+            const response = await createPayment({
+                orderData,
+                paymentMethod: data.paymentMethod,
+            }).unwrap();
+            toast.dismiss(toastId);
+
+            if (response?.data) {
+                dispatch(clearCart());
+                window.location.href = response.data;
+                return;
+            }
+
+            toast.error("The payment gateway did not return a checkout link.");
+        } catch (error) {
+            toast.dismiss(toastId);
+            // Surface the API message: a deployment without gateway credentials
+            // now answers 503 with a readable explanation.
+            const message =
+                (error as { data?: { message?: string } })?.data?.message ??
+                "Could not start the payment. Please try again.";
+            toast.error(message);
         }
     };
 
